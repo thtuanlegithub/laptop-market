@@ -23,7 +23,7 @@
                             android:textSize="15dp"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
-                            android:paddingLeft="10dp"
+                            android:paddingLeft="15dp"
                             android:drawableStart="@drawable/search_mini"
                             android:drawablePadding="10dp"
                             />
