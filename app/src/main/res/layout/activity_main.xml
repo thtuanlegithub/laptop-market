@@ -14,7 +14,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F5BD40"
+        android:background="@drawable/outline_bottom_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         >
     </com.google.android.material.bottomnavigation.BottomNavigationView>

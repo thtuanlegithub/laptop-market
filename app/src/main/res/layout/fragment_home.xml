@@ -4,11 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/home_tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#F5BD40"/>
+            android:layout_height="wrap_content"
+            android:background="#F5BD40">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/search_text_box"
+                            android:hint="Tìm kiếm trên chợ Laptop"
+                            android:inputType="text"
+                            android:textSize="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="10dp"
+                            android:drawableStart="@drawable/search_mini"
+                            android:drawablePadding="10dp"
+                            />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_marginLeft="20dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bell"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/chatting"/>
+/>
+                </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/slideShowViewPager"
+            android:id="@+id/slide_show_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="220dp"/>
 </LinearLayout>

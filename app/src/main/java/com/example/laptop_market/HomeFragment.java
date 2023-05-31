@@ -69,11 +69,11 @@ public class HomeFragment extends Fragment {
         List<Integer> imageList = new ArrayList<>();
         imageList.add(R.drawable.slide_show1);
         imageList.add(R.drawable.slide_show1);
-        ViewPager viewPager = view.findViewById(R.id.slideShowViewPager);
+        ViewPager viewPager = view.findViewById(R.id.slide_show_view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(requireContext(),imageList);
         viewPager.setAdapter(adapter);
         //
-        
+
         return view;
     }
 }
