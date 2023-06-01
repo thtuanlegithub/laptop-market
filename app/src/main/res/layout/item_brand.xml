@@ -5,6 +5,7 @@
     android:layout_height="150dp"
     android:layout_marginLeft="30dp"
     android:layout_marginBottom="30dp"
+    android:id="@+id/layoutBrand"
     android:background="@drawable/background_item_brand">
     <ImageView
         android:layout_marginTop="20dp"

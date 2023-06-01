@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchResultFragment">
+    tools:context=".fragment.SearchResultFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -22,11 +22,14 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSearchResultBack"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_back"/>
                 <EditText
+                    android:imeOptions="actionDone"
+                    android:id="@+id/edtTextSearchResult"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -36,12 +39,13 @@
                     android:textSize="15dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:drawableStart="@drawable/search_mini"
-                    android:drawablePadding="10dp"
+                    android:paddingLeft="12dp"
+                    android:layout_marginRight="10dp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="5dp"
                     />
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:background="@drawable/ic_notification"/>
@@ -56,7 +60,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="@color/white">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
@@ -73,7 +78,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="55dp"
+            android:background="@color/white">
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
@@ -85,11 +91,18 @@
                 android:background="@drawable/outline_rounded_button"
                 android:textAllCaps="false"/>
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvFilter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:orientation="horizontal"/>
         </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvBrandSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:background="@color/white"/>
     </LinearLayout>
 
 </FrameLayout>

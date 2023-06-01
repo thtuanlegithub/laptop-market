@@ -9,12 +9,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.laptop_market.R;
 
@@ -24,6 +29,7 @@ import com.example.laptop_market.R;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
+    private SearchResultFragment searchResultFragment = null;
     private Button btnSearchBack = null;
     private EditText edtTextSearch = null;
     private HomeFragment homeFragment = null;
@@ -95,7 +101,35 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        edtTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    performSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         showKeyboardAndFocusEditText();
+    }
+
+    private void performSearch() {
+        // Lấy nội dung từ EditText
+        //String searchQuery = edtTextSearch.getText().toString().trim();
+
+        //if (!searchQuery.isEmpty()) {
+            // Chuyển sang Fragment Search Result và truyền dữ liệu tìm kiếm
+            if(searchResultFragment==null){
+                searchResultFragment = new SearchResultFragment();
+            }
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_layout, searchResultFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        //}
     }
 
     private void showKeyboardAndFocusEditText() {

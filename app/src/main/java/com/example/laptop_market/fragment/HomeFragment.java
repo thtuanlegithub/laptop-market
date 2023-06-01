@@ -124,19 +124,19 @@ public class HomeFragment extends Fragment {
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
 
-        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple"));
-        listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus"));
-        listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell"));
-        listBrand.add(new Brand(R.drawable.brand_logo_hp,"HP"));
-        listBrand.add(new Brand(R.drawable.brand_logo_lenovo,"Lenovo"));
-        listBrand.add(new Brand(R.drawable.brand_logo_lg,"LG"));
-        listBrand.add(new Brand(R.drawable.brand_logo_acer,"Acer"));
-        listBrand.add(new Brand(R.drawable.brand_logo_msi,"MSI"));
-        listBrand.add(new Brand(R.drawable.brand_logo_razer,"Razer"));
-        listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung"));
-        listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony"));
-        listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba"));
-        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Xem thêm"));
+        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_hp,"HP",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_lenovo,"Lenovo",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_lg,"LG",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_acer,"Acer",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_msi,"MSI",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_razer,"Razer",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba",0));
+        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Xem thêm",0));
         return listBrand;
     }
     @Override
