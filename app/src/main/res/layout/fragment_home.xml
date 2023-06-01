@@ -31,13 +31,13 @@
                             android:layout_marginLeft="20dp"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:background="@drawable/bell"/>
+                            android:background="@drawable/ic_notification"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="15dp"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:background="@drawable/chatting"/> />
+                            android:background="@drawable/ic_chat"/>
                 </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
         <androidx.viewpager.widget.ViewPager
