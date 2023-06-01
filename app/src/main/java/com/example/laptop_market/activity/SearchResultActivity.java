@@ -1,8 +1,10 @@
-package com.example.laptop_market;
+package com.example.laptop_market.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.laptop_market.R;
 
 public class SearchResultActivity extends AppCompatActivity {
 

@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.databinding.ActivityMainBinding;
@@ -13,6 +15,7 @@ import com.example.laptop_market.fragment.AccountFragment;
 import com.example.laptop_market.fragment.BuyFragment;
 import com.example.laptop_market.fragment.HomeFragment;
 import com.example.laptop_market.fragment.PostFragment;
+import com.example.laptop_market.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -59,10 +62,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        // Thêm dòng trên để ẩn bàn phím khi chuyển sang fragment mới
     }
+
+
+
+
+
 }

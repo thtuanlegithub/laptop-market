@@ -1,35 +1,37 @@
 package com.example.laptop_market.fragment;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ViewFlipper;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.adapter.BrandAdapter;
 import com.example.laptop_market.model.Brand;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private LinearLayout linearLayoutFragmentHome = null;
+    private SearchFragment searchFragment = null;
+    private EditText edtTextHome = null;
     private RecyclerView rcvBrand;
     public class ImageSliderAdapter extends PagerAdapter{
         private List<Integer> imageList;
@@ -80,13 +82,41 @@ public class HomeFragment extends Fragment {
         ViewPager viewPager = view.findViewById(R.id.slide_show_view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(requireContext(),imageList);
         viewPager.setAdapter(adapter);
-        //
+
+        // Tạo danh mục tìm kiếm
         rcvBrand = view.findViewById(R.id.rcvBrand);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),2);
         rcvBrand.setLayoutManager(gridLayoutManager);
 
         BrandAdapter brandAdapter = new BrandAdapter(getListBrand());
         rcvBrand.setAdapter(brandAdapter);
+        //
+        linearLayoutFragmentHome = view.findViewById(R.id.linearLayoutFragmentHome);
+        linearLayoutFragmentHome.requestFocus();
+        //Sự kiện search
+
+        edtTextHome = view.findViewById(R.id.edtTextHome);
+            edtTextHome.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        // Xử lý khi EditText được nhấn
+                        if (searchFragment == null) {
+                            searchFragment = new SearchFragment();
+                        }
+                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.frame_layout, searchFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        // Hiển thị bàn phím
+                        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.showSoftInput(edtTextHome, InputMethodManager.SHOW_IMPLICIT);
+                        return true;
+                    }
+                    return false;
+                }
+            });
 
         return view;
     }
@@ -109,4 +139,13 @@ public class HomeFragment extends Fragment {
         listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Xem thêm"));
         return listBrand;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Đảm bảo rằng Fragment được tạo lại khi quay lại từ các Fragment khác
+        if (getView() == null) {
+            onCreateView(LayoutInflater.from(getContext()), null, null);
+        }
+    }
+
 }

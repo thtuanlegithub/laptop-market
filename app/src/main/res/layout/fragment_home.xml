@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:id="@+id/linearLayoutFragmentHome"
+    >
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/home_tool_bar"
             android:layout_width="match_parent"
@@ -14,6 +17,7 @@
                         android:orientation="horizontal">
 
                         <EditText
+                            android:id="@+id/edtTextHome"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
@@ -29,14 +33,14 @@
                             />
                         <androidx.appcompat.widget.AppCompatButton
                             android:layout_marginLeft="20dp"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:background="@drawable/ic_notification"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="15dp"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:background="@drawable/ic_chat"/>
                 </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -67,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
+                    android:orientation="horizontal"
                     >
 
                 </androidx.recyclerview.widget.RecyclerView>
