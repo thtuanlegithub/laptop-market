@@ -12,9 +12,6 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".activity.SearchResultActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden">
