@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laptop_market.HomeBaseFragment;
 import com.example.laptop_market.R;
 
 /**
@@ -29,7 +30,8 @@ import com.example.laptop_market.R;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
-    private SearchResultFragment searchResultFragment = null;
+    private HomeBaseFragment homeBaseFragment;
+    public SearchResultFragment searchResultFragment = null;
     private Button btnSearchBack = null;
     private EditText edtTextSearch = null;
     private HomeFragment homeFragment = null;
@@ -42,8 +44,9 @@ public class SearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SearchFragment() {
+    public SearchFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
+        this.homeBaseFragment = homeBaseFragment;
     }
 
     /**
@@ -55,14 +58,6 @@ public class SearchFragment extends Fragment {
      * @return A new instance of fragment SearchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,13 +77,7 @@ public class SearchFragment extends Fragment {
         edtTextSearch.requestFocus();
         btnSearchBack = view.findViewById(R.id.btnSearchBack);
         btnSearchBack.setOnClickListener(view1 -> {
-            if (homeFragment == null) {
-                homeFragment = new HomeFragment();
-            }
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, homeFragment);
-            fragmentTransaction.commit();
+            homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
             //Ẩn bàn phím:
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             View currentFocus = getActivity().getCurrentFocus();
@@ -122,14 +111,17 @@ public class SearchFragment extends Fragment {
         //if (!searchQuery.isEmpty()) {
             // Chuyển sang Fragment Search Result và truyền dữ liệu tìm kiếm
             if(searchResultFragment==null){
-                searchResultFragment = new SearchResultFragment();
+                searchResultFragment = new SearchResultFragment(homeBaseFragment);
             }
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, searchResultFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        //}
+//            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.frame_layout, searchResultFragment);
+//            fragmentTransaction.addToBackStack(null);
+//            fragmentTransaction.commit();
+        if(homeBaseFragment!=null && searchResultFragment!=null){
+            homeBaseFragment.searchResultFragment = searchResultFragment;
+            homeBaseFragment.replaceFragment(searchResultFragment);
+        }
     }
 
     private void showKeyboardAndFocusEditText() {

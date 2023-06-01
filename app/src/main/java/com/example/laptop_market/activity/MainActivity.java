@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
+import com.example.laptop_market.HomeBaseFragment;
 import com.example.laptop_market.R;
 import com.example.laptop_market.databinding.ActivityMainBinding;
 import com.example.laptop_market.fragment.AccountFragment;
@@ -18,8 +20,9 @@ import com.example.laptop_market.fragment.PostFragment;
 import com.example.laptop_market.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private FragmentManager fragmentManager;
     ActivityMainBinding binding;
-    private HomeFragment homeFragment = null;
+    private HomeBaseFragment homeBaseFragment = null;
     private PostFragment postFragment = null;
     private BuyFragment buyFragment = null;
     private AccountFragment accountFragment = null;
@@ -28,52 +31,59 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        homeFragment = new HomeFragment();
-        replaceFragment(homeFragment);
+
+        // Khởi tạo các fragment
+        homeBaseFragment = new HomeBaseFragment();
+        buyFragment = new BuyFragment();
+        postFragment = new PostFragment();
+        accountFragment = new AccountFragment();
+
+        // Thêm fragment vào FragmentManager
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.frame_layout, homeBaseFragment, "home")
+                .add(R.id.frame_layout, buyFragment, "buy")
+                .add(R.id.frame_layout, postFragment, "post")
+                .add(R.id.frame_layout, accountFragment, "account")
+                .commit();
+
+        // Ẩn tất cả các fragment, chỉ hiển thị fragment home ban đầu
+        fragmentManager.beginTransaction()
+                .hide(buyFragment)
+                .hide(postFragment)
+                .hide(accountFragment)
+                .show(homeBaseFragment)
+                .commit();
         // Thêm HomeFragment vào FragmentContainerView
         // getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,new HomeFragment()).commit();
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.home:
-                    if(homeFragment==null){
-                        homeFragment=new HomeFragment();
-                    }
-                    replaceFragment(homeFragment);
+                    showFragment(homeBaseFragment);
                     break;
                 case R.id.post:
-                    if(postFragment==null){
-                        postFragment=new PostFragment();
-                    }
-                    replaceFragment(postFragment);
+                    showFragment(postFragment);
                     break;
                 case R.id.buy:
-                    if(buyFragment==null){
-                        buyFragment=new BuyFragment();
-                    }
-                    replaceFragment(buyFragment);
+                    showFragment(buyFragment);
                     break;
                 case R.id.account:
-                    if(accountFragment==null){
-                        accountFragment=new AccountFragment();
-                    }
-                    replaceFragment(accountFragment);
+                    showFragment(accountFragment);
                     break;
             }
             return true;
         });
     }
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+    private void showFragment(Fragment fragment) {
+        fragmentManager.beginTransaction()
+                .hide(homeBaseFragment)
+                .hide(buyFragment)
+                .hide(postFragment)
+                .hide(accountFragment)
+                .show(fragment)
+                .commit();
+        // Ẩn bàn phím
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-        // Thêm dòng trên để ẩn bàn phím khi chuyển sang fragment mới
     }
-
-
-
-
-
 }

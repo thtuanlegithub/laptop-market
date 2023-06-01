@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.laptop_market.HomeBaseFragment;
 import com.example.laptop_market.R;
 import com.example.laptop_market.adapter.BrandAdapter;
 import com.example.laptop_market.model.Brand;
@@ -29,8 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private HomeBaseFragment homeBaseFragment;
     private LinearLayout linearLayoutFragmentHome = null;
-    private SearchFragment searchFragment = null;
+    public SearchFragment searchFragment = null;
     private EditText edtTextHome = null;
     private RecyclerView rcvBrand;
     public class ImageSliderAdapter extends PagerAdapter{
@@ -66,8 +68,8 @@ public class HomeFragment extends Fragment {
             container.removeView((ImageView) object);
         }
     }
-    public HomeFragment(){
-
+    public HomeFragment(HomeBaseFragment homeBaseFragment){
+        this.homeBaseFragment = homeBaseFragment;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -102,13 +104,12 @@ public class HomeFragment extends Fragment {
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         // Xử lý khi EditText được nhấn
                         if (searchFragment == null) {
-                            searchFragment = new SearchFragment();
+                            searchFragment = new SearchFragment(homeBaseFragment);
                         }
-                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame_layout, searchFragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        if (homeBaseFragment != null && searchFragment != null) {
+                            homeBaseFragment.searchFragment = searchFragment;
+                            homeBaseFragment.replaceFragment(searchFragment);
+                        }
                         // Hiển thị bàn phím
                         InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputMethodManager.showSoftInput(edtTextHome, InputMethodManager.SHOW_IMPLICIT);
@@ -136,7 +137,7 @@ public class HomeFragment extends Fragment {
         listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung",0));
         listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony",0));
         listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba",0));
-        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Xem thêm",0));
+        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",0));
         return listBrand;
     }
     @Override

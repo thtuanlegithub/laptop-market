@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.laptop_market.HomeBaseFragment;
 import com.example.laptop_market.R;
 import com.example.laptop_market.adapter.BrandAdapter;
 import com.example.laptop_market.adapter.FilterAdapter;
@@ -33,6 +34,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SearchResultFragment extends Fragment {
+    private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
     private RecyclerView rcvFilter;
     private HomeFragment homeFragment;
@@ -48,8 +50,9 @@ public class SearchResultFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SearchResultFragment() {
+    public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
+        this.homeBaseFragment = homeBaseFragment;
     }
 
     /**
@@ -61,14 +64,6 @@ public class SearchResultFragment extends Fragment {
      * @return A new instance of fragment SearchResultFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchResultFragment newInstance(String param1, String param2) {
-        SearchResultFragment fragment = new SearchResultFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +100,7 @@ public class SearchResultFragment extends Fragment {
         listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung",1));
         listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony",1));
         listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba",1));
-        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Xem thêm",1));
+        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",1));
         return listBrand;
     }
     @Override
@@ -115,13 +110,7 @@ public class SearchResultFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
         btnSearchResultBack = view.findViewById(R.id.btnSearchResultBack);
         btnSearchResultBack.setOnClickListener(view1 -> {
-            if (homeFragment == null) {
-                homeFragment = new HomeFragment();
-            }
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, homeFragment);
-            fragmentTransaction.commit();
+            homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
             //Ẩn bàn phím:
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             View currentFocus = getActivity().getCurrentFocus();
@@ -155,14 +144,7 @@ public class SearchResultFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Xử lý khi EditText được nhấn
-                    if (searchFragment == null) {
-                        searchFragment = new SearchFragment();
-                    }
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_layout, searchFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    homeBaseFragment.replaceFragment(homeBaseFragment.searchFragment);
                     // Hiển thị bàn phím
                     InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.showSoftInput(edtTextSearchResult, InputMethodManager.SHOW_IMPLICIT);
