@@ -1,4 +1,4 @@
-package com.example.laptop_market;
+package com.example.laptop_market.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,7 +7,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.example.laptop_market.R;
 import com.example.laptop_market.databinding.ActivityMainBinding;
+import com.example.laptop_market.fragment.AccountFragment;
+import com.example.laptop_market.fragment.BuyFragment;
+import com.example.laptop_market.fragment.HomeFragment;
+import com.example.laptop_market.fragment.PostFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
