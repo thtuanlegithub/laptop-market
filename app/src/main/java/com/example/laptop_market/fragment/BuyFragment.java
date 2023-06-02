@@ -2,13 +2,22 @@ package com.example.laptop_market.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.laptop_market.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,51 +25,69 @@ import com.example.laptop_market.R;
  * create an instance of this fragment.
  */
 public class BuyFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private List<Fragment> fragmentList;
+    private ViewPager2 viewPagerBuy;
+    private BottomNavigationView navBuy;
+    private FragmentStateAdapter fragmentStateAdapter;
+    private int currentSelectedItem = 0;
     public BuyFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BuyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BuyFragment newInstance(String param1, String param2) {
-        BuyFragment fragment = new BuyFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_buy, container, false);
+        View view = inflater.inflate(R.layout.fragment_buy, container, false);
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new BuyDeliveringFragment());
+        fragmentList.add(new BuyFinishFragment());
+        fragmentList.add(new BuyCancelFragment());
+        viewPagerBuy = view.findViewById(R.id.viewPagerBuy);
+        fragmentStateAdapter = new FragmentStateAdapter(this) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                return fragmentList.get(position);
+            }
+
+            @Override
+            public int getItemCount() {
+                return fragmentList.size();
+            }
+        };
+        viewPagerBuy.setAdapter(fragmentStateAdapter);
+        navBuy = view.findViewById(R.id.navBuy);
+        navBuy.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.buyDelivering && currentSelectedItem != 0) {
+                    viewPagerBuy.setCurrentItem(0);
+                    currentSelectedItem = 0;
+                } else if (itemId == R.id.buyFinish && currentSelectedItem != 1) {
+                    viewPagerBuy.setCurrentItem(1);
+                    currentSelectedItem = 1;
+                }else if (itemId == R.id.buyCancel && currentSelectedItem != 2) {
+                    viewPagerBuy.setCurrentItem(2);
+                    currentSelectedItem = 2;
+                }
+                return true;
+            }
+        });
+        viewPagerBuy.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                navBuy.getMenu().getItem(position).setChecked(true);
+                currentSelectedItem = position;
+            }
+        });
+
+        return view;
     }
 }

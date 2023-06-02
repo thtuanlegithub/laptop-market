@@ -3,14 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.BuyFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="BUY FRAGMENT"
-        android:textSize="25dp"
-        android:gravity="center"/>
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F5BD40">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Quản lý đơn mua"/>
+        </androidx.appcompat.widget.Toolbar>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navBuy"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/white_square"
+            android:paddingBottom="5dp"
+            android:elevation="0dp"
+            app:itemIconTint="@drawable/bottom_navigation_colors"
+            app:itemTextColor="@drawable/bottom_navigation_colors"
+            app:itemTextAppearanceActive="@style/SellNavigationTextAppearance"
+            app:itemTextAppearanceInactive="@style/SellNavigationTextAppearance"
+            app:menu="@menu/buy_menu"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerBuy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
 </FrameLayout>
