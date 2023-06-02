@@ -1,5 +1,6 @@
 package com.example.laptop_market.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.laptop_market.NewPostActivity;
 import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class PostFragment extends Fragment {
+    private FloatingActionButton fabNewPost;
     private List<Fragment> fragmentList;
     private ViewPager2 viewPagerPost;
     private BottomNavigationView navPost;
@@ -86,6 +90,12 @@ public class PostFragment extends Fragment {
             }
         });
 
+        //
+        fabNewPost = view.findViewById(R.id.fabNewPost);
+        fabNewPost.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getContext(), NewPostActivity.class);
+            startActivity(intent);
+        });
 
         return view;
     }
