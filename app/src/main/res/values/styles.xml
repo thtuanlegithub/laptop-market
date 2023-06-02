@@ -4,4 +4,9 @@
         <item name="android:background">@color/bottom_nav_background</item>
         <item name="itemIconTint">@color/bottom_nav_item_active</item>
     </style>
+    <style name="SellNavigationTextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">16dp</item> <!-- Kích thước văn bản -->
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
 </resources>

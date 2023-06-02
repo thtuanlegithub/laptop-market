@@ -3,25 +3,23 @@ package com.example.laptop_market.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
-import com.example.laptop_market.HomeBaseFragment;
+import com.example.laptop_market.fragment.HomeBaseFragment;
 import com.example.laptop_market.R;
 import com.example.laptop_market.databinding.ActivityMainBinding;
 import com.example.laptop_market.fragment.AccountFragment;
 import com.example.laptop_market.fragment.BuyFragment;
-import com.example.laptop_market.fragment.HomeFragment;
 import com.example.laptop_market.fragment.PostFragment;
-import com.example.laptop_market.fragment.SearchFragment;
+import com.example.laptop_market.fragment.SellFragment;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     ActivityMainBinding binding;
+    private SellFragment sellFragment = null;
     private HomeBaseFragment homeBaseFragment = null;
     private PostFragment postFragment = null;
     private BuyFragment buyFragment = null;
@@ -37,13 +35,14 @@ public class MainActivity extends AppCompatActivity {
         buyFragment = new BuyFragment();
         postFragment = new PostFragment();
         accountFragment = new AccountFragment();
-
+        sellFragment = new SellFragment();
         // Thêm fragment vào FragmentManager
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.frame_layout, homeBaseFragment, "home")
                 .add(R.id.frame_layout, buyFragment, "buy")
                 .add(R.id.frame_layout, postFragment, "post")
+                .add(R.id.frame_layout,sellFragment,"sell")
                 .add(R.id.frame_layout, accountFragment, "account")
                 .commit();
 
@@ -52,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 .hide(buyFragment)
                 .hide(postFragment)
                 .hide(accountFragment)
+                .hide(sellFragment)
                 .show(homeBaseFragment)
                 .commit();
         // Thêm HomeFragment vào FragmentContainerView
@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.home:
                     showFragment(homeBaseFragment);
+                    break;
+                case R.id.sell:
+                    showFragment(sellFragment);
                     break;
                 case R.id.post:
                     showFragment(postFragment);
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 .hide(buyFragment)
                 .hide(postFragment)
                 .hide(accountFragment)
+                .hide(sellFragment)
                 .show(fragment)
                 .commit();
         // Ẩn bàn phím

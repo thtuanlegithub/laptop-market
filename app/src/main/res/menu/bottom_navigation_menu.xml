@@ -6,8 +6,12 @@
         android:icon="@drawable/ic_baseline_home_24"
         android:title="Trang chủ" />
     <item
-        android:id="@+id/post"
+        android:id="@+id/sell"
         android:icon="@drawable/ic_baseline_sell_24"
+        android:title="Đơn bán" />
+    <item
+        android:id="@+id/post"
+        android:icon="@drawable/ic_post"
         android:title="Tin đăng" />
     <item
         android:id="@+id/buy"

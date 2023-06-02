@@ -1,6 +1,5 @@
-package com.example.laptop_market;
+package com.example.laptop_market.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,14 +9,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
-import com.example.laptop_market.fragment.HomeFragment;
-import com.example.laptop_market.fragment.SearchFragment;
-import com.example.laptop_market.fragment.SearchResultFragment;
-
-import java.util.Objects;
+import com.example.laptop_market.R;
 
 /**
  * A simple {@link Fragment} subclass.
