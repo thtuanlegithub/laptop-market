@@ -98,11 +98,18 @@
                 android:orientation="horizontal"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="2dp"
             android:id="@+id/rcvBrandSearchResult"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:orientation="horizontal"
             android:background="@color/white"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvPostSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
 
 </FrameLayout>

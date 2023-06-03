@@ -284,6 +284,16 @@
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:paddingLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:hint="Giá bán"
+                    android:textSize="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/outline_combobox" />
             </LinearLayout>
             <LinearLayout
                 android:background="#E4E4E4"

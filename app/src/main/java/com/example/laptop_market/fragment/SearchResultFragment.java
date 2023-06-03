@@ -19,8 +19,10 @@ import android.widget.EditText;
 import com.example.laptop_market.R;
 import com.example.laptop_market.adapter.BrandAdapter;
 import com.example.laptop_market.adapter.FilterAdapter;
+import com.example.laptop_market.adapter.PostSearchResultAdapter;
 import com.example.laptop_market.model.Brand;
 import com.example.laptop_market.model.Filter;
+import com.example.laptop_market.model.PostSearchResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,41 +36,21 @@ public class SearchResultFragment extends Fragment {
     private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
     private RecyclerView rcvFilter;
+    private RecyclerView rcvPostSearchResult;
     private HomeFragment homeFragment;
     private EditText edtTextSearchResult;
     private Button btnSearchResultBack;
     private SearchFragment searchFragment;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         this.homeBaseFragment = homeBaseFragment;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchResultFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
     private List<Filter> getListFilter(){
         List<Filter> listFilter = new ArrayList<>();
@@ -100,6 +82,7 @@ public class SearchResultFragment extends Fragment {
         listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",1));
         return listBrand;
     }
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -150,7 +133,26 @@ public class SearchResultFragment extends Fragment {
                 return false;
             }
         });
+
+        // Hiển thị Recycler View Post Search Result
+        rcvPostSearchResult = view.findViewById(R.id.rcvPostSearchResult);
+        GridLayoutManager gridLayoutManagerPost = new GridLayoutManager(requireContext(),1);
+        rcvPostSearchResult.setLayoutManager(gridLayoutManagerPost);
+
+        PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(getListPostSearchResult());
+        rcvPostSearchResult.setAdapter(postSearchResultAdapter);
+        //
+
         return view;
+    }
+
+    private List<PostSearchResult> getListPostSearchResult() {
+        List<PostSearchResult> postSearchResultList = new ArrayList<>();
+        postSearchResultList.add(new PostSearchResult("0",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
+        postSearchResultList.add(new PostSearchResult("1",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
+        postSearchResultList.add(new PostSearchResult("2",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
+        postSearchResultList.add(new PostSearchResult("3",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
+        return postSearchResultList;
     }
 
 }
