@@ -1,6 +1,6 @@
 package com.example.laptop_market.adapter;
 
-import android.media.Image;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.model.PostSearchResult;
+import com.example.laptop_market.activity.PostDetailActivity;
+import com.example.laptop_market.fragment.HomeBaseFragment;
+import com.example.laptop_market.model.Post;
 
 import java.util.List;
 
 public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResultAdapter.PostSearchResultViewHolder> {
-    private List<PostSearchResult> postSearchResultList;
-    public PostSearchResultAdapter(List<PostSearchResult> postSearchResultList){
+    public HomeBaseFragment homeBaseFragment;
+    private List<Post> postSearchResultList;
+    public PostSearchResultAdapter(List<Post> postSearchResultList, HomeBaseFragment homeBaseFragment){
         this.postSearchResultList = postSearchResultList;
+        this.homeBaseFragment = homeBaseFragment;
     }
 
     @NonNull
@@ -30,14 +34,23 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
 
     @Override
     public void onBindViewHolder(@NonNull PostSearchResultViewHolder holder, int position) {
-        PostSearchResult postSearchResult = postSearchResultList.get(position);
+        Post postSearchResult = postSearchResultList.get(position);
         if(postSearchResult==null){
             return;
         }
-        holder.imgPostSearchResult.setImageResource(postSearchResult.getImgPostSearchResult());
-        holder.titlePostSearchResult.setText(postSearchResult.getTitle());
+        holder.imgPostSearchResult.setImageResource(postSearchResult.getImg());
+        holder.titlePostSearchResult.setText(postSearchResult.getLaptopName());
         holder.pricePostSearchResult.setText(postSearchResult.getPrice());
         holder.addressPostSearchResult.setText(postSearchResult.getAddress());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mở Activity mới
+                Intent intent = new Intent(homeBaseFragment.getActivity(), PostDetailActivity.class);
+                // Truyền dữ liệu cần thiết qua intent (nếu cần)
+                homeBaseFragment.startActivity(intent);
+            }
+        });
     }
 
     @Override

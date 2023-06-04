@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewPostActivity"
+    tools:context=".activity.NewPostActivity"
     android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -290,6 +290,7 @@
                     android:paddingLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:hint="Giá bán"
+                    android:inputType="numberDecimal"
                     android:textSize="16dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -317,6 +318,7 @@
                     android:layout_height="55dp"
                     android:paddingLeft="15dp"
                     android:hint="Tiêu đề tin đăng"
+                    android:inputType="text"
                     android:textSize="16dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -329,6 +331,7 @@
                     android:paddingLeft="15dp"
                     android:paddingTop="15dp"
                     android:hint="Mô tả chi tiết"
+                    android:inputType="textMultiLine"
                     android:textSize="16dp"
                     android:clickable="true"
                     android:focusable="true"

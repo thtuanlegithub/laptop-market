@@ -22,16 +22,11 @@ import com.example.laptop_market.adapter.FilterAdapter;
 import com.example.laptop_market.adapter.PostSearchResultAdapter;
 import com.example.laptop_market.model.Brand;
 import com.example.laptop_market.model.Filter;
-import com.example.laptop_market.model.PostSearchResult;
+import com.example.laptop_market.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchResultFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchResultFragment extends Fragment {
     private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
@@ -139,19 +134,23 @@ public class SearchResultFragment extends Fragment {
         GridLayoutManager gridLayoutManagerPost = new GridLayoutManager(requireContext(),1);
         rcvPostSearchResult.setLayoutManager(gridLayoutManagerPost);
 
-        PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(getListPostSearchResult());
+        PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(getListPostSearchResult(), homeBaseFragment);
         rcvPostSearchResult.setAdapter(postSearchResultAdapter);
         //
 
         return view;
     }
 
-    private List<PostSearchResult> getListPostSearchResult() {
-        List<PostSearchResult> postSearchResultList = new ArrayList<>();
-        postSearchResultList.add(new PostSearchResult("0",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
-        postSearchResultList.add(new PostSearchResult("1",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
-        postSearchResultList.add(new PostSearchResult("2",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
-        postSearchResultList.add(new PostSearchResult("3",R.drawable.slide_show1,"Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM","26,000,000 đ","TP HCM"));
+    private List<Post> getListPostSearchResult() {
+        List<Post> postSearchResultList = new ArrayList<>();
+        postSearchResultList.add(new Post("0","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+        postSearchResultList.add(new Post("1","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+        postSearchResultList.add(new Post("2","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+        postSearchResultList.add(new Post("3","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+        postSearchResultList.add(new Post("4","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+        postSearchResultList.add(new Post("5","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+        postSearchResultList.add(new Post("6","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+
         return postSearchResultList;
     }
 

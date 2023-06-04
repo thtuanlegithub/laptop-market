@@ -1,9 +1,11 @@
-package com.example.laptop_market;
+package com.example.laptop_market.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.example.laptop_market.R;
 
 public class NewPostActivity extends AppCompatActivity {
     private Button btnNewPostClose;
