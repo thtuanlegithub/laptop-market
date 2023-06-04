@@ -144,14 +144,34 @@
                                 android:src="@drawable/slide_show1"
                                 android:scaleType="centerCrop"
                                 android:background="@drawable/bg_avatar_post_detail"/>
-                            <TextView
-                                android:text="Chủ shop"
-                                android:textStyle="bold"
-                                android:textColor="@color/black"
-                                android:textSize="16dp"
-                                android:gravity="center_vertical"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:text="Chủ shop"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
+                                    android:textSize="16dp"
+                                    android:gravity="center_vertical"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <RatingBar
+                                    android:id="@+id/ratingBarShopPostDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="-12dp"
+                                    android:layout_marginLeft="-60dp"
+                                    android:layout_marginBottom="-20dp"
+                                    android:numStars="5"
+                                    android:rating="4.5"
+                                    android:stepSize="0.5"
+                                    android:scaleX="0.5"
+                                    android:scaleY="0.5"
+                                    android:progressTint="#F3AD3B"/>
+                            </LinearLayout>
+
+
                         </LinearLayout>
                         <androidx.appcompat.widget.AppCompatButton
                             android:layout_width="100dp"
