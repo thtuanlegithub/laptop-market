@@ -46,7 +46,10 @@ public class SignUpFragment extends Fragment {
 
         btnSignUp = view.findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(v -> {
-            loginActivity.authenticationFragment = new AuthenticationFragment(loginActivity);
+            if(loginActivity.authenticationFragment==null)
+            {
+                loginActivity.authenticationFragment = new AuthenticationFragment(loginActivity);
+            }
             loginActivity.replaceFragment(loginActivity.authenticationFragment);
         });
 

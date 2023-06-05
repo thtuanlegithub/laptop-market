@@ -63,7 +63,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bạn hãy nhập mã OTP được gửi đến số điện thoại:"
+                android:text="Bạn hãy nhập mã OTP được gửi đến email:"
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:gravity="center"/>
@@ -71,7 +71,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0701234567"
+                android:text="supertour@gmail.com"
                 android:textSize="18dp"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/black"
@@ -84,6 +84,7 @@
                 app:itemCount="6"
                 app:lineColor="#C0C0C0"
                 app:lineWidth="1.5dp"
+                android:inputType="number"
                 android:layout_gravity="center_horizontal"/>
 
             <androidx.appcompat.widget.AppCompatButton

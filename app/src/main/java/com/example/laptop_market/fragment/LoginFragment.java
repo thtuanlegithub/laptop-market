@@ -18,6 +18,7 @@ public class LoginFragment extends Fragment {
     public LoginActivity loginActivity;
     private Button btnLoginBack;
     private TextView txtSignUp;
+    private TextView txtForgotPassword;
     public LoginFragment(LoginActivity loginActivity) {
         // Required empty public constructor
         this.loginActivity = loginActivity;
@@ -41,8 +42,19 @@ public class LoginFragment extends Fragment {
 
         txtSignUp = view.findViewById(R.id.txtSignUp);
         txtSignUp.setOnClickListener(v -> {
-            loginActivity.signUpFragment = new SignUpFragment(loginActivity);
+            if(loginActivity.signUpFragment==null)
+            {
+                loginActivity.signUpFragment = new SignUpFragment(loginActivity);
+            }
             loginActivity.replaceFragment(loginActivity.signUpFragment);
+        });
+
+        txtForgotPassword = view.findViewById(R.id.txtForgotPassword);
+        txtForgotPassword.setOnClickListener(v -> {
+            if (loginActivity.forgotPasswordFragment == null){
+                loginActivity.forgotPasswordFragment = new ForgotPasswordFragment(loginActivity);
+            }
+            loginActivity.replaceFragment(loginActivity.forgotPasswordFragment);
         });
         return view;
     }
