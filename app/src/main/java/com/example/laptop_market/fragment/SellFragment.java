@@ -74,7 +74,7 @@ public class SellFragment extends Fragment {
                 } else if (itemId == R.id.sellFinish && currentSelectedItem != 1) {
                     viewPagerSell.setCurrentItem(1);
                     currentSelectedItem = 1;
-                } else if (itemId == R.id.sellFinish && currentSelectedItem != 2) {
+                } else if (itemId == R.id.sellCancel && currentSelectedItem != 2) {
                     viewPagerSell.setCurrentItem(2);
                     currentSelectedItem = 2;
                 }

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.SignUpFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/home_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F5BD40">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLoginBack"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_back"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <LinearLayout
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Đăng ký"
+                        android:textStyle="bold"
+                        android:textSize="30dp"
+                        android:textColor="#F5BD40"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tạo tài khoản và dạo chợ Laptop"
+                        android:textSize="16dp"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_marginLeft="55dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/logo"/>
+            </LinearLayout>
+
+            <EditText
+                android:layout_marginTop="40dp"
+                android:hint="Nhập tên của bạn"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_rounded_outline_edittext"/>
+            <EditText
+                android:layout_marginTop="20dp"
+                android:hint="Nhập email của bạn"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_rounded_outline_edittext"/>
+            <EditText
+                android:layout_marginTop="20dp"
+                android:hint="Tạo mật khẩu với ít nhất 6 kí tự"
+                android:inputType="textVisiblePassword"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_rounded_outline_edittext"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="30dp"
+                android:text="Đăng ký"
+                android:textAllCaps="false"
+                android:textSize="20dp"
+                android:fontFamily="sans-serif"
+                android:backgroundTint="#C0C0C0"
+                android:textColor="@color/white"
+                />
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bạn đã có tài khoản?"/>
+                <TextView
+                    android:textColor="#557DAB"
+                    android:textSize="16dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng nhập ngay"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
