@@ -50,11 +50,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_marginTop="5dp"
+                        android:id="@+id/txtAccountName"
+                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="Tên tài khoản"
+                        android:text="Đăng nhập/ Đăng ký"
                         android:textColor="@color/black"
                         android:textSize="20dp"
                         android:textStyle="bold" />
@@ -64,14 +65,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="-55dp"
-                        android:layout_marginTop="-10dp"
+                        android:layout_marginTop="-15dp"
                         android:layout_marginBottom="-20dp"
                         android:numStars="5"
                         android:progressTint="#F3AD3B"
                         android:rating="4.5"
                         android:scaleX="0.5"
                         android:scaleY="0.5"
-                        android:stepSize="0.5" />
+                        android:stepSize="0.5"
+                        android:visibility="visible"/>
                 </LinearLayout>
             </LinearLayout>
             <TextView

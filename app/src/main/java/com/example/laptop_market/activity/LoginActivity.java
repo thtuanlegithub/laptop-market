@@ -1,59 +1,63 @@
 package com.example.laptop_market.activity;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.inputmethod.InputMethodManager;
-
-import com.example.laptop_market.R;
-import com.example.laptop_market.databinding.ActivityLoginBinding;
 import com.example.laptop_market.fragment.AuthenticationFragment;
 import com.example.laptop_market.fragment.ForgotPasswordFragment;
 import com.example.laptop_market.fragment.ForgotPasswordNewPasswordFragment;
 import com.example.laptop_market.fragment.ForgotPasswordOtpFragment;
+import com.example.laptop_market.R;
 import com.example.laptop_market.fragment.LoginFragment;
 import com.example.laptop_market.fragment.SignUpFragment;
 
+
 public class LoginActivity extends AppCompatActivity {
-    private LoginFragment loginFragment;
-    private SignUpFragment signUpFragment;
-    private AuthenticationFragment authenticationFragment;
-    private ForgotPasswordFragment forgotPasswordFragment;
-    private ForgotPasswordOtpFragment forgotPasswordOtpFragment;
-    private ForgotPasswordNewPasswordFragment forgotPasswordNewPasswordFragment;
-    private FragmentManager fragmentManager;
-    ActivityLoginBinding binding;
+    public LoginFragment loginFragment = null;
+    public SignUpFragment signUpFragment;
+    public AuthenticationFragment authenticationFragment;
+    public ForgotPasswordFragment forgotPasswordFragment;
+    public ForgotPasswordOtpFragment forgotPasswordOtpFragment;
+    public ForgotPasswordNewPasswordFragment forgotPasswordNewPasswordFragment;
+    FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_login);
 
-        loginFragment = new LoginFragment();
+
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.frame_login,loginFragment,"login")
-                .add(R.id.frame_login,signUpFragment,"signup")
-                .add(R.id.frame_login,authenticationFragment,"authentication")
-                .add(R.id.frame_login,forgotPasswordFragment,"forgotpassword")
-                .add(R.id.frame_login,forgotPasswordOtpFragment,"forgotpasswordotp")
-                .add(R.id.frame_login,forgotPasswordNewPasswordFragment,"forgotpasswordnewpassword")
-                .commit();
 
-        fragmentManager.beginTransaction()
-                .hide(signUpFragment)
-                .hide(authenticationFragment)
-                .hide(forgotPasswordFragment)
-                .hide(forgotPasswordOtpFragment)
-                .hide(forgotPasswordNewPasswordFragment)
-                .commit();
+        if(loginFragment==null){
+            loginFragment = new LoginFragment(this);
+        }
+        replaceFragment(loginFragment);
 
+//        fragmentManager.beginTransaction()
+//                .add(R.id.frame_login,loginFragment)
+//                .add(R.id.frame_login,signUpFragment)
+//                .add(R.id.frame_login,authenticationFragment)
+//                .add(R.id.frame_login,forgotPasswordFragment)
+//                .add(R.id.frame_login,forgotPasswordOtpFragment)
+//                .add(R.id.frame_login,forgotPasswordNewPasswordFragment)
+//                .commit();
+//
+//        fragmentManager.beginTransaction()
+//                .hide(signUpFragment)
+//                .hide(authenticationFragment)
+//                .hide(forgotPasswordFragment)
+//                .hide(forgotPasswordOtpFragment)
+//                .hide(forgotPasswordNewPasswordFragment)
+//                .show(loginFragment)
+//                .commit();
     }
 
-    private void showFragment(Fragment fragment){
+    public void showFragment(Fragment fragment) {
         fragmentManager.beginTransaction()
                 .hide(loginFragment)
                 .hide(signUpFragment)
@@ -63,8 +67,12 @@ public class LoginActivity extends AppCompatActivity {
                 .hide(forgotPasswordNewPasswordFragment)
                 .show(fragment)
                 .commit();
-        // Ẩn bàn phím
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_login, fragment);
+        fragmentTransaction.commit();
     }
 }

@@ -20,7 +20,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnLoginBack"
+                    android:id="@+id/btnAuthenticationBack"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
@@ -35,7 +35,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/logo"/>
                 <LinearLayout
+                    android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -53,11 +58,6 @@
                         android:text="Cùng đến bước cuối cùng"
                         android:textSize="16dp"/>
                 </LinearLayout>
-                <ImageView
-                    android:layout_marginLeft="110dp"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/logo"/>
             </LinearLayout>
             <TextView
                 android:layout_marginTop="30dp"

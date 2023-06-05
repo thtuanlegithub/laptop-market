@@ -34,7 +34,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/logo"/>
                 <LinearLayout
+                    android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -52,11 +57,6 @@
                         android:text="Chào mừng bạn đến với chợ Laptop"
                         android:textSize="16dp"/>
                 </LinearLayout>
-                <ImageView
-                    android:layout_marginLeft="40dp"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/logo"/>
             </LinearLayout>
 
             <EditText
@@ -69,7 +69,7 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_rounded_outline_edittext"/>
             <EditText
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:layout_marginTop="20dp"
                 android:hint="Nhập mật khẩu của bạn"
                 android:paddingLeft="10dp"
@@ -113,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:text="Bạn chưa có tài khoản?"/>
                 <TextView
+                    android:id="@+id/txtSignUp"
                     android:textColor="#557DAB"
                     android:textSize="16dp"
                     android:paddingTop="5dp"
