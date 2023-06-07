@@ -14,6 +14,8 @@ import com.example.laptop_market.databinding.ActivityMainBinding;
 import com.example.laptop_market.fragment.AccountFragment;
 import com.example.laptop_market.fragment.BuyFragment;
 import com.example.laptop_market.fragment.PostFragment;
+import com.example.laptop_market.fragment.SearchFragment;
+import com.example.laptop_market.fragment.SearchResultFragment;
 import com.example.laptop_market.fragment.SellFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.home:
                     showFragment(homeBaseFragment);
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameHomeBase);
+                    if(currentFragment instanceof SearchFragment){
+                        homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
+                    }
+                    else if(currentFragment instanceof SearchResultFragment){
+                        homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
+                    }
                     break;
                 case R.id.sell:
                     showFragment(sellFragment);

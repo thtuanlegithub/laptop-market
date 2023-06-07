@@ -23,7 +23,7 @@ public class HomeBaseFragment extends Fragment {
     public HomeFragment homeFragment;
     public SearchFragment searchFragment;
     public SearchResultFragment searchResultFragment;
-    private FrameLayout frameHomeBase;
+    public FrameLayout frameHomeBase;
 
     public HomeBaseFragment() {
         // Required empty public constructor

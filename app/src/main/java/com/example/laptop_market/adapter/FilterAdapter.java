@@ -1,15 +1,16 @@
 package com.example.laptop_market.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.laptop_market.activity.FilterActivity;
 import com.example.laptop_market.R;
 import com.example.laptop_market.model.Filter;
 
@@ -34,6 +35,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             return;
         }
         holder.btnFilter.setText(filter.getName());
+        holder.btnFilter.setTag(filter.getName());
     }
 
     @Override
@@ -49,6 +51,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         public FilterViewHolder(@NonNull View itemView){
             super(itemView);
            btnFilter = itemView.findViewById(R.id.btnFilter);
+
+           btnFilter.setOnClickListener(v -> {
+               Context context = btnFilter.getContext();
+               Intent intent = new Intent(context,FilterActivity.class);
+                intent.putExtra("filter",btnFilter.getTag().toString());
+               context.startActivity(intent);
+
+           });
         }
     }
 }

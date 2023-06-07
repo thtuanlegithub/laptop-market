@@ -65,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/upload_image"/>
                 <RelativeLayout
+                    android:id="@+id/newPostStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -87,6 +88,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostBrand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -109,6 +111,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostCPU"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -131,6 +134,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostRAM"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -153,6 +157,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostHardDiskType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -175,6 +180,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostHardDiskSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -197,6 +203,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostGraphicType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -219,6 +226,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostGraphicSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -241,6 +249,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostWarranty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -263,6 +272,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/newPostOriginCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -285,6 +295,7 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <EditText
+                    android:id="@+id/edtNewPostPrice"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:paddingLeft="15dp"
@@ -314,6 +325,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
                 <EditText
+                    android:id="@+id/edtTitle"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:paddingLeft="15dp"
@@ -324,6 +336,7 @@
                     android:focusable="true"
                     android:background="@drawable/outline_combobox" />
                 <EditText
+                    android:id="@+id/edtDescription"
                     android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -355,6 +368,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
                 <EditText
+                    android:id="@+id/edtPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:paddingLeft="15dp"
@@ -364,6 +378,7 @@
                     android:focusable="true"
                     android:background="@drawable/outline_combobox" />
                 <EditText
+                    android:id="@+id/edtSellerName"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:paddingLeft="15dp"
@@ -374,6 +389,7 @@
                     android:focusable="true"
                     android:background="@drawable/outline_combobox" />
                 <EditText
+                    android:id="@+id/edtSellerAddress"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:paddingLeft="15dp"

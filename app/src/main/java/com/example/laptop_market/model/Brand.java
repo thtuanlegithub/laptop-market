@@ -9,6 +9,11 @@ public class Brand {
         this.name = name;
         this.type = type;
     }
+    public Brand(String name, int type){
+        this.name = name;
+        this.type = type;
+        this.image = 700052;
+    }
     public int getImage() {
         return image;
     }

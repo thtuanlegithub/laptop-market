@@ -54,7 +54,8 @@ public class SearchResultFragment extends Fragment {
         listFilter.add(new Filter("Tình trạng +"));
         listFilter.add(new Filter("Bộ xử lý +"));
         listFilter.add(new Filter("RAM +"));
-        listFilter.add(new Filter("Ổ cứng +"));
+        listFilter.add(new Filter("Loại ổ cứng +"));
+        listFilter.add(new Filter("Kích thước ổ cứng +"));
         listFilter.add(new Filter("Card màn hình +"));
         listFilter.add(new Filter("Kích cỡ màn hình +"));
         return listFilter;

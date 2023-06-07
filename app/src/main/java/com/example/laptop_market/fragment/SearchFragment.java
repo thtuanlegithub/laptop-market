@@ -49,6 +49,12 @@ public class SearchFragment extends Fragment {
         edtTextSearch = view.findViewById(R.id.edtTextSearch);
         edtTextSearch.requestFocus();
         btnSearchBack = view.findViewById(R.id.btnSearchBack);
+
+        return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         btnSearchBack.setOnClickListener(view1 -> {
             homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
             //Ẩn bàn phím:
@@ -58,11 +64,6 @@ public class SearchFragment extends Fragment {
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
         });
-        return view;
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         edtTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
