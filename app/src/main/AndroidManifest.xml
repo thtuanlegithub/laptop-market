@@ -12,19 +12,19 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".activity.FilterActivity"
+            android:name=".view.activities.FilterActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".view.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.PostDetailActivity"
+            android:name=".view.activities.PostDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.NewPostActivity"
+            android:name=".view.activities.NewPostActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".view.activities.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
