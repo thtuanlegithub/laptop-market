@@ -190,6 +190,7 @@
                 android:textSize="18dp"
                 android:stateListAnimator="@null"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bttLogout"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="1dp"
                 android:layout_width="match_parent"

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "63723451261",
+    "project_id": "laptop-martket",
+    "storage_bucket": "laptop-martket.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63723451261:android:d4e0980b3be405fd6ad214",
+        "android_client_info": {
+          "package_name": "com.example.laptop_market"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63723451261-pgv568rgm9kgngbp7eocnlrvrk8agbe3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHpnw5OHUOEO-w_GrXxSxrKie3RJBdCzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63723451261-pgv568rgm9kgngbp7eocnlrvrk8agbe3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

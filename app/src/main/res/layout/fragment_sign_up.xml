@@ -59,6 +59,7 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/editTextName"
                 android:layout_marginTop="40dp"
                 android:hint="Nhập tên của bạn"
                 android:inputType="text"
@@ -68,6 +69,7 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_rounded_outline_edittext"/>
             <EditText
+                android:id="@+id/editTextEmail"
                 android:layout_marginTop="20dp"
                 android:hint="Nhập email của bạn"
                 android:inputType="text"
@@ -77,6 +79,7 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_rounded_outline_edittext"/>
             <EditText
+                android:id="@+id/editTextPassword"
                 android:layout_marginTop="20dp"
                 android:hint="Tạo mật khẩu với ít nhất 6 kí tự"
                 android:inputType="textVisiblePassword"

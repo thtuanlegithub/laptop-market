@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.view.adapters.FilterCheckBoxAdapter;
-import com.example.laptop_market.model.Filter;
+import com.example.laptop_market.model.FIlter.Filter;
 
 import java.util.ArrayList;
 import java.util.List;

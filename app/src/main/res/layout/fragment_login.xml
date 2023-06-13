@@ -60,6 +60,7 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/txtEmailLogin"
                 android:inputType="text"
                 android:layout_marginTop="40dp"
                 android:hint="Nhập email của bạn"
@@ -69,6 +70,7 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_rounded_outline_edittext"/>
             <EditText
+                android:id="@+id/txtPasswordLogin"
                 android:inputType="textPassword"
                 android:layout_marginTop="20dp"
                 android:hint="Nhập mật khẩu của bạn"
@@ -78,6 +80,7 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_rounded_outline_edittext"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bttLogin"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="30dp"

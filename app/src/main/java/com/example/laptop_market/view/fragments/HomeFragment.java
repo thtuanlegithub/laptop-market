@@ -20,7 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.view.adapters.BrandAdapter;
-import com.example.laptop_market.model.Brand;
+import com.example.laptop_market.model.Branch.Brand;
 
 import java.util.ArrayList;
 import java.util.List;

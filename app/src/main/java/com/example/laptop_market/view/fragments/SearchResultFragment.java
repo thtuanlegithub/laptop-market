@@ -20,9 +20,9 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.view.adapters.FilterAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResultAdapter;
-import com.example.laptop_market.model.Brand;
-import com.example.laptop_market.model.Filter;
-import com.example.laptop_market.model.Post;
+import com.example.laptop_market.model.Branch.Brand;
+import com.example.laptop_market.model.FIlter.Filter;
+import com.example.laptop_market.model.Post.Post;
 
 import java.util.ArrayList;
 import java.util.List;
