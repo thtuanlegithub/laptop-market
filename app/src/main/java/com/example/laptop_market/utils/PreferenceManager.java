@@ -1,4 +1,4 @@
-package com.example.laptop_market.ultilities;
+package com.example.laptop_market.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

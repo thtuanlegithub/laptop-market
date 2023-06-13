@@ -1,6 +1,6 @@
 package com.example.laptop_market.contracts;
 
-import com.example.laptop_market.model.Account.Account;
+import com.example.laptop_market.model.account.Account;
 
 public interface IAccountContract {
     interface Model{

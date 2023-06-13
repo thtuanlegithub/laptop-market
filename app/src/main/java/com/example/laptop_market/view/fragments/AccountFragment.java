@@ -17,9 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
-import com.example.laptop_market.model.Account.Account;
-import com.example.laptop_market.presenter.fragment.AccountFragmentPresenter;
-import com.example.laptop_market.ultilities.PreferenceManager;
+import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
+import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 
 

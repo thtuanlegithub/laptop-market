@@ -1,4 +1,4 @@
-package com.example.laptop_market.ultilities;
+package com.example.laptop_market.utils;
 
 public class AccountTable {
     public static final String TABLE_NAME = "accounts";

@@ -1,12 +1,12 @@
-package com.example.laptop_market.model.Account;
+package com.example.laptop_market.model.account;
 
-import static com.example.laptop_market.presenter.fragment.SignUpFragmentPresenter.SIGNUP_FAILED;
-import static com.example.laptop_market.presenter.fragment.SignUpFragmentPresenter.SIGNUP_SUCCESS;
+import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_FAILED;
+import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_SUCCESS;
 
 import com.example.laptop_market.contracts.IAccountContract;
-import com.example.laptop_market.ultilities.AccountTable;
-import com.example.laptop_market.ultilities.Constants;
-import com.example.laptop_market.ultilities.PreferenceManager;
+import com.example.laptop_market.utils.AccountTable;
+import com.example.laptop_market.utils.Constants;
+import com.example.laptop_market.utils.PreferenceManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;

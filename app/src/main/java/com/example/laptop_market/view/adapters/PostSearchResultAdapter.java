@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.laptop_market.R;
 import com.example.laptop_market.view.activities.PostDetailActivity;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
-import com.example.laptop_market.model.Post.Post;
+import com.example.laptop_market.model.post.Post;
 
 import java.util.List;
 

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.model.Branch.Brand;
+import com.example.laptop_market.model.brand.Brand;
 
 import java.util.List;
 

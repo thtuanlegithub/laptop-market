@@ -1,4 +1,4 @@
-package com.example.laptop_market.model.FIlter;
+package com.example.laptop_market.model.filter;
 
 import java.io.Serializable;
 import java.util.List;

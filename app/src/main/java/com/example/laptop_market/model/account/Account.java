@@ -1,4 +1,4 @@
-package com.example.laptop_market.model.Account;
+package com.example.laptop_market.model.account;
 
 import java.util.ArrayList;
 

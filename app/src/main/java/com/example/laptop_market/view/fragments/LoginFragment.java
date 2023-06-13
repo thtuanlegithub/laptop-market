@@ -16,9 +16,9 @@ import android.widget.Toast;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
-import com.example.laptop_market.model.Account.Account;
-import com.example.laptop_market.presenter.fragment.LoginFragmentPresenter;
-import com.example.laptop_market.ultilities.PreferenceManager;
+import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.presenter.fragments.LoginFragmentPresenter;
+import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
 
