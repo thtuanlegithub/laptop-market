@@ -71,7 +71,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     }
     @Override
     public void LoadAccount(Account account) {
-        txtAccountName.setText(account.getName());
+        txtAccountName.setText(account.getAccountName());
         isLogin=true;
     }
 

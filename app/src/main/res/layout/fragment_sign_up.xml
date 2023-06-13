@@ -82,7 +82,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_marginTop="20dp"
                 android:hint="Tạo mật khẩu với ít nhất 6 kí tự"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:paddingLeft="10dp"
                 android:textColorHint="#9B9B9B"
                 android:layout_width="match_parent"

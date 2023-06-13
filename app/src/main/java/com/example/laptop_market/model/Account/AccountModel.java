@@ -4,6 +4,7 @@ import static com.example.laptop_market.presenter.fragment.SignUpFragmentPresent
 import static com.example.laptop_market.presenter.fragment.SignUpFragmentPresenter.SIGNUP_SUCCESS;
 
 import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.ultilities.AccountTable;
 import com.example.laptop_market.ultilities.Constants;
 import com.example.laptop_market.ultilities.PreferenceManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,10 +38,10 @@ public class AccountModel implements IAccountContract.Model {
                     if (task.isSuccessful()) {
                         firebaseUser = task.getResult().getUser();
                         String UId = task.getResult().getUser().getUid();
-                        db.collection(Account.KEY_TABLE_ACCOUNT).document(UId).get().addOnCompleteListener(
+                        db.collection(AccountTable.TABLE_NAME).document(UId).get().addOnCompleteListener(
                                 task1 -> {
                                     if(task1.isSuccessful()) {
-                                        String username = task1.getResult().getString(Account.KEY_ACCOUNT_NAME);
+                                        String username = task1.getResult().getString(AccountTable.ACCOUNT_NAME);
                                         preferenceManager.putString(Constants.KEY_USER_EMAIL, account.getEmail());
                                         preferenceManager.putString(Constants.KEY_USER_NAME, username);
                                     }
@@ -49,7 +50,7 @@ public class AccountModel implements IAccountContract.Model {
                         listener.OnLoginListener(true,"Success");
                     }
                     else{
-                        db.collection(Account.KEY_TABLE_ACCOUNT).whereEqualTo(Account.KEY_EMAIL,account.getEmail()).get().addOnSuccessListener(
+                        db.collection(AccountTable.TABLE_NAME).whereEqualTo(AccountTable.EMAIL,account.getEmail()).get().addOnSuccessListener(
                                 queryDocumentSnapshots -> {
                                     if(queryDocumentSnapshots.getDocuments().size()==0)
                                     {
@@ -69,19 +70,19 @@ public class AccountModel implements IAccountContract.Model {
         if(firebaseUser!=null)
         {
             Account account = new Account();
-            account.setID_Account(firebaseUser.getUid());
+            account.setAccountID(firebaseUser.getUid());
             String temp =preferenceManager.getString(Constants.KEY_USER_NAME);
             if(!(preferenceManager.getString(Constants.KEY_USER_NAME).isEmpty())) {
-                account.setName(preferenceManager.getString(Constants.KEY_USER_NAME));
+                account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
                 account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
                 listener.OnLoadingListener(true,account);
             }
             else{
-                db.collection(Account.KEY_TABLE_ACCOUNT).document(firebaseUser.getUid()).get().addOnSuccessListener(
+                db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnSuccessListener(
                         documentSnapshot -> {
-                            account.setName(documentSnapshot.getString(Account.KEY_ACCOUNT_NAME));
-                            account.setEmail(documentSnapshot.getString(Account.KEY_EMAIL));
-                            account.setName(preferenceManager.getString(Constants.KEY_USER_NAME));
+                            account.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
+                            account.setEmail(documentSnapshot.getString(AccountTable.EMAIL));
+                            account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
                             account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
                             listener.OnLoadingListener(true,account);
                         }
@@ -117,11 +118,11 @@ public class AccountModel implements IAccountContract.Model {
                             if (task.isSuccessful()) {
 
                                 Map<String, Object> user = new HashMap<>();
-                                user.put(Account.KEY_EMAIL, account.getEmail());
-                                user.put(Account.KEY_PASSWORD, account.getPassword());
-                                user.put(Account.KEY_ACCOUNT_NAME, account.getName());
-                                user.put(Account.KEY_LIST_PUBLISH_POST,new ArrayList<String>());
-                                db.collection(Account.KEY_TABLE_ACCOUNT).document(task.getResult().getUser().getUid()).set(user);
+                                user.put(AccountTable.EMAIL, account.getEmail());
+                                user.put(AccountTable.PASSWORD, account.getPassword());
+                                user.put(AccountTable.ACCOUNT_NAME, account.getAccountName());
+                                user.put(AccountTable.PUBLISH_POSTS,new ArrayList<String>());
+                                db.collection(AccountTable.TABLE_NAME).document(task.getResult().getUser().getUid()).set(user);
                                 listener.OnCreateAccountResult(SIGNUP_SUCCESS,"Create account success");
                             }
                         })

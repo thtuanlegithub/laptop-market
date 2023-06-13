@@ -3,44 +3,37 @@ package com.example.laptop_market.model.Account;
 import java.util.ArrayList;
 
 public class Account {
-    public static final String KEY_TABLE_ACCOUNT= "account";
-    public static final String KEY_ID_ACCOUNT = "id_account";
-    public static final String KEY_ACCOUNT_NAME = "account_name";
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_CHECK_DATA = "check_data";
-    public static final String KEY_PASSWORD = "password";
-    public static final String KEY_LIST_PUBLISH_POST = "list_publish_post";
-    private String idAccount;
-    private String name;
+    private String accountID;
     private String email;
     private String password;
-    private String gender;
+    private String accountName;
+    private String address;
+    private Double rating;
+    private ArrayList<String> publishPosts;
+    private ArrayList<String> savedPosts;
+    private ArrayList<String> cartItems;
 
     public Account() {
     }
 
-    public Account(String idAccount, String name, String email, String password, String gender) {
-        this.idAccount = idAccount;
-        this.name = name;
+    public Account(String accountID, String email, String password, String accountName, String address, Double rating, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> cartItems) {
+        this.accountID = accountID;
         this.email = email;
         this.password = password;
-        this.gender = gender;
+        this.accountName = accountName;
+        this.address = address;
+        this.rating = rating;
+        this.publishPosts = publishPosts;
+        this.savedPosts = savedPosts;
+        this.cartItems = cartItems;
     }
 
-    public String getID_Account() {
-        return idAccount;
+    public String getAccountID() {
+        return accountID;
     }
 
-    public void setID_Account(String idAccount) {
-        this.idAccount = idAccount;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setAccountID(String accountID) {
+        this.accountID = accountID;
     }
 
     public String getEmail() {
@@ -59,11 +52,52 @@ public class Account {
         this.password = password;
     }
 
-    public String getGender() {
-        return gender;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public ArrayList<String> getPublishPosts() {
+        return publishPosts;
+    }
+
+    public void setPublishPosts(ArrayList<String> publishPosts) {
+        this.publishPosts = publishPosts;
+    }
+
+    public ArrayList<String> getSavedPosts() {
+        return savedPosts;
+    }
+
+    public void setSavedPosts(ArrayList<String> savedPosts) {
+        this.savedPosts = savedPosts;
+    }
+
+    public ArrayList<String> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(ArrayList<String> cartItems) {
+        this.cartItems = cartItems;
     }
 }
+

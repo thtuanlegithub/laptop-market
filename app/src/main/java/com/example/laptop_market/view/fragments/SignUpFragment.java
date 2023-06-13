@@ -107,7 +107,7 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
                 Account account = new Account();
                 account.setEmail(email);
                 account.setPassword(password);
-                account.setName(name);
+                account.setAccountName(name);
                 presenter.createAccountClicked(account);
             }
         });
