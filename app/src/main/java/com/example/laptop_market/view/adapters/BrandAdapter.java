@@ -37,7 +37,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         if(brand==null) {
             return;
         }
-        if(brand.getType()==BRAND_TYPE_HOME) {
+       /* if(brand.getType()==BRAND_TYPE_HOME) {
             holder.txtBrand.setText(brand.getName());
             holder.imgBrand.setImageResource(brand.getImage());
         }
@@ -51,7 +51,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
             );
             layoutParams.setMargins(0, 0, 0, 0);
             holder.layoutBrand.setLayoutParams(layoutParams);
-        }
+        }*/
 
     }
 

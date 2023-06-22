@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IStringFilterSearchContract;
+import com.example.laptop_market.presenter.fragments.SearchResultFragmentPresenter;
+import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.view.adapters.FilterAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResultAdapter;
@@ -27,7 +30,7 @@ import com.example.laptop_market.model.post.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultFragment extends Fragment {
+public class SearchResultFragment extends Fragment implements IStringFilterSearchContract.View.SearchResultFragmentView {
     private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
     private RecyclerView rcvFilter;
@@ -36,15 +39,19 @@ public class SearchResultFragment extends Fragment {
     private EditText edtTextSearchResult;
     private Button btnSearchResultBack;
     private SearchFragment searchFragment;
-
+    private PreferenceManager preferenceManager;
+    private IStringFilterSearchContract.Presenter.SearchResultFragmentPresenter presenter;
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         this.homeBaseFragment = homeBaseFragment;
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferenceManager = new PreferenceManager(getContext());
+        presenter = new SearchResultFragmentPresenter(preferenceManager,this);
 
     }
     private List<Filter> getListFilter(){
@@ -63,7 +70,7 @@ public class SearchResultFragment extends Fragment {
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
 
-        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",1));
+/*        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",1));
         listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus",1));
         listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell",1));
         listBrand.add(new Brand(R.drawable.brand_logo_hp,"HP",1));
@@ -75,7 +82,7 @@ public class SearchResultFragment extends Fragment {
         listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung",1));
         listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony",1));
         listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba",1));
-        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",1));
+        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",1));*/
         return listBrand;
     }
     @SuppressLint("ClickableViewAccessibility")
@@ -144,15 +151,25 @@ public class SearchResultFragment extends Fragment {
 
     private List<Post> getListPostSearchResult() {
         List<Post> postSearchResultList = new ArrayList<>();
-        postSearchResultList.add(new Post("0","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
+      /*  postSearchResultList.add(new Post("0","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
         postSearchResultList.add(new Post("1","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
         postSearchResultList.add(new Post("2","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
         postSearchResultList.add(new Post("3","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
         postSearchResultList.add(new Post("4","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
         postSearchResultList.add(new Post("5","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
         postSearchResultList.add(new Post("6","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-
+*/
         return postSearchResultList;
     }
 
+    @Override
+    public void LoadSearchingFragment(String itemString) {
+        edtTextSearchResult.setText(itemString);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.OnLoadingPageView();
+    }
 }

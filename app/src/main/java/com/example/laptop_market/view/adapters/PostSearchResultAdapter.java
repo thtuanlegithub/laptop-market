@@ -38,7 +38,7 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
         if(postSearchResult==null){
             return;
         }
-        holder.imgPostSearchResult.setImageResource(postSearchResult.getImg());
+        /*holder.imgPostSearchResult.setImageResource(postSearchResult.getImg());
         holder.titlePostSearchResult.setText(postSearchResult.getLaptopName());
         holder.pricePostSearchResult.setText(postSearchResult.getPrice());
         holder.addressPostSearchResult.setText(postSearchResult.getAddress());
@@ -50,7 +50,7 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
                 // Truyền dữ liệu cần thiết qua intent (nếu cần)
                 homeBaseFragment.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
