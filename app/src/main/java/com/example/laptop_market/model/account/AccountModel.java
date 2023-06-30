@@ -120,13 +120,18 @@ public class AccountModel implements IAccountContract.Model {
         firebaseAuth.createUserWithEmailAndPassword(account.getEmail(), account.getPassword()).addOnCompleteListener(
                         task -> {
                             if (task.isSuccessful()) {
-
+                                account.setFinishData(false);
+                                account.setAccountID(task.getResult().getUser().getUid());
+                                account.setPublishPosts(new ArrayList<>());
+                                account.setCartItems(new ArrayList<>());
+                                account.setSavedPosts(new ArrayList<>());
+                                account.setRating(0d);
                                 Map<String, Object> user = new HashMap<>();
                                 user.put(AccountTable.EMAIL, account.getEmail());
                                 user.put(AccountTable.PASSWORD, account.getPassword());
                                 user.put(AccountTable.ACCOUNT_NAME, account.getAccountName());
                                 user.put(AccountTable.PUBLISH_POSTS,new ArrayList<String>());
-                                db.collection(AccountTable.TABLE_NAME).document(task.getResult().getUser().getUid()).set(user);
+                                db.collection(AccountTable.TABLE_NAME).document(task.getResult().getUser().getUid()).set(account);
                                 listener.OnCreateAccountResult(SIGNUP_SUCCESS,"Create account success");
                             }
                         })

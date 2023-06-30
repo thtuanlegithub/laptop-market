@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -20,6 +24,9 @@ import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.NewPostActivityPresenter;
 import com.example.laptop_market.utils.PreferenceManager;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class NewPostActivity extends AppCompatActivity implements IPostContract.View.NewPostActivityView, ILaptopContract.View.NewPostActivityView {
@@ -132,12 +139,30 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
             laptopActivityPresenter.OnCreateNewLaptopClicked(laptop);
         });
     }
+    private String encode_img(Uri uri)
+    {
+        Bitmap bitmap = null;
+        ContentResolver contentResolver = getContentResolver();
+        try {
+            InputStream inputStream = contentResolver.openInputStream(uri);
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            int previewWidth = 720;
+            int previewHeight=bitmap.getHeight()*previewWidth/bitmap.getWidth();
+            Bitmap preivewBitmap= Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
+            ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
+            preivewBitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            return Base64.encodeToString(bytes,Base64.DEFAULT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            ListPictures.clear();
             if (data.getData() != null) {
                 // Xử lý một ảnh duy nhất
                 Uri uri = data.getData();
@@ -165,6 +190,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         post.setSellerName(edtSellerName.getText().toString());
         post.setSellerPhoneNumber(edtPhoneNumber.getText().toString());
         post.setTitle(edtTitle.getText().toString());
+        post.setPostMainImage(encode_img(ListPictures.get(0)));
         postActivityPresenter.OnCreateNewPostClicked(post);
     }
 

@@ -144,6 +144,7 @@ public class Laptop {
     public void setImgLists(ArrayList<Uri> listImages) {
         this.listImages = listImages;
     }
+
 }
 
 

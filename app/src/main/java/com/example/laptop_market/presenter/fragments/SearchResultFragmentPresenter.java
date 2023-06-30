@@ -36,6 +36,7 @@ public class SearchResultFragmentPresenter implements IStringFilterSearchContrac
     public void OnSearchPost(String searchPost) {
         postModel.LoadSearchPost(searchPost,(posts,exception)->{
             viewPost.FinishLoadingSearchPost(posts);
+
         });
     }
 

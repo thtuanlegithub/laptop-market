@@ -9,9 +9,12 @@ public class Account {
     private String accountName;
     private String address;
     private Double rating;
+    private String phoneNumber;
+    private boolean isFinishData;
     private ArrayList<String> publishPosts;
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
+    private String avatar;
 
     public Account() {
     }
@@ -98,6 +101,30 @@ public class Account {
 
     public void setCartItems(ArrayList<String> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public boolean isFinishData() {
+        return isFinishData;
+    }
+
+    public void setFinishData(boolean finishData) {
+        isFinishData = finishData;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
 

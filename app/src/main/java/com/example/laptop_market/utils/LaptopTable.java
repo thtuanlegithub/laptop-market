@@ -14,5 +14,6 @@ public class LaptopTable {
     public static final String SCREEN_SIZE = "screenSize";
     public static final String GUARANTEE = "guarantee";
     public static final String ORIGIN = "origin";
+    public static final String MAIN_IMAGE = "mainImage";
     public static final String LIST_IMAGES = "listImages";
 }

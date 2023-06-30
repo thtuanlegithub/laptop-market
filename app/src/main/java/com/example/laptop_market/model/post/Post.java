@@ -12,6 +12,7 @@ public class Post {
     private String sellerName;
     private String sellerAddress;
     private Date pushlishTime;
+    private String postMainImage;
 
     public Post() {
     }
@@ -97,5 +98,13 @@ public class Post {
 
     public void setSellerAddress(String sellerAddress) {
         this.sellerAddress = sellerAddress;
+    }
+
+    public String getPostMainImage() {
+        return postMainImage;
+    }
+
+    public void setPostMainImage(String postMainImage) {
+        this.postMainImage = postMainImage;
     }
 }

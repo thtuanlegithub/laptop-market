@@ -57,8 +57,6 @@ public class LaptopModel implements ILaptopContract.Model {
         });
     }
 
-
-
     //endregion
     //region upload Image to Firebase Storage
     private void upLoadImageToFireStorage(ArrayList<Uri> listImage,String Laptop_Id, OnCreateLaptopListener listener)

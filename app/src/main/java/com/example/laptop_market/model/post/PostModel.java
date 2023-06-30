@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
 import com.algolia.search.saas.AlgoliaException;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -62,6 +64,7 @@ public class PostModel implements IPostContract.Model {
     @Override
     public void CreateNewPost(Post post, OnCreatePostListener listener) {
         post.setAccountID(firebaseUser.getUid());
+        post.setPushlishTime(new Date());
         db.collection(PostTable.TABLE_NAME).add(post).addOnCompleteListener(task -> {
             if(task.isSuccessful())
             {
@@ -130,20 +133,10 @@ public class PostModel implements IPostContract.Model {
                                     post.setTitle(documentSnapshot.getString(PostTable.TITLE));
                                     post.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
                                     post.setAccountId(documentSnapshot.getString(PostTable.ACCOUNT_ID));
+                                    post.setImage(getBitMapFromString(documentSnapshot.getString((PostTable.POST_MAIN_IMAGE))));
                                     listPost.add(post);
-                                    String idLaptop = documentSnapshot.getString(PostTable.LAPTOP_ID);
-                                    firebaseStorage.getReference().child(LaptopTable.TABLE_NAME + "/" + idLaptop + "/Image0.jpg").getBytes(1024 * 1024).addOnSuccessListener(bytes -> {
-                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                        listPost.get(j).setImage(bitmap);
-                                        PostSearchResult postSearchResultTemp=listPost.get(j);
-                                        j++;
-                                        if (j == hits.length()) {
-                                            listener.OnFinishLoadingSearchPostListener(listPost, null);
-                                        }
-                                    }).addOnFailureListener(e1 -> {
-                                        j++;
-                                    });
                                 }
+                                listener.OnFinishLoadingSearchPostListener(listPost,null);
                             } else {
                                 Exception error = task.getException();
                                 listener.OnFinishLoadingSearchPostListener(null, error);
@@ -158,6 +151,15 @@ public class PostModel implements IPostContract.Model {
 
                 }
         );
+    }
+    private Bitmap getBitMapFromString(String encodedImage)
+    {
+        if(encodedImage!=null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        else
+            return  null;
     }
     //endregion
     @Override
