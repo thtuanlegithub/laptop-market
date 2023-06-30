@@ -1,20 +1,20 @@
 package com.example.laptop_market.presenter.fragments;
 
+import android.content.Context;
+
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.AccountModel;
 import com.example.laptop_market.utils.PreferenceManager;
 
 public class AccountFragmentPresenter implements IAccountContract.Presenter.AccountFragmentPresenter {
 
-    private PreferenceManager preferenceManager = null;
     private IAccountContract.View.AccountFragmentView view = null;
     private IAccountContract.Model accountModel = null;
 
-    public AccountFragmentPresenter(IAccountContract.View.AccountFragmentView view, PreferenceManager preferenceManager)
+    public AccountFragmentPresenter(IAccountContract.View.AccountFragmentView view, Context context)
     {
-        this.preferenceManager = preferenceManager;
         this.view = view;
-        accountModel = new AccountModel(preferenceManager);
+        accountModel = new AccountModel(context);
     }
 
     @Override

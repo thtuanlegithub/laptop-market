@@ -1,18 +1,18 @@
 package com.example.laptop_market.presenter.fragments;
 
+import android.content.Context;
+
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.model.filter.StringFilterSearchModel;
 import com.example.laptop_market.utils.PreferenceManager;
 
 public class SearchFragmentPresenter implements IStringFilterSearchContract.Presenter.SearchFragmentPresenter {
-    private PreferenceManager preferenceManager;
     private IStringFilterSearchContract.View.SearchFragmentView view;
     private IStringFilterSearchContract.Model model;
 
-    public SearchFragmentPresenter(PreferenceManager preferenceManager, IStringFilterSearchContract.View.SearchFragmentView view) {
-        this.preferenceManager = preferenceManager;
+    public SearchFragmentPresenter(Context context, IStringFilterSearchContract.View.SearchFragmentView view) {
         this.view = view;
-        model = new StringFilterSearchModel(preferenceManager);
+        model = new StringFilterSearchModel(context);
     }
 
     @Override

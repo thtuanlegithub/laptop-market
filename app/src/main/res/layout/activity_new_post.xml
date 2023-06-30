@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.NewPostActivity"
+    tools:context=".activity.NewPostActivity"
     android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -61,6 +61,7 @@
                 android:layout_margin="15dp"
                 android:orientation="vertical">
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/NewPostOpenImageBtt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/upload_image"/>
@@ -420,6 +421,7 @@
             android:layout_marginRight="2dp"
             />
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/NewPostBttDangTin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -1,4 +1,4 @@
-package com.example.laptop_market.view.adapters;
+package com.example.laptop_market.view.adapters.PostSearchResult;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.utils.PostTable;
 import com.example.laptop_market.view.activities.PostDetailActivity;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
 import com.example.laptop_market.model.post.Post;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResultAdapter.PostSearchResultViewHolder> {
     public HomeBaseFragment homeBaseFragment;
-    private List<Post> postSearchResultList;
-    public PostSearchResultAdapter(List<Post> postSearchResultList, HomeBaseFragment homeBaseFragment){
+    private List<PostSearchResult> postSearchResultList;
+    public PostSearchResultAdapter(List<PostSearchResult> postSearchResultList, HomeBaseFragment homeBaseFragment){
         this.postSearchResultList = postSearchResultList;
         this.homeBaseFragment = homeBaseFragment;
     }
@@ -34,13 +35,13 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
 
     @Override
     public void onBindViewHolder(@NonNull PostSearchResultViewHolder holder, int position) {
-        Post postSearchResult = postSearchResultList.get(position);
+        PostSearchResult postSearchResult = postSearchResultList.get(position);
         if(postSearchResult==null){
             return;
         }
-        /*holder.imgPostSearchResult.setImageResource(postSearchResult.getImg());
-        holder.titlePostSearchResult.setText(postSearchResult.getLaptopName());
-        holder.pricePostSearchResult.setText(postSearchResult.getPrice());
+        holder.imgPostSearchResult.setImageBitmap(postSearchResult.getImage());
+        holder.titlePostSearchResult.setText(postSearchResult.getTitle());
+        holder.pricePostSearchResult.setText(String.valueOf(postSearchResult.getPrice()));
         holder.addressPostSearchResult.setText(postSearchResult.getAddress());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,9 +49,10 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
                 // Mở Activity mới
                 Intent intent = new Intent(homeBaseFragment.getActivity(), PostDetailActivity.class);
                 // Truyền dữ liệu cần thiết qua intent (nếu cần)
+                intent.putExtra(PostTable.TABLE_NAME, postSearchResult);
                 homeBaseFragment.startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override

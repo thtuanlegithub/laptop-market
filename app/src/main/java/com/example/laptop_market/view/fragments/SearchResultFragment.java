@@ -2,6 +2,7 @@ package com.example.laptop_market.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.opengl.Visibility;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,14 +16,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.presenter.fragments.SearchResultFragmentPresenter;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.view.adapters.FilterAdapter;
-import com.example.laptop_market.view.adapters.PostSearchResultAdapter;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResultAdapter;
 import com.example.laptop_market.model.brand.Brand;
 import com.example.laptop_market.model.filter.Filter;
 import com.example.laptop_market.model.post.Post;
@@ -30,7 +34,8 @@ import com.example.laptop_market.model.post.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultFragment extends Fragment implements IStringFilterSearchContract.View.SearchResultFragmentView {
+public class SearchResultFragment extends Fragment implements IStringFilterSearchContract.View.SearchResultFragmentView
+        , IPostContract.View.SearchResultFragmentView {
     private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
     private RecyclerView rcvFilter;
@@ -40,7 +45,9 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private Button btnSearchResultBack;
     private SearchFragment searchFragment;
     private PreferenceManager preferenceManager;
-    private IStringFilterSearchContract.Presenter.SearchResultFragmentPresenter presenter;
+    private IStringFilterSearchContract.Presenter.SearchResultFragmentPresenter stringSearchpresenter;
+    private IPostContract.Presenter.SearchResultFragmentPresenter postPreseneter;
+    private ProgressBar isLoading;
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         this.homeBaseFragment = homeBaseFragment;
@@ -51,7 +58,8 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferenceManager = new PreferenceManager(getContext());
-        presenter = new SearchResultFragmentPresenter(preferenceManager,this);
+        stringSearchpresenter = new SearchResultFragmentPresenter(getContext(),this,this);
+        postPreseneter = new SearchResultFragmentPresenter(getContext(),this,this);
 
     }
     private List<Filter> getListFilter(){
@@ -70,7 +78,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
 
-/*        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",1));
+        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",1));
         listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus",1));
         listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell",1));
         listBrand.add(new Brand(R.drawable.brand_logo_hp,"HP",1));
@@ -82,7 +90,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung",1));
         listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony",1));
         listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba",1));
-        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",1));*/
+        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",1));
         return listBrand;
     }
     @SuppressLint("ClickableViewAccessibility")
@@ -91,6 +99,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
+        isLoading= view.findViewById(R.id.isLoading);
         btnSearchResultBack = view.findViewById(R.id.btnSearchResultBack);
         btnSearchResultBack.setOnClickListener(view1 -> {
             homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
@@ -141,11 +150,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         rcvPostSearchResult = view.findViewById(R.id.rcvPostSearchResult);
         GridLayoutManager gridLayoutManagerPost = new GridLayoutManager(requireContext(),1);
         rcvPostSearchResult.setLayoutManager(gridLayoutManagerPost);
-
-        PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(getListPostSearchResult(), homeBaseFragment);
-        rcvPostSearchResult.setAdapter(postSearchResultAdapter);
         //
-
         return view;
     }
 
@@ -164,12 +169,25 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
     @Override
     public void LoadSearchingFragment(String itemString) {
+        isLoading.setVisibility(View.VISIBLE);
+        rcvPostSearchResult.setVisibility(View.GONE);
         edtTextSearchResult.setText(itemString);
+        postPreseneter.OnSearchPost(itemString);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.OnLoadingPageView();
+        stringSearchpresenter.OnLoadingPageView();
+    }
+
+
+    @Override
+    public void FinishLoadingSearchPost(ArrayList<PostSearchResult> posts) {
+        PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(posts, homeBaseFragment);
+        rcvPostSearchResult.setAdapter(postSearchResultAdapter);
+        isLoading.setVisibility(View.GONE);
+        rcvPostSearchResult.setVisibility(View.VISIBLE);
+        //rcvPostSearchResult.notify();
     }
 }

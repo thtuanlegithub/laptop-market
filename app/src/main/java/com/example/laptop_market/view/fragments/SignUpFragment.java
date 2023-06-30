@@ -34,7 +34,6 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
     private EditText editTextName;
     private TextView txtLogin;
     public LoginActivity loginActivity;
-    private PreferenceManager preferenceManager;
     private IAccountContract.Presenter.SignUpFragmentPresenter presenter;
     private static final int ENTER_EMAIL = 1;
     private static final int INVALID_EMAIL = 2;
@@ -65,8 +64,7 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
         btnSignUp = view.findViewById(R.id.btnSignUp);
-        preferenceManager = new PreferenceManager(getContext());
-        presenter = new SignUpFragmentPresenter(this,preferenceManager);
+        presenter = new SignUpFragmentPresenter(this,getContext());
         setListener();
         return view;
     }

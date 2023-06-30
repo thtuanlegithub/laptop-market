@@ -34,7 +34,6 @@ import java.util.ArrayList;
 public class SearchFragment extends Fragment implements  IStringFilterSearchContract.View.SearchFragmentView{
     private HomeBaseFragment homeBaseFragment;
     public SearchResultFragment searchResultFragment = null;
-    private PreferenceManager preferenceManager;
     private Button btnSearchBack = null;
     private EditText edtTextSearch = null;
     private HomeFragment homeFragment = null;
@@ -50,8 +49,7 @@ public class SearchFragment extends Fragment implements  IStringFilterSearchCont
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferenceManager = new PreferenceManager(getContext());
-        presenter = new SearchFragmentPresenter(preferenceManager,this);
+        presenter = new SearchFragmentPresenter(getContext(),this);
     }
 
     @Override

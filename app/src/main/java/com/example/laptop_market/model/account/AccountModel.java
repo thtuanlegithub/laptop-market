@@ -3,9 +3,13 @@ package com.example.laptop_market.model.account;
 import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_FAILED;
 import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_SUCCESS;
 
+import android.content.Context;
+
 import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.utils.AccountTable;
 import com.example.laptop_market.utils.Constants;
+import com.example.laptop_market.utils.LaptopTable;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -23,9 +27,9 @@ public class AccountModel implements IAccountContract.Model {
     private PreferenceManager preferenceManager;
     private FirebaseUser firebaseUser;
 
-    public AccountModel(PreferenceManager preferenceManager)
+    public AccountModel(Context context)
     {
-        this.preferenceManager=preferenceManager;
+        this.preferenceManager= new PreferenceManager(context);
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -133,6 +137,16 @@ public class AccountModel implements IAccountContract.Model {
                         listener.OnCreateAccountResult(SIGNUP_FAILED,"Sign up fail");
                     }
                 });
+    }
+
+    @Override
+    public void LoadAccountWithId(String accountId, OnLoadingAccountWithIdListener listener) {
+        db.collection(AccountTable.TABLE_NAME).document(accountId).get().addOnSuccessListener(documentSnapshot -> {
+            Account account = documentSnapshot.toObject(Account.class);
+            listener.OnFinishLoadingAccountWithId(account,null);
+        }).addOnFailureListener(e -> {
+            listener.OnFinishLoadingAccountWithId(null,e);
+        });
     }
     //endregion
 

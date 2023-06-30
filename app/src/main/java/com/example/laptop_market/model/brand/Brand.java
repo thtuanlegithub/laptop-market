@@ -6,11 +6,17 @@ public class Brand {
     private String brandID;
     private String brandName;
     private int img;
-
-    public Brand(String brandID, String brandName, int img) {
+    private int type;
+    public Brand(String brandID, String brandName, int type) {
         this.brandID = brandID;
         this.brandName = brandName;
+        this.type = type;
+    }
+
+    public Brand( int img,String brandName, int type) {
+        this.brandName = brandName;
         this.img = img;
+        this.type = type;
     }
 
     public String getBrandID() {
@@ -35,5 +41,12 @@ public class Brand {
 
     public void setImg(int img) {
         this.img = img;
+    }
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

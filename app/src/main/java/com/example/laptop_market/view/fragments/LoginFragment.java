@@ -61,7 +61,7 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         txtPassword = view.findViewById(R.id.txtPasswordLogin);
         txtEmail = view.findViewById(R.id.txtEmailLogin);
         preferenceManager = new PreferenceManager(getContext());
-        presenter = new LoginFragmentPresenter(this,preferenceManager);
+        presenter = new LoginFragmentPresenter(this, getContext());
         setListener();
         return view;
     }

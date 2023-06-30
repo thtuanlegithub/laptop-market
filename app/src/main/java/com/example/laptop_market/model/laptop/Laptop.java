@@ -1,5 +1,8 @@
 package com.example.laptop_market.model.laptop;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -16,9 +19,13 @@ public class Laptop {
     private String screenSize;
     private String guarantee;
     private String origin;
-    private ArrayList<URI> listImages;
+    private ArrayList<Uri> listImages;
+    public Laptop()
+    {
 
-    public Laptop(String laptopName, String brandID, Double price, String status, String cpu, String ram, String hardDrive, String hardDriveSize, String graphics, String screenSize, String guarantee, String origin, ArrayList<URI> listImages) {
+    }
+
+    public Laptop(String laptopName, String brandID, Double price, String status, String cpu, String ram, String hardDrive, String hardDriveSize, String graphics, String screenSize, String guarantee, String origin, ArrayList<Uri> listImages) {
         this.laptopName = laptopName;
         this.brandID = brandID;
         this.price = price;
@@ -130,11 +137,11 @@ public class Laptop {
         this.origin = origin;
     }
 
-    public ArrayList<URI> getImgLists() {
+    public ArrayList<Uri> getImgLists() {
         return listImages;
     }
 
-    public void setImgLists(ArrayList<URI> listImages) {
+    public void setImgLists(ArrayList<Uri> listImages) {
         this.listImages = listImages;
     }
 }

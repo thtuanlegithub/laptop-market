@@ -65,8 +65,9 @@
                             android:layout_weight="1"
                             >
                             <TextView
+
                                 android:layout_marginTop="10dp"
-                                android:id="@+id/postDetailTitle"
+                                android:id="@+id/postDetailTitleTextView"
                                 android:textSize="18dp"
                                 android:textStyle="bold|normal"
                                 android:textColor="@color/black"
@@ -74,6 +75,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                             <TextView
+
+                                android:id="@+id/postDetailPrice"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
                                 android:textSize="16dp"
@@ -82,7 +85,7 @@
                                 android:text="26,000,000 đ"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/postDetailTitle"
+                                app:layout_constraintTop_toBottomOf="@id/postDetailTitleTextView"
                                 />
                             <TextView
                                 android:layout_width="match_parent"
@@ -149,6 +152,7 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
                                 <TextView
+                                    android:id="@+id/NameShopTextView"
                                     android:text="Chủ shop"
                                     android:textStyle="bold"
                                     android:textColor="@color/black"

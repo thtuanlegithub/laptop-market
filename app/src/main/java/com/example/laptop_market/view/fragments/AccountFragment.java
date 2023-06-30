@@ -46,7 +46,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         imgAccount = view.findViewById(R.id.imgAccount);
         txtAccountName = view.findViewById(R.id.txtAccountName);
         bttLogout = view.findViewById(R.id.bttLogout);
-        presenter = new AccountFragmentPresenter(this,preferenceManager);
+        presenter = new AccountFragmentPresenter(this, getContext());
         setListener();
         return view;
     }
@@ -87,7 +87,6 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         txtAccountName.setText("Đăng nhập/ Đăng ký");
         isLogin = false;
     }
-
     @Override
     public void onResume() {
         super.onResume();

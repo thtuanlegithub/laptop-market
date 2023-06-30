@@ -37,13 +37,13 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         if(brand==null) {
             return;
         }
-       /* if(brand.getType()==BRAND_TYPE_HOME) {
-            holder.txtBrand.setText(brand.getName());
-            holder.imgBrand.setImageResource(brand.getImage());
+        if(brand.getType()==BRAND_TYPE_HOME) {
+            holder.txtBrand.setText(brand.getBrandName());
+            holder.imgBrand.setImageResource(brand.getImg());
         }
         else{
-            holder.txtBrand.setText(brand.getName());
-            holder.imgBrand.setImageResource(brand.getImage());
+            holder.txtBrand.setText(brand.getBrandName());
+            holder.imgBrand.setImageResource(brand.getImg());
             holder.layoutBrand.setBackgroundResource(R.drawable.white_square);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     300,
@@ -51,7 +51,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
             );
             layoutParams.setMargins(0, 0, 0, 0);
             holder.layoutBrand.setLayoutParams(layoutParams);
-        }*/
+        }
 
     }
 

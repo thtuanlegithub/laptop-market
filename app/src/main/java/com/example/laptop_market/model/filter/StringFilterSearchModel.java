@@ -1,5 +1,7 @@
 package com.example.laptop_market.model.filter;
 
+import android.content.Context;
+
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.utils.Constants;
 import com.example.laptop_market.utils.PreferenceManager;
@@ -11,8 +13,8 @@ public class StringFilterSearchModel implements IStringFilterSearchContract.Mode
 
     private PreferenceManager preferenceManager;
 
-    public StringFilterSearchModel(PreferenceManager preferenceManager) {
-        this.preferenceManager = preferenceManager;
+    public StringFilterSearchModel(Context context) {
+        this.preferenceManager = new PreferenceManager(context);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.example.laptop_market.model.post;
 
+import java.util.Date;
+
 public class Post {
     private String postID;
     private String laptopID;
@@ -9,6 +11,10 @@ public class Post {
     private String sellerPhoneNumber;
     private String sellerName;
     private String sellerAddress;
+    private Date pushlishTime;
+
+    public Post() {
+    }
 
     public Post(String postID, String laptopID, String accountID, String title, String description, String sellerPhoneNumber, String sellerName, String sellerAddress) {
         this.postID = postID;
@@ -19,6 +25,14 @@ public class Post {
         this.sellerPhoneNumber = sellerPhoneNumber;
         this.sellerName = sellerName;
         this.sellerAddress = sellerAddress;
+    }
+
+    public Date getPushlishTime() {
+        return pushlishTime;
+    }
+
+    public void setPushlishTime(Date pushlishTime) {
+        this.pushlishTime = pushlishTime;
     }
 
     public String getPostID() {

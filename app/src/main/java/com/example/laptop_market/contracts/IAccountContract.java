@@ -32,6 +32,12 @@ public interface IAccountContract {
             void OnCreateAccountResult(int type, String message);
         }
         //endregion
+        //region Account had post
+        void LoadAccountWithId(String accountId,OnLoadingAccountWithIdListener listener);
+        interface OnLoadingAccountWithIdListener{
+            void OnFinishLoadingAccountWithId(Account account, Exception error);
+        }
+        //endregion
     }
     interface View{
         //region Account Fragment view
@@ -55,6 +61,12 @@ public interface IAccountContract {
             void RegisterSuccess();
         }
         //endregion
+        //region PostDetail Activity view
+        interface PostDetailActivityView{
+            void LoadingAccountInPostDetail(Account account);
+            void FailedLoadingPostDetail(Exception error);
+        }
+        //endregion
     }
     //region Presenter
     interface Presenter{
@@ -70,10 +82,15 @@ public interface IAccountContract {
             void LoginButtonClicked(Account account);
         }
         //endregion
-        //region Signup Fragment view
+        //region Signup Fragment presenter
         interface SignUpFragmentPresenter
         {
             void createAccountClicked(Account account);
+        }
+        //endregion
+        //region PostDetail Activity presenter
+        interface PostDetailActivityPresenter{
+            void OnLoadingAccountInPostDetail(String accountId);
         }
         //endregion
     }
