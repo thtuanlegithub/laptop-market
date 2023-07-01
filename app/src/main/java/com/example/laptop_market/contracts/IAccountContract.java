@@ -38,6 +38,10 @@ public interface IAccountContract {
             void OnFinishLoadingAccountWithId(Account account, Exception error);
         }
         //endregion
+        void CheckSignedInAccount(OnCheckingSignInAccountListener listener);
+        interface  OnCheckingSignInAccountListener{
+            void OnFinishCheckingSignInAccount(boolean isLogin);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -67,13 +71,17 @@ public interface IAccountContract {
             void FailedLoadingPostDetail(Exception error);
         }
         //endregion
+        //region Post fragment
+        interface PostFragmentView{
+            void OnDisableNewPostButton();
+        }
+        //endregion
     }
     //region Presenter
     interface Presenter{
         //region Account Fragment presenter
         interface AccountFragmentPresenter {
             void LoadingAccount();
-
             void LogoutAccount();
         }
         //endregion
@@ -91,6 +99,11 @@ public interface IAccountContract {
         //region PostDetail Activity presenter
         interface PostDetailActivityPresenter{
             void OnLoadingAccountInPostDetail(String accountId);
+        }
+        //endregion
+        //region Post Fragment presenter
+        interface PostFragmentPresenter{
+            void OnNewPostClickedEnable();
         }
         //endregion
     }

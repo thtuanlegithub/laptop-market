@@ -1,6 +1,8 @@
 package com.example.laptop_market.model.laptop;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
@@ -102,10 +104,31 @@ public class LaptopModel implements ILaptopContract.Model {
         db.collection(LaptopTable.TABLE_NAME).document(idLaptop).get().addOnSuccessListener(documentSnapshot -> {
             Laptop laptop = documentSnapshot.toObject(Laptop.class);
             laptop.setImgLists(new ArrayList<>());
+            laptop.setListDownloadImages(new ArrayList<>());
             listener.OnFinishLoadingLaptopInPostDetail(laptop,null);
 
         }).addOnFailureListener(e -> {
             listener.OnFinishLoadingLaptopInPostDetail(null,e);
         });
     }
+
+    @Override
+    public void LoadingImageToPostDetail(String idLaptop, OnLoadingImageLaptopInPostDetailListener listener) {
+        firebaseStorage.getReference().child(LaptopTable.TABLE_NAME).child(idLaptop + "/").listAll().addOnSuccessListener(
+                listResult -> {
+                    for(StorageReference item : listResult.getItems())
+                    {
+                        item.getBytes(Long.MAX_VALUE).addOnSuccessListener(
+                                bytes -> {
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    listener.OnFinsishLoadingImageInPostDetail(bitmap,null);
+                                }).addOnFailureListener(
+                                e -> {
+                                        listener.OnFinsishLoadingImageInPostDetail(null,e);
+                                });
+                    }
+                }
+        );
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.example.laptop_market.view.activities;
-
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -50,7 +52,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private EditText edtSellerAddress;
     private AppCompatButton NewPostOpenImageBtt;
     private AppCompatButton NewPostBttDangTin;
-    private PreferenceManager preferenceManager;
     private ArrayList<Uri> ListPictures;
     private IPostContract.Presenter.NewPostActivityPresenter postActivityPresenter;
     private ILaptopContract.Presenter.NewPostActivityPresenter laptopActivityPresenter;
@@ -119,7 +120,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                     //}
 
                 }
-
         );
         NewPostBttDangTin.setOnClickListener(view -> {
             Laptop laptop = new Laptop();
@@ -146,7 +146,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         try {
             InputStream inputStream = contentResolver.openInputStream(uri);
             bitmap = BitmapFactory.decodeStream(inputStream);
-            int previewWidth = 720;
+            int previewWidth = 480;
             int previewHeight=bitmap.getHeight()*previewWidth/bitmap.getWidth();
             Bitmap preivewBitmap= Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
             ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
@@ -173,7 +173,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 if (clipData != null) {
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         Uri uri = clipData.getItemAt(i).getUri();
-                        // Do something with each image URI, such as display it in an ImageView
                         ListPictures.add(uri);
                     }
                 }
