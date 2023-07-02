@@ -19,7 +19,7 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
     private IPostContract.Model postModel;
     private ILaptopContract.Model laptopModel;
     private IAccountContract.Model accountModel;
-
+    //region Constructor
     public PostDetailActivityPresenter(Context context, ILaptopContract.View.PostDetailActivityView laptopView, IPostContract.View.PostDetailActivityView postView
             , IAccountContract.View.PostDetailActivityView accountView) {
         this.accountView = accountView;
@@ -29,7 +29,8 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
         postModel = new PostModel(context);
         accountModel = new AccountModel(context);
     }
-
+    //endregion
+    //region Laptop Presenter
     @Override
     public void OnLoadingLaptopInPostDetail(String laptopId) {
         laptopModel.LoadingLaptopInPostDetail(laptopId,((laptop, error) -> {
@@ -41,6 +42,17 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
     }
 
     @Override
+    public void OnLoadingImageLaptopInPostDetail(String laptopId) {
+        laptopModel.LoadingImageToPostDetail(laptopId,(image, error) -> {
+            if(error!=null)
+                laptopView.FailedLoadingPostDetail(error);
+            else
+                laptopView.LoadingImageLaptopInPostDetail(image);
+        });
+    }
+    //endregion
+    //region Post presenter
+    @Override
     public void OnLoadingPostInPostDetail(String postID) {
         postModel.LoadingPostInPostDetail(postID,(post, error) -> {
             if(error!=null)
@@ -49,6 +61,8 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
                 postView.LoadingPostInPostDetail(post);
         });
     }
+    //endregion
+    //region Account presenter
 
     @Override
     public void OnLoadingAccountInPostDetail(String accountId) {
@@ -59,4 +73,5 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
                 accountView.LoadingAccountInPostDetail(account);
         });
     }
+    //endregion
 }

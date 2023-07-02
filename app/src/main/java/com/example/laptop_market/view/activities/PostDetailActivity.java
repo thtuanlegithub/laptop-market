@@ -7,9 +7,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -50,7 +53,10 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private boolean isloadLaptopFinish;
     private boolean isLoadPostFinish;
     private boolean isLoadAccountFinish;
-
+    private ImageSliderAdapter Imageadapter;
+    private PostSearchResult postSearchResult;
+    private int targetWidth;
+    private int targetHeight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +75,42 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
                 .into(imgPostDetailShop);
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
         setListener();
-        List<Integer> imageList = new ArrayList<>();
-        imageList.add(R.drawable.slide_show1);
-        imageList.add(R.drawable.slide_show1);
-   /*     ImageSliderAdapter adapter = new ImageSliderAdapter(this,imageList);
-        viewPagerImagePostDetail.setAdapter(adapter);*/
         InitData();
     }
+    private int dpToPx( float dp) {
+        Resources resources = getApplicationContext().getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+    private Bitmap resizeBitmap(Bitmap bitmap)
+    {
+        targetWidth = dpToPx(viewPagerImagePostDetail.getWidth());
+        targetHeight = dpToPx(viewPagerImagePostDetail.getHeight());
+
+        // Tính toán tỷ lệ giữa chiều rộng và chiều cao của đối tượng bitmap so với chiều rộng và chiều cao mục tiêu
+        float aspectRatio = (float) bitmap.getWidth() / (float) bitmap.getHeight();
+        float targetAspectRatio = (float) targetWidth / (float) targetHeight;
+
+// Tính toán kích thước mới của đối tượng bitmap
+        int newWidth, newHeight;
+        if (targetAspectRatio > aspectRatio) {
+            // Kích thước mới dựa trên chiều rộng
+            newWidth = targetWidth;
+            newHeight = (int) (targetWidth / aspectRatio);
+        } else {
+            // Kích thước mới dựa trên chiều cao
+            newHeight = targetHeight;
+            newWidth = (int) (targetHeight * aspectRatio);
+        }
+
+// Tạo bitmap mới với kích thước mới
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+
+// Tạo bitmap mới với kích thước thu nhỏ
+        //Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return resizedBitmap;
+    }
+
     private void setListener()
     {
         btnPostDetailClose.setOnClickListener(v -> {
@@ -88,7 +123,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         isLoadAccountFinish = false;
         isLoadPostFinish = false;
         Intent intent = getIntent();
-        PostSearchResult postSearchResult = (PostSearchResult) intent.getSerializableExtra(PostTable.TABLE_NAME);
+        postSearchResult = (PostSearchResult) intent.getSerializableExtra(PostTable.TABLE_NAME);
         postPresenter.OnLoadingPostInPostDetail(postSearchResult.getPostId());
         laptopPresenter.OnLoadingLaptopInPostDetail(postSearchResult.getLaptopId());
         accountPresenter.OnLoadingAccountInPostDetail(postSearchResult.getAccountId());
@@ -98,10 +133,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         postDetailTitleTextView.setText(post.getTitle());
         NameShopTextView.setText(account.getAccountName());
         postDetailPrice.setText(String.valueOf(laptop.getPrice()) + " VNĐ");
-        for(Uri uri: laptop.getImgLists())
-        {
-            // Xử lí up ảnh lên
-        }
+        Imageadapter = new ImageSliderAdapter(this,laptop.getListDownloadImages());
+        viewPagerImagePostDetail.setAdapter(Imageadapter);
+        laptopPresenter.OnLoadingImageLaptopInPostDetail(postSearchResult.getLaptopId());
     }
     @Override
     public void LoadingLapTopInPostDetail(Laptop laptop) {
@@ -111,6 +145,13 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         {
             LoadData();
         }
+    }
+
+    @Override
+    public void LoadingImageLaptopInPostDetail(Bitmap bitmap) {
+
+        laptop.getListDownloadImages().add(resizeBitmap(bitmap));
+        Imageadapter.notifyDataSetChanged();
     }
 
 

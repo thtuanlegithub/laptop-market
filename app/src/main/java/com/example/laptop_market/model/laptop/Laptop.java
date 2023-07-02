@@ -3,6 +3,8 @@ package com.example.laptop_market.model.laptop;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -19,7 +21,10 @@ public class Laptop {
     private String screenSize;
     private String guarantee;
     private String origin;
+    @Exclude
     private ArrayList<Uri> listImages;
+    @Exclude
+    private ArrayList<Bitmap> listDownloadImages;
     public Laptop()
     {
 
@@ -145,6 +150,13 @@ public class Laptop {
         this.listImages = listImages;
     }
 
+    public ArrayList<Bitmap> getListDownloadImages() {
+        return listDownloadImages;
+    }
+
+    public void setListDownloadImages(ArrayList<Bitmap> listDownloadImages) {
+        this.listDownloadImages = listDownloadImages;
+    }
 }
 
 

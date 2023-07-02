@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
 import com.example.laptop_market.view.activities.NewPostActivity;
 import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,12 +29,13 @@ import java.util.List;
  * Use the {@link PostFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PostFragment extends Fragment {
+public class PostFragment extends Fragment implements IAccountContract.View.PostFragmentView {
     private FloatingActionButton fabNewPost;
     private List<Fragment> fragmentList;
     private ViewPager2 viewPagerPost;
     private BottomNavigationView navPost;
     private FragmentStateAdapter fragmentStateAdapter;
+    private IAccountContract.Presenter.PostFragmentPresenter presenter;
     private int currentSelectedItem = 0;
     public PostFragment() {
         // Required empty public constructor
@@ -40,7 +43,7 @@ public class PostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new PostFragmentPresenter(getContext(),this);
     }
 
     @Override
@@ -98,5 +101,16 @@ public class PostFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void OnDisableNewPostButton() {
+        fabNewPost.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.OnNewPostClickedEnable();
     }
 }

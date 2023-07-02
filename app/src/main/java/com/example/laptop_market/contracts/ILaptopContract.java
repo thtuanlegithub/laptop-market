@@ -1,6 +1,10 @@
 package com.example.laptop_market.contracts;
 
+import android.graphics.Bitmap;
+
 import com.example.laptop_market.model.laptop.Laptop;
+
+import java.util.ArrayList;
 
 public interface ILaptopContract {
     interface Model{
@@ -15,6 +19,10 @@ public interface ILaptopContract {
         interface OnLoadingLaptopInPostDetailListener{
             void OnFinishLoadingLaptopInPostDetail(Laptop laptop, Exception error);
         }
+        void LoadingImageToPostDetail(String idLaptop, OnLoadingImageLaptopInPostDetailListener listener);
+        interface OnLoadingImageLaptopInPostDetailListener{
+            void OnFinsishLoadingImageInPostDetail(Bitmap image,Exception error);
+        }
     }
     interface View{
         interface NewPostActivityView{
@@ -23,6 +31,7 @@ public interface ILaptopContract {
         }
         interface PostDetailActivityView{
             void LoadingLapTopInPostDetail(Laptop laptop);
+            void LoadingImageLaptopInPostDetail(Bitmap bitmap);
             void FailedLoadingPostDetail(Exception error);
         }
     }
@@ -32,6 +41,7 @@ public interface ILaptopContract {
         }
         interface PostDetailActivityPresenter{
             void OnLoadingLaptopInPostDetail(String laptopId);
+            void OnLoadingImageLaptopInPostDetail(String laptopId);
         }
     }
 }
