@@ -81,7 +81,7 @@ public interface IAccountContract {
     interface Presenter{
         //region Account Fragment presenter
         interface AccountFragmentPresenter {
-            void LoadingSigninAccount();
+            void LoadAccountStatus();
             void LogoutAccount();
         }
         //endregion

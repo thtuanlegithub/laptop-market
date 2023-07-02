@@ -19,6 +19,7 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
+import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 
@@ -63,7 +64,22 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
             }
         });
         bttLogout.setOnClickListener(view -> {
-            presenter.LogoutAccount();
+            MyDialog.showDialog(getContext(), "Bạn có chắc muốn đăng xuất không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+                    presenter.LogoutAccount();
+                }
+
+                @Override
+                public void onNoClick() {
+                    // Do nothing
+                }
+
+                @Override
+                public void onOkClick() {
+                    // Do nothing
+                }
+            });
         });
     }
     public void ShowToast(String message) {
@@ -93,6 +109,6 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     @Override
     public void onResume() {
         super.onResume();
-        presenter.LoadingSigninAccount();
+        presenter.LoadAccountStatus();
     }
 }
