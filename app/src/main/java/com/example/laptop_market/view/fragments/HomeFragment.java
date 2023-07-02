@@ -67,6 +67,11 @@ public class HomeFragment extends Fragment {
     public HomeFragment(HomeBaseFragment homeBaseFragment){
         this.homeBaseFragment = homeBaseFragment;
     }
+
+    public HomeFragment(){
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         // Inflate the layout for this fragment
@@ -114,14 +119,12 @@ public class HomeFragment extends Fragment {
                     return false;
                 }
             });
-
         return view;
     }
 
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
-
-/*        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",0));
+        listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",0));
         listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus",0));
         listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell",0));
         listBrand.add(new Brand(R.drawable.brand_logo_hp,"HP",0));
@@ -133,7 +136,7 @@ public class HomeFragment extends Fragment {
         listBrand.add(new Brand(R.drawable.brand_logo_samsung,"Samsung",0));
         listBrand.add(new Brand(R.drawable.brand_logo_sony,"Sony",0));
         listBrand.add(new Brand(R.drawable.brand_logo_toshiba,"Toshiba",0));
-        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",0));*/
+        listBrand.add(new Brand(R.drawable.ic_baseline_more_horiz_24,"Khác",0));
         return listBrand;
     }
     @Override

@@ -66,8 +66,8 @@ public class AccountModel implements IAccountContract.Model {
         {
             Account account = new Account();
             account.setAccountID(firebaseUser.getUid());
-            String temp =preferenceManager.getString(Constants.KEY_USER_NAME);
-            if(!(preferenceManager.getString(Constants.KEY_USER_NAME).isEmpty())) {
+            String temp = preferenceManager.getString(Constants.KEY_USER_NAME);
+            if(temp != null && !temp.isEmpty()){
                 account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
                 account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
                 listener.OnLoadingListener(true,account);

@@ -33,10 +33,10 @@ public class PostActiveAdapter extends RecyclerView.Adapter<PostActiveAdapter.Po
         if(postActive==null){
             return;
         }
-        holder.imgPostActive.setImageResource(postActive.getImg());
+        /*holder.imgPostActive.setImageResource(postActive.getImg());
         holder.titlePostActive.setText(postActive.getLaptopName());
         holder.pricePostActive.setText(postActive.getPrice());
-        holder.addressPostActive.setText(postActive.getAddress());
+        holder.addressPostActive.setText(postActive.getAddress());*/
     }
 
     @Override

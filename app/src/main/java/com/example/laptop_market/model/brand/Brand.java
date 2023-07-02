@@ -13,7 +13,7 @@ public class Brand {
         this.type = type;
     }
 
-    public Brand( int img,String brandName, int type) {
+    public Brand(int img,String brandName, int type) {
         this.brandName = brandName;
         this.img = img;
         this.type = type;

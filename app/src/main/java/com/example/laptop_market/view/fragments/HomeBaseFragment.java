@@ -31,7 +31,6 @@ public class HomeBaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -41,8 +40,8 @@ public class HomeBaseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_base, container, false);
         //
         frameHomeBase = view.findViewById(R.id.frameHomeBase);
-        if(homeFragment==null){
-            homeFragment=new HomeFragment(this);
+        if(homeFragment == null){
+            homeFragment = new HomeFragment(this);
         }
         replaceFragment(homeFragment);
         return view;

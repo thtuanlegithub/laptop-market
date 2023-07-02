@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.presenter.fragments.SearchFragmentPresenter;
-import com.example.laptop_market.utils.PreferenceManager;
 
 import java.util.ArrayList;
 

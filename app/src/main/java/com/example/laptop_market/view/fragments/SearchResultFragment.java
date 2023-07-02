@@ -2,7 +2,6 @@ package com.example.laptop_market.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.opengl.Visibility;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;

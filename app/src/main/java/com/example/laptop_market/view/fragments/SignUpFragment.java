@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter;
-import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.utils.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
 
