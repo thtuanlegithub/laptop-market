@@ -72,19 +72,22 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     @Override
     public void LoadAccount(Account account) {
         txtAccountName.setText(account.getAccountName());
+        bttLogout.setVisibility(View.VISIBLE);
         isLogin=true;
     }
 
     @Override
     public void LogoutAccount() {
-        ShowToast("Log out success");
-        txtAccountName.setText("Đăng nhập/ Đăng ký");
+        ShowToast("Đăng xuất thành công");
+        txtAccountName.setText("Đăng nhập / Đăng ký");
+        bttLogout.setVisibility(View.GONE);
         isLogin = false;
     }
 
     @Override
     public void LoadNotLoginAccount() {
-        txtAccountName.setText("Đăng nhập/ Đăng ký");
+        txtAccountName.setText("Đăng nhập / Đăng ký");
+        bttLogout.setVisibility(View.GONE);
         isLogin = false;
     }
     @Override
