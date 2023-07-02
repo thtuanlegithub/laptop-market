@@ -50,6 +50,7 @@ public class LaptopModel implements ILaptopContract.Model {
         hashMap.put(LaptopTable.SCREEN_SIZE, laptop.getScreenSize());
         hashMap.put(LaptopTable.GUARANTEE, laptop.getGuarantee());
         hashMap.put(LaptopTable.ORIGIN, laptop.getOrigin());
+        hashMap.put(LaptopTable.NUM_OF_IMAGE,laptop.getNumOfImage());
         db.collection(LaptopTable.TABLE_NAME).add(hashMap).addOnSuccessListener(
                 documentReference -> {
                     upLoadImageToFireStorage(laptop.getImgLists(), documentReference.getId(),listener);
@@ -103,8 +104,9 @@ public class LaptopModel implements ILaptopContract.Model {
     public void LoadingLaptopInPostDetail(String idLaptop, OnLoadingLaptopInPostDetailListener listener) {
         db.collection(LaptopTable.TABLE_NAME).document(idLaptop).get().addOnSuccessListener(documentSnapshot -> {
             Laptop laptop = documentSnapshot.toObject(Laptop.class);
-            laptop.setImgLists(new ArrayList<>());
-            laptop.setListDownloadImages(new ArrayList<>());
+            ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
+            laptop.setImgLists(new ArrayList<>(laptop.getNumOfImage()));
+            laptop.setListDownloadImages(bitmapArrayList);
             listener.OnFinishLoadingLaptopInPostDetail(laptop,null);
 
         }).addOnFailureListener(e -> {

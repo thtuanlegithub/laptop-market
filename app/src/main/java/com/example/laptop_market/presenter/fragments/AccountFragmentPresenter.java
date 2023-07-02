@@ -18,7 +18,7 @@ public class AccountFragmentPresenter implements IAccountContract.Presenter.Acco
     }
 
     @Override
-    public void LoadingAccount() {
+    public void LoadingSigninAccount() {
         accountModel.LoadAccount((isSignIn, account) -> {
             if(isSignIn)
                 view.LoadAccount(account);

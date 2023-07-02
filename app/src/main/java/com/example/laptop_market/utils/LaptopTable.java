@@ -16,4 +16,5 @@ public class LaptopTable {
     public static final String ORIGIN = "origin";
     public static final String MAIN_IMAGE = "mainImage";
     public static final String LIST_IMAGES = "listImages";
+    public static final String NUM_OF_IMAGE = "numOfImage";
 }
