@@ -90,6 +90,6 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     @Override
     public void onResume() {
         super.onResume();
-        presenter.LoadingAccount();
+        presenter.LoadingSigninAccount();
     }
 }
