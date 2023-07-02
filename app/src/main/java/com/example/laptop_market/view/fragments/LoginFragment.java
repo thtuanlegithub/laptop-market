@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Patterns;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.LoginFragmentPresenter;
 import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
 
@@ -33,10 +37,6 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
     private TextView txtEmail;
     private PreferenceManager preferenceManager;
     private IAccountContract.Presenter.LoginFragmentPresenter presenter;
-    private static final int ENTER_EMAIL = 1;
-    private static final int INVALID_EMAIL = 2;
-    private static final int ENTER_PASSWORD = 3;
-    private static final int VALID_EMAIL = 4;
     public LoginFragment(LoginActivity loginActivity) {
         // Required empty public constructor
         this.loginActivity = loginActivity;
@@ -62,6 +62,14 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         txtEmail = view.findViewById(R.id.txtEmailLogin);
         preferenceManager = new PreferenceManager(getContext());
         presenter = new LoginFragmentPresenter(this, getContext());
+
+        // Disable button
+        bttLogin.setEnabled(false);
+        bttLogin.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
+
+        // Add event for edit text
+        txtEmail.addTextChangedListener(textWatcher);
+        txtPassword.addTextChangedListener(textWatcher);
         setListener();
         return view;
     }
@@ -85,15 +93,14 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
             }
             loginActivity.replaceFragment(loginActivity.forgotPasswordFragment);
         });
+
         bttLogin.setOnClickListener(view -> {
             String email = txtEmail.getText().toString();
             String password = txtPassword.getText().toString();
-            if(isValidLogin(email,password) == ENTER_EMAIL)
-                LoginFailed("Vui lòng nhập email");
-            else if(isValidLogin(email,password) == INVALID_EMAIL)
-                LoginFailed("Vui lòng nhập lại email");
-            else if(isValidLogin(email,password) == ENTER_PASSWORD)
-                LoginFailed("Vui lòng nhập password");
+            boolean isValidEmail = ValidateData.isValidEmail(email);
+            if(!isValidEmail){
+                Toast.makeText(getContext(), "Vui lòng kiểm tra lại địa chỉ email", Toast.LENGTH_SHORT).show();
+            }
             else {
                 Account account = new Account();
                 account.setEmail(email);
@@ -103,28 +110,39 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         });
     }
 
-    //region Function check valid email and password before Login
-    private int isValidLogin(String email, String password)
-    {
-        if(email.trim().isEmpty())
-        {
-            return ENTER_EMAIL;
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
+    //region Validate data format
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            return INVALID_EMAIL;
         }
-        else if(password.trim().isEmpty())
-        {
-            return ENTER_PASSWORD;
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Check if both email and password fields are filled
+            boolean isEmailFilled = !TextUtils.isEmpty(txtEmail.getText());
+            boolean isPasswordFilled = !TextUtils.isEmpty(txtPassword.getText());
+
+            // Enable or disable the login button and change its background color
+            if (isEmailFilled && isPasswordFilled) {
+                bttLogin.setEnabled(true);
+                bttLogin.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.yellow));
+            } else {
+                bttLogin.setEnabled(false);
+                bttLogin.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
+            }
         }
-        return VALID_EMAIL;
-    }
-    // endregion
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+    //endregion
+
     @Override
     public void LoginSuccess() {
-        Toast.makeText(getContext(), "Login success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }

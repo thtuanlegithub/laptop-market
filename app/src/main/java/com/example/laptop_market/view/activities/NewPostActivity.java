@@ -136,6 +136,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
             laptop.setGuarantee("Còn tg bảo hành");
             laptop.setOrigin("Trung Quốc");
             laptop.setImgLists(ListPictures);
+            laptop.setNumOfImage(ListPictures.size());
             laptopActivityPresenter.OnCreateNewLaptopClicked(laptop);
         });
     }

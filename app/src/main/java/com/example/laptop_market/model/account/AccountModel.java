@@ -54,17 +54,8 @@ public class AccountModel implements IAccountContract.Model {
                         listener.OnLoginListener(true,"Success");
                     }
                     else{
-                        db.collection(AccountTable.TABLE_NAME).whereEqualTo(AccountTable.EMAIL,account.getEmail()).get().addOnSuccessListener(
-                                queryDocumentSnapshots -> {
-                                    if(queryDocumentSnapshots.getDocuments().size()==0)
-                                    {
-                                        listener.OnLoginListener(false,"Sai địa chỉ email");
-                                    }
-                                    else
-                                        listener.OnLoginListener(false,"Sai password");
-                                });
+                        listener.OnLoginListener(false,"Thông tin đăng nhập không chính xác. Vui lòng kiểm tra lại!");
                     }
-
                 });
     }
     //endregion
@@ -75,8 +66,8 @@ public class AccountModel implements IAccountContract.Model {
         {
             Account account = new Account();
             account.setAccountID(firebaseUser.getUid());
-            String temp =preferenceManager.getString(Constants.KEY_USER_NAME);
-            if(!(preferenceManager.getString(Constants.KEY_USER_NAME).isEmpty())) {
+            String temp = preferenceManager.getString(Constants.KEY_USER_NAME);
+            if(temp != null && !temp.isEmpty()){
                 account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
                 account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
                 listener.OnLoadingListener(true,account);
@@ -132,14 +123,14 @@ public class AccountModel implements IAccountContract.Model {
                                 user.put(AccountTable.ACCOUNT_NAME, account.getAccountName());
                                 user.put(AccountTable.PUBLISH_POSTS,new ArrayList<String>());
                                 db.collection(AccountTable.TABLE_NAME).document(task.getResult().getUser().getUid()).set(account);
-                                listener.OnCreateAccountResult(SIGNUP_SUCCESS,"Create account success");
+                                listener.OnCreateAccountResult(SIGNUP_SUCCESS,"Tạo tài khoản thành công");
                             }
                         })
                 .addOnFailureListener(e -> {
                     if (e instanceof FirebaseAuthUserCollisionException) {
-                        listener.OnCreateAccountResult(SIGNUP_FAILED,"Account already existed");
+                        listener.OnCreateAccountResult(SIGNUP_FAILED,"Đã tồn tại tài khoản này");
                     } else {
-                        listener.OnCreateAccountResult(SIGNUP_FAILED,"Sign up fail");
+                        listener.OnCreateAccountResult(SIGNUP_FAILED,"Đăng ký thất bại");
                     }
                 });
     }

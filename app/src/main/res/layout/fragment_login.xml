@@ -61,7 +61,7 @@
 
             <EditText
                 android:id="@+id/txtEmailLogin"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:layout_marginTop="40dp"
                 android:hint="Nhập email của bạn"
                 android:paddingLeft="10dp"
@@ -88,7 +88,7 @@
                 android:textAllCaps="false"
                 android:textSize="20dp"
                 android:fontFamily="sans-serif"
-                android:backgroundTint="#C0C0C0"
+                android:backgroundTint="#F5BD40"
                 android:textColor="@color/white"
                 />
             <TextView

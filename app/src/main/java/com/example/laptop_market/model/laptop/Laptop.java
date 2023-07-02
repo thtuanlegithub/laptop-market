@@ -21,6 +21,7 @@ public class Laptop {
     private String screenSize;
     private String guarantee;
     private String origin;
+    private int numOfImage;
     @Exclude
     private ArrayList<Uri> listImages;
     @Exclude
@@ -156,6 +157,14 @@ public class Laptop {
 
     public void setListDownloadImages(ArrayList<Bitmap> listDownloadImages) {
         this.listDownloadImages = listDownloadImages;
+    }
+
+    public int getNumOfImage() {
+        return numOfImage;
+    }
+
+    public void setNumOfImage(int numOfImage) {
+        this.numOfImage = numOfImage;
     }
 }
 

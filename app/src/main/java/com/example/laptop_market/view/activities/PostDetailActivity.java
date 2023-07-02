@@ -29,6 +29,7 @@ import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
+import com.example.laptop_market.utils.Constants;
 import com.example.laptop_market.utils.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
@@ -55,8 +56,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private boolean isLoadAccountFinish;
     private ImageSliderAdapter Imageadapter;
     private PostSearchResult postSearchResult;
-    private int targetWidth;
-    private int targetHeight;
+    private TextView totalPictureTextView;
+    private TextView currentPictureTextView;
+    private int currentImagePage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         postDetailTitleTextView = findViewById(R.id.postDetailTitleTextView);
         NameShopTextView = findViewById(R.id.NameShopTextView);
         postDetailPrice = findViewById(R.id.postDetailPrice);
+        totalPictureTextView = findViewById(R.id.totalPictureTextView);
+        currentPictureTextView = findViewById(R.id.currentPictureTextView);
         Glide.with(this)
                 .load(R.drawable.slide_show1)
                 .apply(RequestOptions.circleCropTransform())
@@ -77,48 +81,32 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         setListener();
         InitData();
     }
-    private int dpToPx( float dp) {
-        Resources resources = getApplicationContext().getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        return (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-    private Bitmap resizeBitmap(Bitmap bitmap)
-    {
-        targetWidth = dpToPx(viewPagerImagePostDetail.getWidth());
-        targetHeight = dpToPx(viewPagerImagePostDetail.getHeight());
-
-        // Tính toán tỷ lệ giữa chiều rộng và chiều cao của đối tượng bitmap so với chiều rộng và chiều cao mục tiêu
-        float aspectRatio = (float) bitmap.getWidth() / (float) bitmap.getHeight();
-        float targetAspectRatio = (float) targetWidth / (float) targetHeight;
-
-// Tính toán kích thước mới của đối tượng bitmap
-        int newWidth, newHeight;
-        if (targetAspectRatio > aspectRatio) {
-            // Kích thước mới dựa trên chiều rộng
-            newWidth = targetWidth;
-            newHeight = (int) (targetWidth / aspectRatio);
-        } else {
-            // Kích thước mới dựa trên chiều cao
-            newHeight = targetHeight;
-            newWidth = (int) (targetHeight * aspectRatio);
-        }
-
-// Tạo bitmap mới với kích thước mới
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
-
-// Tạo bitmap mới với kích thước thu nhỏ
-        //Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        return resizedBitmap;
-    }
-
     private void setListener()
     {
         btnPostDetailClose.setOnClickListener(v -> {
             finish();
         });
+        viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentImagePage=position+1;
+                currentPictureTextView.setText(String.valueOf(currentImagePage));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
     private void InitData()
     {
+        currentImagePage = 1;
         isloadLaptopFinish = false;
         isLoadAccountFinish = false;
         isLoadPostFinish = false;
@@ -132,8 +120,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     {
         postDetailTitleTextView.setText(post.getTitle());
         NameShopTextView.setText(account.getAccountName());
+        totalPictureTextView.setText(String.valueOf(laptop.getNumOfImage()));
         postDetailPrice.setText(String.valueOf(laptop.getPrice()) + " VNĐ");
-        Imageadapter = new ImageSliderAdapter(this,laptop.getListDownloadImages());
+        Imageadapter = new ImageSliderAdapter(laptop.getNumOfImage(),getApplicationContext(),laptop.getListDownloadImages());
         viewPagerImagePostDetail.setAdapter(Imageadapter);
         laptopPresenter.OnLoadingImageLaptopInPostDetail(postSearchResult.getLaptopId());
     }
@@ -150,8 +139,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     @Override
     public void LoadingImageLaptopInPostDetail(Bitmap bitmap) {
 
-        laptop.getListDownloadImages().add(resizeBitmap(bitmap));
+        laptop.getListDownloadImages().add(bitmap);
         Imageadapter.notifyDataSetChanged();
+
     }
 
 
