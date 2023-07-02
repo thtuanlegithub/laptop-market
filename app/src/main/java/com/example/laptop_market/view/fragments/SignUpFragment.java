@@ -3,8 +3,12 @@ package com.example.laptop_market.view.fragments;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +23,12 @@ import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter;
 import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SignUpFragment#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment implements IAccountContract.View.SignUpFragmentView{
@@ -35,12 +40,6 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
     private TextView txtLogin;
     public LoginActivity loginActivity;
     private IAccountContract.Presenter.SignUpFragmentPresenter presenter;
-    private static final int ENTER_EMAIL = 1;
-    private static final int INVALID_EMAIL = 2;
-    private static final int ENTER_PASSWORD = 3;
-    private static final int INVALID_PASSWORD = 4;
-    private static final int ENTER_NAME = 5;
-    private static final int VALID_EMAIL = 6;
 
     public SignUpFragment(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
@@ -63,8 +62,16 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
         editTextName = view.findViewById(R.id.editTextName);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
-        btnSignUp = view.findViewById(R.id.btnSignUp);
         presenter = new SignUpFragmentPresenter(this,getContext());
+
+        // Disable button
+        btnSignUp.setEnabled(false);
+        btnSignUp.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
+
+        // Add event for edit text
+        editTextName.addTextChangedListener(textWatcher);
+        editTextEmail.addTextChangedListener(textWatcher);
+        editTextPassword.addTextChangedListener(textWatcher);
         setListener();
         return view;
     }
@@ -85,21 +92,15 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
         txtLogin.setOnClickListener(v -> {
             loginActivity.replaceFragment(loginActivity.loginFragment);
         });
+
         btnSignUp.setOnClickListener(v->{
             String email = editTextEmail.getText().toString();
             String password = editTextPassword.getText().toString();
             String name = editTextName.getText().toString();
-            int caseHappen = isValidLogin(email, password, name);
-            if(caseHappen == ENTER_NAME)
-                ShowError("Vui lòng nhập tên người dùng");
-            else if (caseHappen == ENTER_EMAIL)
-                ShowError("Vui lòng nhập email");
-            else if (caseHappen == INVALID_EMAIL)
-                ShowError("Vui lòng nhập lại email");
-            else if (caseHappen == ENTER_PASSWORD)
-                ShowError("Vui lòng nhập password");
-            else if (caseHappen == INVALID_PASSWORD)
-                ShowError("Mật khẩu phải lớn hơn 6 ký tự");
+            boolean isValidEmail = ValidateData.isValidEmail(email);
+            if(!isValidEmail){
+                ShowError("Vui lòng kiểm tra lại địa chỉ email");
+            }
             else {
                 Account account = new Account();
                 account.setEmail(email);
@@ -109,32 +110,36 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
             }
         });
     }
-    private int isValidLogin(String email, String password,String name)
-    {
-        if(name.trim().isEmpty())
-        {
-            return ENTER_NAME;
-        }
-        if(email.trim().isEmpty())
-        {
-            return ENTER_EMAIL;
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
 
-            return INVALID_EMAIL;
+    //region Validate data format
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
         }
-        else if(password.trim().isEmpty())
-        {
-            return ENTER_PASSWORD;
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Check if both email and password fields are filled
+            boolean isEmailFilled = !TextUtils.isEmpty(editTextEmail.getText());
+            boolean isPasswordFilled = editTextPassword.length() >= 6;
+            boolean isNameFilled = !TextUtils.isEmpty(editTextName.getText());
+            // Enable or disable the login button and change its background color
+            if (isEmailFilled && isPasswordFilled && isNameFilled) {
+                btnSignUp.setEnabled(true);
+                btnSignUp.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.yellow));
+            } else {
+                btnSignUp.setEnabled(false);
+                btnSignUp.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
+            }
         }
-        else if(password.length()<6)
-        {
-            return INVALID_PASSWORD;
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
         }
-        else
-            return VALID_EMAIL;
-    }
+    };
+    //endregion
 
     @Override
     public void ShowError(String message) {
@@ -143,7 +148,7 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
 
     @Override
     public void RegisterSuccess() {
-        Toast.makeText(getContext(),"Success",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"",Toast.LENGTH_SHORT).show();
         if(loginActivity.authenticationFragment==null)
         {
             loginActivity.authenticationFragment = new AuthenticationFragment(loginActivity);
