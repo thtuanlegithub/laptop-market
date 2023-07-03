@@ -38,7 +38,11 @@ public interface IPostContract {
         interface PostDetailActivityView{
             void LoadingPostInPostDetail(Post post);
             void FailedLoadingPostDetail(Exception error);
+        }
 
+        interface PostFragmentView{
+            void CreateNewPost();
+            void LoginAccount();
         }
     }
     interface Presenter{
@@ -50,6 +54,9 @@ public interface IPostContract {
         }
         interface PostDetailActivityPresenter{
             void OnLoadingPostInPostDetail(String postID);
+        }
+        interface PostFragmentPresenter{
+            void CreateNewPost();
         }
     }
 }

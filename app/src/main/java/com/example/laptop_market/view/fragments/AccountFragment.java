@@ -28,7 +28,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     private ImageView imgAccount;
     private TextView txtAccountName;
     private IAccountContract.Presenter.AccountFragmentPresenter presenter;
-    private AppCompatButton bttLogout;
+    private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
     private boolean isLogin = false;
     public AccountFragment() {
@@ -46,11 +46,18 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         preferenceManager = new PreferenceManager(getContext());
         imgAccount = view.findViewById(R.id.imgAccount);
         txtAccountName = view.findViewById(R.id.txtAccountName);
+        btnSellOrder = view.findViewById(R.id.btnSellOrder);
+        btnBuyOrder = view.findViewById(R.id.btnBuyOrder);
+        btnSavedPost = view.findViewById(R.id.btnSavedPost);
+        btnYourRating = view.findViewById(R.id.btnYourRating);
+        btnAccountSettings = view.findViewById(R.id.btnAccountSettings);
+        btnFeedback = view.findViewById(R.id.btnFeedback);
         bttLogout = view.findViewById(R.id.bttLogout);
         presenter = new AccountFragmentPresenter(this, getContext());
         setListener();
         return view;
     }
+
     private void setListener()
     {
         Glide.with(this)
@@ -62,6 +69,24 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
                 Intent intent = new Intent(this.getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
+        });
+        btnSellOrder.setOnClickListener(view -> {
+            presenter.ClickSellOrder();
+        });
+        btnBuyOrder.setOnClickListener(view -> {
+            presenter.ClickBuyOrder();
+        });
+        btnSavedPost.setOnClickListener(view -> {
+            presenter.ClickSavedPost();
+        });
+        btnYourRating.setOnClickListener(view -> {
+            presenter.ClickYourRating();
+        });
+        btnAccountSettings.setOnClickListener(view -> {
+            presenter.ClickAccountSettings();
+        });
+        btnFeedback.setOnClickListener(view -> {
+            // Create feedback activity
         });
         bttLogout.setOnClickListener(view -> {
             MyDialog.showDialog(getContext(), "Bạn có chắc muốn đăng xuất không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
@@ -106,6 +131,38 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         bttLogout.setVisibility(View.GONE);
         isLogin = false;
     }
+
+    @Override
+    public void LoginAccount() {
+        Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void LoadSellOrder() {
+
+    }
+
+    @Override
+    public void LoadBuyOrder() {
+
+    }
+
+    @Override
+    public void LoadSavedPost() {
+
+    }
+
+    @Override
+    public void LoadYourRating() {
+
+    }
+
+    @Override
+    public void LoadAccountSettings() {
+
+    }
+
     @Override
     public void onResume() {
         super.onResume();

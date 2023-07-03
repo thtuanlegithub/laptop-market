@@ -147,12 +147,9 @@ public class AccountModel implements IAccountContract.Model {
 
     @Override
     public void CheckSignedInAccount(OnCheckingSignInAccountListener listener) {
+        firebaseAuth = FirebaseAuth.getInstance();
         boolean isLogin = firebaseAuth.getCurrentUser() != null;
         listener.OnFinishCheckingSignInAccount(isLogin);
     }
     //endregion
-
-
-
-
 }

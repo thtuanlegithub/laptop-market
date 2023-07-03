@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
+import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
 import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,24 +28,24 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PostFragment#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
-public class PostFragment extends Fragment implements IAccountContract.View.PostFragmentView {
+public class PostFragment extends Fragment implements IPostContract.View.PostFragmentView {
     private FloatingActionButton fabNewPost;
     private List<Fragment> fragmentList;
     private ViewPager2 viewPagerPost;
     private BottomNavigationView navPost;
     private FragmentStateAdapter fragmentStateAdapter;
-    private IAccountContract.Presenter.PostFragmentPresenter presenter;
     private int currentSelectedItem = 0;
+    private IPostContract.Presenter.PostFragmentPresenter postFragmentPresenter;
     public PostFragment() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new PostFragmentPresenter(getContext(),this);
+        postFragmentPresenter = new PostFragmentPresenter(getContext(),this);
     }
 
     @Override
@@ -93,24 +95,29 @@ public class PostFragment extends Fragment implements IAccountContract.View.Post
             }
         });
 
-        //
+        // Create new post
         fabNewPost = view.findViewById(R.id.fabNewPost);
         fabNewPost.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), NewPostActivity.class);
-            startActivity(intent);
+            postFragmentPresenter.CreateNewPost();
         });
 
         return view;
     }
 
     @Override
-    public void OnDisableNewPostButton() {
-        fabNewPost.setVisibility(View.GONE);
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.OnNewPostClickedEnable();
+    public void CreateNewPost() {
+        Intent intent = new Intent(getContext(), NewPostActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void LoginAccount() {
+        Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+        startActivity(intent);
     }
 }

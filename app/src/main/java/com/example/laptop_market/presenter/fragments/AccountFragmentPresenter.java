@@ -33,4 +33,54 @@ public class AccountFragmentPresenter implements IAccountContract.Presenter.Acco
             view.LogoutAccount();
         });
     }
+
+    @Override
+    public void ClickSellOrder() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin)
+                view.LoadSellOrder();
+            else
+                view.LoginAccount();
+        });
+    }
+
+    @Override
+    public void ClickBuyOrder() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin)
+                view.LoadBuyOrder();
+            else
+                view.LoginAccount();
+        });
+    }
+
+    @Override
+    public void ClickSavedPost() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin)
+                view.LoadSavedPost();
+            else
+                view.LoginAccount();
+        });
+    }
+
+    @Override
+    public void ClickYourRating() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin)
+                view.LoadYourRating();
+            else
+                view.LoginAccount();
+        });
+    }
+
+    @Override
+    public void ClickAccountSettings() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin)
+                view.LoadAccountSettings();
+            else
+                view.LoginAccount();
+        });
+    }
 }

@@ -19,7 +19,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -88,6 +88,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSellOrder"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -96,12 +97,13 @@
                 android:drawableStart="@drawable/ic_account_menu_sell"
                 android:paddingLeft="15dp"
                 android:drawablePadding="10dp"
-                android:text="Quản lý đơn bán"
+                android:text="Đơn bán"
                 android:gravity="center_vertical"
                 android:textAllCaps="false"
                 android:textSize="18dp"
                 android:stateListAnimator="@null"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnBuyOrder"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="1dp"
                 android:layout_width="match_parent"
@@ -110,7 +112,7 @@
                 android:drawableStart="@drawable/ic_account_menu_buy"
                 android:paddingLeft="15dp"
                 android:drawablePadding="10dp"
-                android:text="Quản lý đơn mua"
+                android:text="Đơn mua"
                 android:gravity="center_vertical"
                 android:textAllCaps="false"
                 android:textSize="18dp"
@@ -126,7 +128,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="20dp"/>
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSavedPostList"
+                android:id="@+id/btnSavedPost"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -141,7 +143,7 @@
                 android:textSize="18dp"
                 android:stateListAnimator="@null"/>
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnRatingList"
+                android:id="@+id/btnYourRating"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="1dp"
                 android:layout_width="match_parent"

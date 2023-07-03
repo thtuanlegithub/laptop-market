@@ -10,4 +10,5 @@ public class OrderTable {
     public static final String TOTAL_AMOUNT = "totalAmount";
     public static final String POST_ID = "postID";
     public static final String BUYER_ID = "buyerID";
+    public static final String SELLER_ID = "sellerID";
 }

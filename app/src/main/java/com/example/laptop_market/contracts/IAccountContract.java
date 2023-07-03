@@ -47,10 +47,14 @@ public interface IAccountContract {
         //region Account Fragment view
         interface AccountFragmentView {
             void LoadAccount(Account account);
-
-            void LogoutAccount();
-
             void LoadNotLoginAccount();
+            void LogoutAccount();
+            void LoginAccount();
+            void LoadSellOrder();
+            void LoadBuyOrder();
+            void LoadSavedPost();
+            void LoadYourRating();
+            void LoadAccountSettings();
         }
         //endregion
         //region Login Fragment view
@@ -71,11 +75,6 @@ public interface IAccountContract {
             void FailedLoadingPostDetail(Exception error);
         }
         //endregion
-        //region Post fragment
-        interface PostFragmentView{
-            void OnDisableNewPostButton();
-        }
-        //endregion
     }
     //region Presenter
     interface Presenter{
@@ -83,6 +82,11 @@ public interface IAccountContract {
         interface AccountFragmentPresenter {
             void LoadAccountStatus();
             void LogoutAccount();
+            void ClickSellOrder();
+            void ClickBuyOrder();
+            void ClickSavedPost();
+            void ClickYourRating();
+            void ClickAccountSettings();
         }
         //endregion
         //region Login Fragment presenter
@@ -99,11 +103,6 @@ public interface IAccountContract {
         //region PostDetail Activity presenter
         interface PostDetailActivityPresenter{
             void OnLoadingAccountInPostDetail(String accountId);
-        }
-        //endregion
-        //region Post Fragment presenter
-        interface PostFragmentPresenter{
-            void OnNewPostClickedEnable();
         }
         //endregion
     }

@@ -12,8 +12,9 @@ public class Order {
     private Double totalAmount;
     private String postID;
     private String buyerID;
+    private String sellerID;
 
-    public Order(String orderID, DateTime orderedDate, DateTime finishedDate, String shipAddress, String orderRating, String orderStatus, Double totalAmount, String postID, String buyerID) {
+    public Order(String orderID, DateTime orderedDate, DateTime finishedDate, String shipAddress, String orderRating, String orderStatus, Double totalAmount, String postID, String buyerID, String sellerID) {
         this.orderID = orderID;
         this.orderedDate = orderedDate;
         this.finishedDate = finishedDate;
@@ -23,6 +24,7 @@ public class Order {
         this.totalAmount = totalAmount;
         this.postID = postID;
         this.buyerID = buyerID;
+        this.sellerID = sellerID;
     }
 
     public String getOrderID() {
@@ -96,4 +98,8 @@ public class Order {
     public void setBuyerID(String buyerID) {
         this.buyerID = buyerID;
     }
+
+    public String getSellerID() { return sellerID; }
+
+    public void setSellerID(String sellerID) { this.sellerID = sellerID; }
 }
