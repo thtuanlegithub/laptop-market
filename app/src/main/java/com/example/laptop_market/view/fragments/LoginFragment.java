@@ -21,10 +21,12 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.LoginFragmentPresenter;
+import com.example.laptop_market.utils.Fragment_ActivityType;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.utils.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
+import com.example.laptop_market.view.activities.NewPostActivity;
 
 
 public class LoginFragment extends Fragment implements IAccountContract.View.LoginFragmentView{
@@ -37,6 +39,7 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
     private TextView txtEmail;
     private PreferenceManager preferenceManager;
     private IAccountContract.Presenter.LoginFragmentPresenter presenter;
+    private int Previous_Intent;
     public LoginFragment(LoginActivity loginActivity) {
         // Required empty public constructor
         this.loginActivity = loginActivity;
@@ -143,8 +146,21 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
     @Override
     public void LoginSuccess() {
         Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        preferenceManager = new PreferenceManager(getContext());
+        Intent intent;
+        int Previous_Fragment = preferenceManager.getInt(Fragment_ActivityType.FRAGMENT_ACTIVITY,0);
+        switch (Previous_Fragment)
+        {
+            case Fragment_ActivityType.POST_FRAGMENT:
+                intent = new Intent(getContext(), NewPostActivity.class);
+                break;
+            default:
+                intent = new Intent(getContext(), MainActivity.class);
+        }
+        preferenceManager.putInt(Fragment_ActivityType.FRAGMENT_ACTIVITY,0);
         startActivity(intent);
+        loginActivity.finish();
+
     }
 
     @Override

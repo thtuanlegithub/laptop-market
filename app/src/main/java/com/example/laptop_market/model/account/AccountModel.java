@@ -62,6 +62,7 @@ public class AccountModel implements IAccountContract.Model {
     //region On Loading account information
     @Override
     public void LoadAccount(OnLoadingAccountListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseUser!=null)
         {
             Account account = new Account();
