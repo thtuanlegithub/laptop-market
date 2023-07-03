@@ -21,7 +21,7 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.LoginFragmentPresenter;
-import com.example.laptop_market.utils.Fragment_ActivityType;
+import com.example.laptop_market.utils.FragmentActivityType;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.utils.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
@@ -147,20 +147,40 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
     public void LoginSuccess() {
         Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
         preferenceManager = new PreferenceManager(getContext());
-        Intent intent;
-        int Previous_Fragment = preferenceManager.getInt(Fragment_ActivityType.FRAGMENT_ACTIVITY,0);
-        switch (Previous_Fragment)
+        Intent intent = null;
+        int PreviousFragment = preferenceManager.getInt(FragmentActivityType.FRAGMENT_ACTIVITY,0);
+        switch (PreviousFragment)
         {
-            case Fragment_ActivityType.POST_FRAGMENT:
+            case FragmentActivityType.NEW_POST_ACTIVITY:
                 intent = new Intent(getContext(), NewPostActivity.class);
+                break;
+            case FragmentActivityType.NOTIFICATION_ACTIVITY:
+
+                break;
+            case FragmentActivityType.CHAT_ACTIVITY:
+
+                break;
+            case FragmentActivityType.SELL_ORDER_STATISTIC_ACTIVITY:
+
+                break;
+            case FragmentActivityType.BUY_ORDER_STATISTIC_ACTIVITY:
+
+                break;
+            case FragmentActivityType.SAVED_POST_ACTIVITY:
+
+                break;
+            case FragmentActivityType.YOUR_RATING_ACTIVITY:
+
+                break;
+            case FragmentActivityType.ACCOUNT_SETTINGS_ACTIVITY:
+
                 break;
             default:
                 intent = new Intent(getContext(), MainActivity.class);
         }
-        preferenceManager.putInt(Fragment_ActivityType.FRAGMENT_ACTIVITY,0);
+        preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY,0);
         startActivity(intent);
         loginActivity.finish();
-
     }
 
     @Override

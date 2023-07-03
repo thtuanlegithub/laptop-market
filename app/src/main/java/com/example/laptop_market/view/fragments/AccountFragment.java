@@ -19,7 +19,7 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
-import com.example.laptop_market.utils.Fragment_ActivityType;
+import com.example.laptop_market.utils.FragmentActivityType;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
@@ -28,7 +28,7 @@ import com.example.laptop_market.view.activities.LoginActivity;
 public class AccountFragment extends Fragment implements IAccountContract.View.AccountFragmentView {
     private ImageView imgAccount;
     private TextView txtAccountName;
-    private IAccountContract.Presenter.AccountFragmentPresenter presenter;
+    private IAccountContract.Presenter.AccountFragmentPresenter accountFragmentPresenter;
     private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
     private boolean isLogin = false;
@@ -54,7 +54,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         btnAccountSettings = view.findViewById(R.id.btnAccountSettings);
         btnFeedback = view.findViewById(R.id.btnFeedback);
         bttLogout = view.findViewById(R.id.bttLogout);
-        presenter = new AccountFragmentPresenter(this, getContext());
+        accountFragmentPresenter = new AccountFragmentPresenter(this, getContext());
         setListener();
         return view;
     }
@@ -69,24 +69,24 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
             if(!isLogin) {
                 Intent intent = new Intent(this.getActivity(), LoginActivity.class);
                 PreferenceManager preferenceManager = new PreferenceManager(getContext());
-                preferenceManager.putInt(Fragment_ActivityType.FRAGMENT_ACTIVITY,Fragment_ActivityType.ACCOUNT_FRAGMENT);
+                preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.ACCOUNT_FRAGMENT);
                 startActivity(intent);
             }
         });
         btnSellOrder.setOnClickListener(view -> {
-            presenter.ClickSellOrder();
+            accountFragmentPresenter.ClickSellOrderStatistic();
         });
         btnBuyOrder.setOnClickListener(view -> {
-            presenter.ClickBuyOrder();
+            accountFragmentPresenter.ClickBuyOrderStatistic();
         });
         btnSavedPost.setOnClickListener(view -> {
-            presenter.ClickSavedPost();
+            accountFragmentPresenter.ClickSavedPost();
         });
         btnYourRating.setOnClickListener(view -> {
-            presenter.ClickYourRating();
+            accountFragmentPresenter.ClickYourRating();
         });
         btnAccountSettings.setOnClickListener(view -> {
-            presenter.ClickAccountSettings();
+            accountFragmentPresenter.ClickAccountSettings();
         });
         btnFeedback.setOnClickListener(view -> {
             // Create feedback activity
@@ -95,7 +95,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
             MyDialog.showDialog(getContext(), "Bạn có chắc muốn đăng xuất không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
                 @Override
                 public void onYesClick() {
-                    presenter.LogoutAccount();
+                    accountFragmentPresenter.LogoutAccount();
                 }
 
                 @Override
@@ -169,6 +169,6 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     @Override
     public void onResume() {
         super.onResume();
-        presenter.LoadAccountStatus();
+        accountFragmentPresenter.LoadAccountStatus();
     }
 }

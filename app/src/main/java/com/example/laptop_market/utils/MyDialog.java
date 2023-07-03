@@ -13,7 +13,6 @@ import com.example.laptop_market.R;
 public class MyDialog {
     private Dialog dialog;
     private Button btnYes, btnNo, btnOk;
-    private TextView txtDialogMessage;
     private DialogClickListener dialogClickListener;
 
     private MyDialog(Context context) {
@@ -22,7 +21,6 @@ public class MyDialog {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // Find views
-        txtDialogMessage = dialog.findViewById(R.id.txtDialogMessage);
         btnYes = dialog.findViewById(R.id.btnYes);
         btnNo = dialog.findViewById(R.id.btnNo);
         btnOk = dialog.findViewById(R.id.btnOk);
