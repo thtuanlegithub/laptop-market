@@ -288,7 +288,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tên khách hàng"
+                    android:hint="Tên người bán"
                     app:hintTextAppearance="@style/HintTextAppearance"
                     app:hintAnimationEnabled="true"
                     android:background="@drawable/outline_combobox"

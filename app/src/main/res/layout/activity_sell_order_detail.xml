@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.activities.SellOrderDetailActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusableInTouchMode="true">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -220,7 +221,6 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:focusedByDefault="false"
                         android:text="khối phố Cổ An Đông, phường Điện Nam Đông, thị xã Điện Bàn, tỉnh Quảng Nam"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -269,7 +269,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tên khách hàng"
+                    android:hint="Tên người bán"
                     app:hintTextAppearance="@style/HintTextAppearance"
                     app:hintAnimationEnabled="true"
                     android:background="@drawable/outline_combobox"
