@@ -1,12 +1,15 @@
 package com.example.laptop_market.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -21,11 +24,14 @@ import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.NewPostActivityPresenter;
+import com.example.laptop_market.view.adapters.ImageForNewPostAdapter;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewPostActivity extends AppCompatActivity implements IPostContract.View.NewPostActivityView, ILaptopContract.View.NewPostActivityView {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -49,9 +55,11 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private AppCompatButton NewPostOpenImageBtt;
     private AppCompatButton NewPostBttDangTin;
     private ArrayList<Uri> ListPictures;
+    private RecyclerView rcvImageForNewPost;
+    private List<Bitmap> imageList;
     private IPostContract.Presenter.NewPostActivityPresenter postActivityPresenter;
     private ILaptopContract.Presenter.NewPostActivityPresenter laptopActivityPresenter;
-
+    private  ImageForNewPostAdapter imageForNewPostAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +74,22 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
         findView();
 
+        GridLayoutManager gridLayoutManagerImageForNewPost = new GridLayoutManager(this,1, RecyclerView.HORIZONTAL,false);
+        rcvImageForNewPost.setLayoutManager(gridLayoutManagerImageForNewPost);
+
+        imageList = new ArrayList<>();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.slide_show1);
+        imageList.add(bitmap);
+        imageList.add(bitmap);
+        imageList.add(bitmap);
+        imageList.add(bitmap);
+
+        imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, position -> {
+            // Xử lý sự kiện khi người dùng nhấn nút close
+            imageList.remove(position);
+            imageForNewPostAdapter.notifyDataSetChanged();
+        });
+        rcvImageForNewPost.setAdapter(imageForNewPostAdapter);
     }
 
     private void findView(){
@@ -88,6 +112,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         edtSellerName = findViewById(R.id.edtSellerName);
         NewPostOpenImageBtt = findViewById(R.id.NewPostOpenImageBtt);
         edtDescription=findViewById(R.id.edtDescription);
+        rcvImageForNewPost = findViewById(R.id.rcvImageForNewPost);
         setListener();
     }
     private void ShowToast(String message)

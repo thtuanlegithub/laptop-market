@@ -56,15 +56,49 @@
                     android:textSize="16dp"/>
             </LinearLayout>
             <LinearLayout
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
+                    android:drawableTop="@drawable/ic_add_img"
+                    android:background="#E4E4E4"
+                    android:text="Thêm ảnh"
+                    android:textSize="13dp"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:drawablePadding="-5dp"
+                    android:textColor="#F09D38"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvImageForNewPost"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
                 android:orientation="vertical">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/NewPostOpenImageBtt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/upload_image"/>
+                    android:layout_height="100dp"
+                    android:paddingTop="15dp"
+                    android:drawableTop="@drawable/ic_img_btn"
+                    android:background="#E4E4E4"
+                    android:text="Đăng từ 1 đến 5 hình"
+                    android:textStyle="normal"
+                    android:drawablePadding="-10dp"
+                    android:textColor="#6B6D6D"/>
+
                 <RelativeLayout
                     android:id="@+id/newPostStatus"
                     android:layout_width="match_parent"
