@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.view.adapters.SellFinishAdapter;
-import com.example.laptop_market.view.adapters.SellOrder;
+import com.example.laptop_market.view.adapters.Sell.SellFinishAdapter;
+import com.example.laptop_market.view.adapters.Sell.SellOrder;
 
 import java.util.ArrayList;
 import java.util.List;

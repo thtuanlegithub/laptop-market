@@ -1,10 +1,10 @@
-package com.example.laptop_market.view.adapters;
+package com.example.laptop_market.view.adapters.Buy;
 
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
-public class SellOrder implements Serializable {
+public class BuyOrder implements Serializable {
     private transient Bitmap image;
     private String laptopName;
     private String userId;
@@ -30,9 +30,9 @@ public class SellOrder implements Serializable {
         this.laptopId = laptopId;
     }
 
-    public SellOrder() {
+    public BuyOrder() {
     }
-    public SellOrder(String title, double price, String address){
+    public BuyOrder(String title, double price, String address){
         this.title = title;
         this.price = price;
         this.address = address;
