@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,8 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -49,7 +52,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private EditText edtNewPostPrice;
     private EditText edtTitle;
     private EditText edtDescription;
-    private EditText edtPhoneNumber;
+    private EditText edtSellerPhoneNumber;
     private EditText edtSellerName;
     private EditText edtSellerAddress;
     private AppCompatButton NewPostOpenImageBtt;
@@ -107,7 +110,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         newPostOriginCountry = findViewById(R.id.newPostOriginCountry);
         edtNewPostPrice = findViewById(R.id.edtNewPostPrice);
         edtTitle = findViewById(R.id.edtTitle);
-        edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
+        edtSellerPhoneNumber = findViewById(R.id.edtSellerPhoneNumber);
         edtSellerAddress = findViewById(R.id.edtSellerAddress);
         edtSellerName = findViewById(R.id.edtSellerName);
         NewPostOpenImageBtt = findViewById(R.id.NewPostOpenImageBtt);
@@ -123,6 +126,12 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     {
         btnNewPostClose.setOnClickListener(view -> {
             finish();
+            //Ẩn bàn phím:
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View currentFocus = this.getCurrentFocus();
+            if (inputMethodManager != null && currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+            }
         });
         NewPostOpenImageBtt.setOnClickListener(
                 view -> {
@@ -209,7 +218,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         post.setDescription(edtDescription.getText().toString());
         post.setSellerAddress(edtSellerAddress.getText().toString());
         post.setSellerName(edtSellerName.getText().toString());
-        post.setSellerPhoneNumber(edtPhoneNumber.getText().toString());
+        post.setSellerPhoneNumber(edtSellerPhoneNumber.getText().toString());
         post.setTitle(edtTitle.getText().toString());
         post.setPostMainImage(encode_img(ListPictures.get(0)));
         postActivityPresenter.OnCreateNewPostClicked(post);
