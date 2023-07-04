@@ -1,4 +1,4 @@
-package com.example.laptop_market.view.adapters;
+package com.example.laptop_market.view.adapters.Sell;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,39 +16,39 @@ import com.example.laptop_market.view.activities.SellOrderDetailActivity;
 import java.text.NumberFormat;
 import java.util.List;
 
-public class SellCancelAdapter extends RecyclerView.Adapter<SellCancelAdapter.SellCancelViewHolder> {
-    private List<SellOrder> SellCancelList;
-    public SellCancelAdapter(List<SellOrder> SellCancelList){
-        this.SellCancelList = SellCancelList;
+public class SellDeliveringAdapter extends RecyclerView.Adapter<SellDeliveringAdapter.SellDeliveringViewHolder> {
+    private List<SellOrder> SellDeliveringList;
+    public SellDeliveringAdapter(List<SellOrder> SellDeliveringList){
+        this.SellDeliveringList = SellDeliveringList;
     }
 
     @NonNull
     @Override
-    public SellCancelAdapter.SellCancelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SellDeliveringAdapter.SellDeliveringViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sell_order,parent,false);
-        return new SellCancelAdapter.SellCancelViewHolder(view);
+        return new SellDeliveringAdapter.SellDeliveringViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SellCancelAdapter.SellCancelViewHolder holder, int position) {
-        SellOrder SellCancel = SellCancelList.get(position);
-        if(SellCancel==null){
+    public void onBindViewHolder(@NonNull SellDeliveringAdapter.SellDeliveringViewHolder holder, int position) {
+        SellOrder SellDelivering = SellDeliveringList.get(position);
+        if(SellDelivering==null){
             return;
         }
-        holder.imgSellOrder.setImageBitmap(SellCancel.getImage());
-        holder.titleSellOrder.setText(SellCancel.getTitle());
+        holder.imgSellOrder.setImageBitmap(SellDelivering.getImage());
+        holder.titleSellOrder.setText(SellDelivering.getTitle());
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
-        String formattedPrice = numberFormat.format(SellCancel.getPrice());
+        String formattedPrice = numberFormat.format(SellDelivering.getPrice());
         holder.priceSellOrder.setText(formattedPrice);
-        holder.addressSellOrder.setText(SellCancel.getAddress());
+        holder.addressSellOrder.setText(SellDelivering.getAddress());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),SellOrderDetailActivity.class);
-                intent.putExtra("SellOrderStatus",3);
+                intent.putExtra("SellOrderStatus",1);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -56,18 +56,18 @@ public class SellCancelAdapter extends RecyclerView.Adapter<SellCancelAdapter.Se
 
     @Override
     public int getItemCount() {
-        if(SellCancelList!=null){
-            return SellCancelList.size();
+        if(SellDeliveringList!=null){
+            return SellDeliveringList.size();
         }
         return 0;
     }
 
-    public class SellCancelViewHolder extends RecyclerView.ViewHolder{
+    public class SellDeliveringViewHolder extends RecyclerView.ViewHolder{
         private ImageView imgSellOrder;
         private TextView titleSellOrder;
         private TextView priceSellOrder;
         private TextView addressSellOrder;
-        public SellCancelViewHolder(@NonNull View itemView){
+        public SellDeliveringViewHolder(@NonNull View itemView){
             super(itemView);
             imgSellOrder = itemView.findViewById(R.id.imgSellOrder);
             titleSellOrder = itemView.findViewById(R.id.titleSellOrder);

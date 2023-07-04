@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.SellOrderDetailActivity"
+    tools:context=".view.activities.BuyOrderDetailActivity"
     android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSellOrderDetailClose"
+                android:id="@+id/btnBuyOrderDetailClose"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/linearLayoutSellOrderStatus"
+                android:id="@+id/linearLayoutBuyOrderStatus"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,10 +58,11 @@
                     android:text="TRANG THÁI ĐƠN HÀNG"
                     android:textSize="16dp"/>
                 <TextView
-                    android:id="@+id/txtViewSellOrderStatus"
+                    android:id="@+id/txtViewBuyOrderStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ĐANG XỬ LÝ"
+                    android:textAllCaps="true"
                     android:gravity="center"
                     android:textSize="28dp"
                     android:textStyle="normal"
@@ -96,7 +97,10 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailPostServiceName"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:textColor="@color/black"
+                        android:id="@+id/edtBuyOrderDetailPostServiceName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -119,7 +123,10 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailPostServiceCode"
+                        android:id="@+id/edtBuyOrderDetailPostServiceCode"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -161,7 +168,10 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailCustomerPhone"
+                        android:id="@+id/edtBuyOrderDetailCustomerPhone"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:textColor="@color/black"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -186,7 +196,10 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailCustomerName"
+                        android:id="@+id/edtBuyOrderDetailCustomerName"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -210,7 +223,10 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailCustomerAddress"
+                        android:id="@+id/edtBuyOrderDetailCustomerAddress"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -254,7 +270,10 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailSellerPhone"
+                        android:id="@+id/edtBuyOrderDetailBuyerPhone"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -278,7 +297,10 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailSellerName"
+                        android:id="@+id/edtBuyOrderDetailBuyerName"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -303,7 +325,10 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtSellOrderDetailSellerAddress"
+                        android:id="@+id/edtBuyOrderDetailBuyerAddress"
+                        android:textColor="@color/black"
+                        android:enabled="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -324,7 +349,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/linearLayoutButtonSellProcessing"
+            android:id="@+id/linearLayoutButtonBuyProcessing"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -341,47 +366,18 @@
                 android:layout_marginRight="2dp"
                 />
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/NewPostBttDangTin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="#F09D38"
-                android:text="Giao đơn"
-                android:textSize="16dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="20dp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linearLayoutButtonSellDelivering"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            >
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:text="Huỷ đơn"
                 android:textSize="16dp"
-                android:backgroundTint="#F5BD40"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="2dp"
-                />
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="#F09D38"
-                android:text="Hoàn thành"
-                android:textSize="16dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="20dp"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/linearLayoutButtonSellFinish"
+            android:id="@+id/linearLayoutButtonBuyDelivering"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -391,25 +387,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Đăng lại tin"
+                android:text="Xem lại tin"
                 android:textSize="16dp"
                 android:backgroundTint="#F5BD40"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="2dp"
-                />
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="#F09D38"
-                android:text="Hủy tin"
-                android:textSize="16dp"
-                android:layout_marginLeft="2dp"
                 android:layout_marginRight="20dp"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/linearLayoutButtonSellCancel"
+            android:id="@+id/linearLayoutButtonBuyFinish"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -419,7 +405,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Đăng lại tin"
+                android:text="Đánh giá shop"
+                android:textSize="16dp"
+                android:backgroundTint="#F5BD40"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutButtonBuyCancel"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Xem lại tin"
                 android:textSize="16dp"
                 android:backgroundTint="#F5BD40"
                 android:layout_marginLeft="20dp"
