@@ -1,7 +1,5 @@
 package com.example.laptop_market.contracts;
 
-import com.example.laptop_market.model.post.Post;
-
 import java.util.ArrayList;
 
 public interface IStringFilterSearchContract {

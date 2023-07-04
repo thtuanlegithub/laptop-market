@@ -3,8 +3,8 @@ package com.example.laptop_market.model.filter;
 import android.content.Context;
 
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
-import com.example.laptop_market.utils.Constants;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.Collections;

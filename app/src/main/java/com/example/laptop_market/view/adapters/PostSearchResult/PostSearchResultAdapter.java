@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.utils.PostTable;
+import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.activities.PostDetailActivity;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
 

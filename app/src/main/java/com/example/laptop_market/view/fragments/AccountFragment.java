@@ -19,9 +19,9 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
-import com.example.laptop_market.utils.FragmentActivityType;
+import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.MyDialog;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 
 

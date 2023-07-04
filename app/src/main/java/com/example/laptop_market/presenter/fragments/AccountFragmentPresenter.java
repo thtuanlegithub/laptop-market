@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.AccountModel;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 
 public class AccountFragmentPresenter implements IAccountContract.Presenter.AccountFragmentPresenter {
 

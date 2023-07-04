@@ -21,7 +21,7 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.presenter.fragments.SearchResultFragmentPresenter;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.view.adapters.FilterAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
