@@ -6,11 +6,9 @@ import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresen
 import android.content.Context;
 
 import com.example.laptop_market.contracts.IAccountContract;
-import com.example.laptop_market.model.laptop.Laptop;
-import com.example.laptop_market.utils.AccountTable;
-import com.example.laptop_market.utils.Constants;
-import com.example.laptop_market.utils.LaptopTable;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.tables.AccountTable;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;

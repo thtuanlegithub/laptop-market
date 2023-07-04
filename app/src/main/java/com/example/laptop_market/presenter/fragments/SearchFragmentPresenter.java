@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.model.filter.StringFilterSearchModel;
-import com.example.laptop_market.utils.PreferenceManager;
 
 public class SearchFragmentPresenter implements IStringFilterSearchContract.Presenter.SearchFragmentPresenter {
     private IStringFilterSearchContract.View.SearchFragmentView view;

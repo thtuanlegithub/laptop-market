@@ -1,7 +1,4 @@
 package com.example.laptop_market.view.activities;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -24,7 +21,6 @@ import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.NewPostActivityPresenter;
-import com.example.laptop_market.utils.PreferenceManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

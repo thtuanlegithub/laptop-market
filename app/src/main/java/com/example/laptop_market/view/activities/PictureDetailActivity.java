@@ -9,15 +9,12 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.utils.Constants;
-import com.example.laptop_market.utils.LaptopTable;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.tables.LaptopTable;
 import com.example.laptop_market.view.adapters.ImageDetailSliderAdapter;
-import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;

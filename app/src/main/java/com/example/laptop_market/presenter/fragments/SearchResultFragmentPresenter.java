@@ -6,7 +6,6 @@ import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.model.filter.StringFilterSearchModel;
 import com.example.laptop_market.model.post.PostModel;
-import com.example.laptop_market.utils.PreferenceManager;
 
 public class SearchResultFragmentPresenter implements IStringFilterSearchContract.Presenter.SearchResultFragmentPresenter
         , IPostContract.Presenter.SearchResultFragmentPresenter {

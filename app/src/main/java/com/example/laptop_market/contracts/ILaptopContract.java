@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 
 import com.example.laptop_market.model.laptop.Laptop;
 
-import java.util.ArrayList;
-
 public interface ILaptopContract {
     interface Model{
         //region Create new Laptop

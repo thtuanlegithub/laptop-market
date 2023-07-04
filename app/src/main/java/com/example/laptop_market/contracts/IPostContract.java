@@ -1,6 +1,5 @@
 package com.example.laptop_market.contracts;
 
-import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 

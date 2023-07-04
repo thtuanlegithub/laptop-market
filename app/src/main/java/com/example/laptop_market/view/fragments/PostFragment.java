@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
-import com.example.laptop_market.utils.FragmentActivityType;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.elses.FragmentActivityType;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
 import com.example.laptop_market.R;

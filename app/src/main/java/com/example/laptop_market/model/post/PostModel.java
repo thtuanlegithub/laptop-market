@@ -3,22 +3,15 @@ package com.example.laptop_market.model.post;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 
-import com.algolia.search.saas.AlgoliaException;
 import com.algolia.search.saas.Client;
-import com.algolia.search.saas.CompletionHandler;
 import com.algolia.search.saas.Index;
 import com.algolia.search.saas.Query;
-import com.bumptech.glide.Glide;
-import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IPostContract;
-import com.example.laptop_market.model.laptop.Laptop;
-import com.example.laptop_market.utils.AccountTable;
-import com.example.laptop_market.utils.LaptopTable;
-import com.example.laptop_market.utils.PostTable;
+import com.example.laptop_market.utils.tables.AccountTable;
+import com.example.laptop_market.utils.tables.LaptopTable;
+import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -29,18 +22,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class PostModel implements IPostContract.Model {
     private FirebaseAuth firebaseAuth;

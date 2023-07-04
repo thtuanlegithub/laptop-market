@@ -1,4 +1,4 @@
-package com.example.laptop_market.utils;
+package com.example.laptop_market.utils.elses;
 
 public class FragmentActivityType {
     public static final String FRAGMENT_ACTIVITY = "fragment_activity";

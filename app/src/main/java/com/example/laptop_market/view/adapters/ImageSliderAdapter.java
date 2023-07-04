@@ -13,9 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.utils.Constants;
-import com.example.laptop_market.utils.LaptopTable;
-import com.example.laptop_market.utils.MyImageView;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.tables.LaptopTable;
+import com.example.laptop_market.utils.elses.MyImageView;
 import com.example.laptop_market.view.activities.PictureDetailActivity;
 
 import org.json.JSONException;
@@ -25,7 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 
 public class ImageSliderAdapter extends PagerAdapter {

@@ -1,20 +1,12 @@
 package com.example.laptop_market.view.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,8 +22,7 @@ import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
-import com.example.laptop_market.utils.Constants;
-import com.example.laptop_market.utils.PostTable;
+import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 

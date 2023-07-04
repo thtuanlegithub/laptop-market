@@ -7,12 +7,9 @@ import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
 import com.example.laptop_market.contracts.ILaptopContract;
-import com.example.laptop_market.utils.LaptopTable;
-import com.example.laptop_market.utils.PreferenceManager;
+import com.example.laptop_market.utils.tables.LaptopTable;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

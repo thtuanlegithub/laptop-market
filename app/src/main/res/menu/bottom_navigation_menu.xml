@@ -21,4 +21,5 @@
         android:id="@+id/account"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="Tài khoản" />
+
 </menu>
