@@ -33,7 +33,8 @@
             app:itemTextColor="@drawable/bottom_navigation_colors"
             app:itemTextAppearanceActive="@style/SellNavigationTextAppearance"
             app:itemTextAppearanceInactive="@style/SellNavigationTextAppearance"
-            app:menu="@menu/sell_menu"/>
+            app:menu="@menu/sell_menu"
+            app:labelVisibilityMode="labeled"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerSell"
             android:layout_width="match_parent"

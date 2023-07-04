@@ -46,6 +46,7 @@ public class SellFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sell, container, false);
         fragmentList = new ArrayList<>();
+        fragmentList.add(new SellProcessingFragment());
         fragmentList.add(new SellDeliveringFragment());
         fragmentList.add(new SellFinishFragment());
         fragmentList.add(new SellCancelFragment());
@@ -68,15 +69,18 @@ public class SellFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.sellDelivering && currentSelectedItem != 0) {
+                if(itemId == R.id.sellProcessing && currentSelectedItem != 0){
                     viewPagerSell.setCurrentItem(0);
                     currentSelectedItem = 0;
-                } else if (itemId == R.id.sellFinish && currentSelectedItem != 1) {
+                } else if (itemId == R.id.sellDelivering && currentSelectedItem != 1) {
                     viewPagerSell.setCurrentItem(1);
                     currentSelectedItem = 1;
-                } else if (itemId == R.id.sellCancel && currentSelectedItem != 2) {
+                } else if (itemId == R.id.sellFinish && currentSelectedItem != 2) {
                     viewPagerSell.setCurrentItem(2);
                     currentSelectedItem = 2;
+                } else if (itemId == R.id.sellCancel && currentSelectedItem != 3) {
+                    viewPagerSell.setCurrentItem(3);
+                    currentSelectedItem = 3;
                 }
 
                 return true;

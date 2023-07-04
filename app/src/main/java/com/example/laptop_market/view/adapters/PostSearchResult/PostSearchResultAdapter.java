@@ -15,6 +15,7 @@ import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.activities.PostDetailActivity;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResultAdapter.PostSearchResultViewHolder> {
@@ -40,7 +41,12 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
         }
         holder.imgPostSearchResult.setImageBitmap(postSearchResult.getImage());
         holder.titlePostSearchResult.setText(postSearchResult.getTitle());
-        holder.pricePostSearchResult.setText(String.valueOf(postSearchResult.getPrice()));
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
+        numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
+        String formattedPrice = numberFormat.format(postSearchResult.getPrice());
+        holder.pricePostSearchResult.setText(formattedPrice);
         holder.addressPostSearchResult.setText(postSearchResult.getAddress());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

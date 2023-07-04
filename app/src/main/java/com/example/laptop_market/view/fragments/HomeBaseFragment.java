@@ -22,6 +22,7 @@ import com.example.laptop_market.utils.elses.Connection_Receiver;
  */
 public class HomeBaseFragment extends Fragment {
     private FragmentManager fragmentManager;
+    public boolean isSearch = false;
     public HomeFragment homeFragment;
     public SearchFragment searchFragment;
     public SearchResultFragment searchResultFragment;
