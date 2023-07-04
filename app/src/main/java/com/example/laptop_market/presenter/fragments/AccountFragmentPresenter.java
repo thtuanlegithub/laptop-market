@@ -35,7 +35,7 @@ public class AccountFragmentPresenter implements IAccountContract.Presenter.Acco
     }
 
     @Override
-    public void ClickSellOrder() {
+    public void ClickSellOrderStatistic() {
         accountModel.CheckSignedInAccount(isLogin -> {
             if (isLogin)
                 view.LoadSellOrder();
@@ -45,7 +45,7 @@ public class AccountFragmentPresenter implements IAccountContract.Presenter.Acco
     }
 
     @Override
-    public void ClickBuyOrder() {
+    public void ClickBuyOrderStatistic() {
         accountModel.CheckSignedInAccount(isLogin -> {
             if (isLogin)
                 view.LoadBuyOrder();

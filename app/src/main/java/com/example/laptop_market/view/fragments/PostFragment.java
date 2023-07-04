@@ -13,10 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
-import com.example.laptop_market.utils.Fragment_ActivityType;
+import com.example.laptop_market.utils.FragmentActivityType;
 import com.example.laptop_market.utils.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
@@ -121,7 +120,7 @@ public class PostFragment extends Fragment implements IPostContract.View.PostFra
     public void LoginAccount() {
         Intent intent = new Intent(this.getActivity(), LoginActivity.class);
         PreferenceManager preferenceManager = new PreferenceManager(getContext());
-        preferenceManager.putInt(Fragment_ActivityType.FRAGMENT_ACTIVITY,Fragment_ActivityType.POST_FRAGMENT);
+        preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.NEW_POST_ACTIVITY);
         startActivity(intent);
     }
 }

@@ -82,8 +82,8 @@ public interface IAccountContract {
         interface AccountFragmentPresenter {
             void LoadAccountStatus();
             void LogoutAccount();
-            void ClickSellOrder();
-            void ClickBuyOrder();
+            void ClickSellOrderStatistic();
+            void ClickBuyOrderStatistic();
             void ClickSavedPost();
             void ClickYourRating();
             void ClickAccountSettings();
