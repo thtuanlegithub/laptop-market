@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.SellFinishFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvSellFinish"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="SELL FINISH"
-        android:textSize="40dp"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

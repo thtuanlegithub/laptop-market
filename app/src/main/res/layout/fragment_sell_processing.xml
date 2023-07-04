@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.SellDeliveringFragment">
+    tools:context=".view.fragments.SellProcessingFragment">
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvSellDelivering"
+        android:id="@+id/rcvSellProcessing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginTop="8dp">
     </androidx.recyclerview.widget.RecyclerView>
+
 </FrameLayout>

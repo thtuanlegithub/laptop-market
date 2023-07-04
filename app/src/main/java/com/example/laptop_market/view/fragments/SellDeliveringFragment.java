@@ -3,64 +3,54 @@ package com.example.laptop_market.view.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.view.adapters.SellOrder;
+import com.example.laptop_market.view.adapters.SellDeliveringAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SellDeliveringFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class SellDeliveringFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SellDeliveringFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SellDeliveringFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SellDeliveringFragment newInstance(String param1, String param2) {
-        SellDeliveringFragment fragment = new SellDeliveringFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    private RecyclerView rcvSellDelivering;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sell_delivering, container, false);
+        View view = inflater.inflate(R.layout.fragment_sell_delivering, container, false);
+
+        //Hiển thị các đơn bán - đang xử lý
+        rcvSellDelivering = view.findViewById(R.id.rcvSellDelivering);
+        GridLayoutManager gridLayoutManagerSellDelivering = new GridLayoutManager(requireContext(),1);
+        rcvSellDelivering.setLayoutManager(gridLayoutManagerSellDelivering);
+        SellDeliveringAdapter sellDeliveringAdapter = new SellDeliveringAdapter(getListSellDelivering());
+        rcvSellDelivering.setAdapter(sellDeliveringAdapter);
+
+        return view;
     }
+
+    private List<SellOrder> getListSellDelivering(){
+        List<SellOrder> listSellDelivering = new ArrayList<>();
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        listSellDelivering.add(new SellOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
+        return  listSellDelivering;
+    }
+
 }

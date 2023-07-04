@@ -8,5 +8,9 @@
         <item name="android:textSize">16dp</item> <!-- Kích thước văn bản -->
         <item name="android:paddingBottom">10dp</item>
     </style>
+    <style name="HintTextAppearance" parent="TextAppearance.Design.Hint">
+        <item name="android:textStyle">bold</item> <!-- Đặt fontWeight là bold -->
+        <item name="android:textColor">#CD7810</item>
+    </style>
 
 </resources>

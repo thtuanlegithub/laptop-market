@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment {
                         if (homeBaseFragment != null && searchFragment != null) {
                             homeBaseFragment.searchFragment = searchFragment;
                             homeBaseFragment.replaceFragment(searchFragment);
+                            homeBaseFragment.isSearch = true;
                         }
                         // Hiển thị bàn phím
                         InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

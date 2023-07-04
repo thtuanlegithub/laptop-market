@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +35,7 @@ import com.example.laptop_market.utils.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private TextView totalPictureTextView;
     private TextView currentPictureTextView;
     private int currentImagePage;
+    private LinearLayout layoutButtonCustomer;
+    private LinearLayout layoutButtonSeller;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,16 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         postDetailPrice = findViewById(R.id.postDetailPrice);
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
+        layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
+        layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
+        if(checkSeller()){
+            layoutButtonSeller.setVisibility(View.VISIBLE);
+            layoutButtonCustomer.setVisibility(View.GONE);
+        }
+        else{
+            layoutButtonCustomer.setVisibility(View.VISIBLE);
+            layoutButtonSeller.setVisibility(View.GONE);
+        }
         Glide.with(this)
                 .load(R.drawable.slide_show1)
                 .apply(RequestOptions.circleCropTransform())
@@ -80,6 +94,13 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
         setListener();
         InitData();
+    }
+    private boolean checkSeller(){
+        // Customer - false
+
+        // Seller - true
+
+        return false;
     }
     private void setListener()
     {
@@ -121,7 +142,12 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         postDetailTitleTextView.setText(post.getTitle());
         NameShopTextView.setText(account.getAccountName());
         totalPictureTextView.setText(String.valueOf(laptop.getNumOfImage()));
-        postDetailPrice.setText(String.valueOf(laptop.getPrice()) + " VNĐ");
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
+        numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
+        String formattedPrice = numberFormat.format(laptop.getPrice());
+        postDetailPrice.setText(String.valueOf(formattedPrice) + " VNĐ");
         Imageadapter = new ImageSliderAdapter(laptop.getNumOfImage(),getApplicationContext(),laptop.getListDownloadImages());
         viewPagerImagePostDetail.setAdapter(Imageadapter);
         laptopPresenter.OnLoadingImageLaptopInPostDetail(postSearchResult.getLaptopId());
