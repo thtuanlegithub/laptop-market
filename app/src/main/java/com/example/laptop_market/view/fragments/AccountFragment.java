@@ -49,7 +49,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         txtAccountName = view.findViewById(R.id.txtAccountName);
         btnSellOrder = view.findViewById(R.id.btnSellOrder);
         btnBuyOrder = view.findViewById(R.id.btnBuyOrder);
-        btnSavedPost = view.findViewById(R.id.btnSavedPost);
+        btnSavedPost = view.findViewById(R.id.btnSavedPostList);
         btnYourRating = view.findViewById(R.id.btnYourRating);
         btnAccountSettings = view.findViewById(R.id.btnAccountSettings);
         btnFeedback = view.findViewById(R.id.btnFeedback);

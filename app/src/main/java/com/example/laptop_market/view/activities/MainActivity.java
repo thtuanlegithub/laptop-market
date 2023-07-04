@@ -70,14 +70,20 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.home:
                     showFragment(homeBaseFragment);
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameHomeBase);
-                    if(currentFragment instanceof SearchFragment){
+                    if (homeBaseFragment.isVisible()){
                         homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
+                        break;
                     }
-                    else if(currentFragment instanceof SearchResultFragment){
-                        homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
+                    else {
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frameHomeBase);
+                        if(currentFragment instanceof SearchFragment){
+                            homeBaseFragment.replaceFragment(homeBaseFragment.searchFragment);
+                        }
+                        else if(currentFragment instanceof SearchResultFragment){
+                            homeBaseFragment.replaceFragment(homeBaseFragment.searchResultFragment);
+                        }
+                        break;
                     }
-                    break;
                 case R.id.sell:
                     showFragment(sellFragment);
                     break;

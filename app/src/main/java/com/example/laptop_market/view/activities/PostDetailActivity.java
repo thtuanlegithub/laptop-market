@@ -32,7 +32,7 @@ import java.util.List;
 
 public class PostDetailActivity extends AppCompatActivity implements IPostContract.View.PostDetailActivityView
         , ILaptopContract.View.PostDetailActivityView, IAccountContract.View.PostDetailActivityView {
-    private Button btnPostDetailClose;
+    private Button btnPostDetailClose, btnSavePost;
     private ImageView imgPostDetailShop;
     private ViewPager viewPagerImagePostDetail;
     private ILaptopContract.Presenter.PostDetailActivityPresenter laptopPresenter;
@@ -47,6 +47,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private boolean isloadLaptopFinish;
     private boolean isLoadPostFinish;
     private boolean isLoadAccountFinish;
+    private boolean isSaved = false;
     private ImageSliderAdapter Imageadapter;
     private PostSearchResult postSearchResult;
     private TextView totalPictureTextView;
@@ -70,6 +71,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
+        btnSavePost = findViewById(R.id.btnSavePost);
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
@@ -98,6 +100,11 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         btnPostDetailClose.setOnClickListener(v -> {
             finish();
         });
+
+        btnSavePost.setOnClickListener(v -> {
+            postPresenter.OnSavePostClicked(this.postSearchResult.getPostId(), isSaved);
+        });
+
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -161,10 +168,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
 
     }
 
-
     @Override
     public void LoadingPostInPostDetail(Post post) {
-        this.post=post;
+        this.post = post;
         isLoadPostFinish =true;
         if(isloadLaptopFinish && isLoadAccountFinish)
             LoadData();
@@ -181,5 +187,23 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     @Override
     public void FailedLoadingPostDetail(Exception error) {
         error.printStackTrace();
+    }
+
+    @Override
+    public void LoadRemoveSavePostButton() {
+        isSaved = true;
+        btnSavePost.setText("Bỏ lưu");
+    }
+
+    @Override
+    public void LoadSavePostButton() {
+        isSaved = false;
+        btnSavePost.setText("Lưu tin");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postPresenter.LoadSavePostButton(this.postSearchResult.getPostId());
     }
 }

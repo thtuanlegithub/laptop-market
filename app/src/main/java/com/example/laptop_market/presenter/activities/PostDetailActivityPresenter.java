@@ -61,9 +61,52 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
                 postView.LoadingPostInPostDetail(post);
         });
     }
+
+    @Override
+    public void LoadSavePostButton(String postID) {
+        accountModel.LoadSavePostButton(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+            @Override
+            public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                if (isSuccess){
+                    if (isSaved)
+                        postView.LoadRemoveSavePostButton();
+                    else
+                        postView.LoadSavePostButton();
+                }
+                else
+                    error.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void OnSavePostClicked(String postID, boolean isSaved) {
+        if (!isSaved){
+            accountModel.ClickSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                @Override
+                public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                    if (isSuccess)
+                        postView.LoadRemoveSavePostButton();
+                    else
+                        error.printStackTrace();
+                }
+            });
+        }
+        else {
+            accountModel.ClickRemoveSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                @Override
+                public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                    if (isSuccess)
+                        postView.LoadSavePostButton();
+                    else
+                        error.printStackTrace();
+                }
+            });
+        }
+    }
+
     //endregion
     //region Account presenter
-
     @Override
     public void OnLoadingAccountInPostDetail(String accountId) {
         accountModel.LoadAccountWithId(accountId,(account, error) -> {

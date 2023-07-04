@@ -37,6 +37,8 @@ public interface IPostContract {
         interface PostDetailActivityView{
             void LoadingPostInPostDetail(Post post);
             void FailedLoadingPostDetail(Exception error);
+            void LoadSavePostButton();
+            void LoadRemoveSavePostButton();
         }
 
         interface PostFragmentView{
@@ -53,6 +55,8 @@ public interface IPostContract {
         }
         interface PostDetailActivityPresenter{
             void OnLoadingPostInPostDetail(String postID);
+            void LoadSavePostButton(String postID);
+            void OnSavePostClicked(String postID, boolean isSaved);
         }
         interface PostFragmentPresenter{
             void CreateNewPost();
