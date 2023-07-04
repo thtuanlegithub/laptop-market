@@ -76,7 +76,6 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     }
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
-
         listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",1));
         listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus",1));
         listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell",1));
