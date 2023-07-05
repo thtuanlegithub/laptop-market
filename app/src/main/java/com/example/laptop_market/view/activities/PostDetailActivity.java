@@ -63,6 +63,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
+
+        // get view
         preferenceManager = new PreferenceManager(getApplicationContext());
         laptopPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
         postPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
@@ -77,6 +79,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
         btnSavePost = findViewById(R.id.btnSavePost);
+
+        // check seller or customer
         btnCallNow = findViewById(R.id.btnCallNow);
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
@@ -86,12 +90,18 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             layoutButtonCustomer.setVisibility(View.VISIBLE);
             layoutButtonSeller.setVisibility(View.GONE);
         }
+
+        // circle avatar of seller
         Glide.with(this)
                 .load(R.drawable.slide_show1)
                 .apply(RequestOptions.circleCropTransform())
                 .into(imgPostDetailShop);
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
+
+        // set listener
         setListener();
+
+        // init data
         InitData();
     }
     private boolean checkSeller(){
