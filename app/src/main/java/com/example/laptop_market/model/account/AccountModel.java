@@ -9,9 +9,12 @@ import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -76,8 +79,8 @@ public class AccountModel implements IAccountContract.Model {
                         documentSnapshot -> {
                             account.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
                             account.setEmail(documentSnapshot.getString(AccountTable.EMAIL));
-                            account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
-                            account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
+                            preferenceManager.putString(Constants.KEY_USER_NAME, account.getAccountName());
+                            preferenceManager.putString(Constants.KEY_USER_EMAIL, account.getEmail());
                             listener.OnLoadingListener(true,account);
                         }
                 );
@@ -149,6 +152,51 @@ public class AccountModel implements IAccountContract.Model {
         firebaseAuth = FirebaseAuth.getInstance();
         boolean isLogin = firebaseAuth.getCurrentUser() != null;
         listener.OnFinishCheckingSignInAccount(isLogin);
+    }
+    //endregion
+
+    //region Save post
+    @Override
+    public void ClickSavePost(String postID, OnFinishSavePostListener listener) {
+        String userID = firebaseUser.getUid();
+        db.collection(AccountTable.TABLE_NAME).document(userID).update(AccountTable.SAVED_POSTS, FieldValue.arrayUnion(postID)).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                listener.OnFinishSavePost(true, true, null);
+            }
+            else {
+                listener.OnFinishSavePost(false, false, task.getException());
+            }
+        });
+    }
+
+    @Override
+    public void ClickRemoveSavePost(String postID, OnFinishSavePostListener listener) {
+        String userID = firebaseUser.getUid();
+        db.collection(AccountTable.TABLE_NAME).document(userID).update(AccountTable.SAVED_POSTS, FieldValue.arrayRemove(postID)).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                listener.OnFinishSavePost(true, false, null);
+            }
+            else {
+                listener.OnFinishSavePost(false, false, task.getException());
+            }
+        });
+    }
+
+    @Override
+    public void LoadSavePostButton(String postID, OnFinishSavePostListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userID = firebaseUser.getUid();
+        db.collection(AccountTable.TABLE_NAME).document(userID).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot documentSnapshot = task.getResult();
+                ArrayList<String> savedPostList = (ArrayList<String>) documentSnapshot.get(AccountTable.SAVED_POSTS);
+                boolean isExisted = savedPostList.contains(postID);
+                listener.OnFinishSavePost(true, isExisted, null);
+            }
+            else{
+                listener.OnFinishSavePost(false, false, task.getException());
+            }
+        });
     }
     //endregion
 }

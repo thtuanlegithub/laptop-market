@@ -55,13 +55,17 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private IPostContract.Presenter.SearchResultFragmentPresenter postPreseneter;
     private ProgressBar isLoading;
     private SearchFilterPost searchFilterPost;
+    private List<Filter> listFilter;
+    private FilterAdapter filterAdapter;
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         searchFilterPost = new SearchFilterPost();
         this.homeBaseFragment = homeBaseFragment;
-
     }
 
+    public SearchResultFragment() {
+        // Required empty public constructor
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +90,6 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     }
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
-
         listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",1));
         listBrand.add(new Brand(R.drawable.brand_logo_asus,"Asus",1));
         listBrand.add(new Brand(R.drawable.brand_logo_dell,"Dell",1));
@@ -123,8 +126,8 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         rcvFilter = view.findViewById(R.id.rcvFilter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),1,0,false);
         rcvFilter.setLayoutManager(gridLayoutManager);
-
-        FilterAdapter filterAdapter = new FilterAdapter(getListFilter(),getContext());
+        listFilter = getListFilter();
+        filterAdapter = new FilterAdapter(listFilter,getContext());
         rcvFilter.setAdapter(filterAdapter);
         //
 
@@ -162,7 +165,135 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         return view;
     }
 
+    private void reloadListFilter()
+    {
+        if(searchFilterPost.getListBrandName().size()>0)
+        {
+            String brand = "";
+            ArrayList<String> list = searchFilterPost.getListBrandName();
+            for(int i = 0; i<list.size();i++)
+            {
+                brand += list.get(i) + ", ";
+            }
+            brand = brand.substring(0,brand.length()-2) + " +";
+            if (brand.length() > 10) {
+                brand = brand.substring(0, 7) + "..." + " +";
+            }
+            filterAdapter.updateFilterName(0,brand);
+        }
+        if (searchFilterPost.getListGuarantee().size() > 0) {
+            String guarantee = "";
+            ArrayList<String> list = searchFilterPost.getListGuarantee();
+            for (int i = 0; i < list.size(); i++) {
+                guarantee += list.get(i) + ", ";
+            }
+            guarantee = guarantee.substring(0, guarantee.length() - 2);
 
+            if (guarantee.length() > 10) {
+                guarantee = guarantee.substring(0, 7) + "..." + " +";
+            } else {
+                guarantee += " +";
+            }
+
+            filterAdapter.updateFilterName(2, guarantee);
+        }
+        if (searchFilterPost.getListCPU().size() > 0) {
+            String cpu = "";
+            ArrayList<String> list = searchFilterPost.getListCPU();
+            for (int i = 0; i < list.size(); i++) {
+                cpu += list.get(i) + ", ";
+            }
+            cpu = cpu.substring(0, cpu.length() - 2);
+
+            if (cpu.length() > 10) {
+                cpu = cpu.substring(0, 7) + "..." + " +";
+            } else {
+                cpu += " +";
+            }
+
+            filterAdapter.updateFilterName(3, cpu);
+        }
+        if (searchFilterPost.getListRam().size() > 0) {
+            String ram = "";
+            ArrayList<String> list = searchFilterPost.getListRam();
+            for (int i = 0; i < list.size(); i++) {
+                ram += list.get(i) + ", ";
+            }
+            ram = ram.substring(0, ram.length() - 2);
+
+            if (ram.length() > 10) {
+                ram = ram.substring(0, 7) + "..." + " +";
+            } else {
+                ram += " +";
+            }
+
+            filterAdapter.updateFilterName(4, ram);
+        }
+        if (searchFilterPost.getListHardDrive().size() > 0) {
+            String hardDrive = "";
+            ArrayList<String> list = searchFilterPost.getListHardDrive();
+            for (int i = 0; i < list.size(); i++) {
+                hardDrive += list.get(i) + ", ";
+            }
+            hardDrive = hardDrive.substring(0, hardDrive.length() - 2);
+
+            if (hardDrive.length() > 10) {
+                hardDrive = hardDrive.substring(0, 7) + "..." + " +";
+            } else {
+                hardDrive += " +";
+            }
+
+            filterAdapter.updateFilterName(5, hardDrive);
+        }
+        if (searchFilterPost.getListHardDriveSize().size() > 0) {
+            String hardDriveSize = "";
+            ArrayList<String> list = searchFilterPost.getListHardDriveSize();
+            for (int i = 0; i < list.size(); i++) {
+                hardDriveSize += list.get(i) + ", ";
+            }
+            hardDriveSize = hardDriveSize.substring(0, hardDriveSize.length() - 2);
+
+            if (hardDriveSize.length() > 10) {
+                hardDriveSize = hardDriveSize.substring(0, 7) + "..." + " +";
+            } else {
+                hardDriveSize += " +";
+            }
+
+            filterAdapter.updateFilterName(6, hardDriveSize);
+        }
+        if (searchFilterPost.getListGraphics().size() > 0) {
+            String graphics = "";
+            ArrayList<String> list = searchFilterPost.getListGraphics();
+            for (int i = 0; i < list.size(); i++) {
+                graphics += list.get(i) + ", ";
+            }
+            graphics = graphics.substring(0, graphics.length() - 2);
+
+            if (graphics.length() > 10) {
+                graphics = graphics.substring(0, 7) + "..." + " +";
+            } else {
+                graphics += "+";
+            }
+
+            filterAdapter.updateFilterName(7, graphics);
+        }
+        if (searchFilterPost.getListScreenSize().size() > 0) {
+            String screenSize = "";
+            ArrayList<String> list = searchFilterPost.getListScreenSize();
+            for (int i = 0; i < list.size(); i++) {
+                screenSize += list.get(i) + ", ";
+            }
+            screenSize = screenSize.substring(0, screenSize.length() - 2);
+
+            if (screenSize.length() > 10) {
+                screenSize = screenSize.substring(0, 7) + "..." + " +";
+            } else {
+                screenSize += " +";
+            }
+
+            filterAdapter.updateFilterName(8, screenSize);
+        }
+    }
     @Override
     public void LoadSearchingFragment(String itemString) {
         isLoading.setVisibility(View.VISIBLE);
@@ -197,9 +328,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             preferenceManager.putSerializable(Constants.KEY_FILTER_SEARCH,searchFilterPost);
         }
         else if(searchResultFragmentType == SEARCH_CLICK){
-
             stringSearchpresenter.OnLoadingPageView();
-
         }
         else
         {
@@ -211,6 +340,8 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 postPreseneter.OnSearchPostByFilter(searchFilterPost);
             }
         }
+        reloadListFilter();
+
     }
     private void cleanSearchFilterPost()
     {

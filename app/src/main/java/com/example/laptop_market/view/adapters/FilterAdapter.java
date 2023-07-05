@@ -31,6 +31,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         this.context = context;
         preferenceManager = new PreferenceManager(context);
     }
+    public void updateFilterName(int position, String newName) {
+        if (listFilter != null && position >= 0 && position < listFilter.size()) {
+            Filter filter = listFilter.get(position);
+            filter.setName(newName);
+            notifyItemChanged(position);
+        }
+    }
     @NonNull
     @Override
     public FilterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,7 +52,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             return;
         }
         holder.btnFilter.setText(filter.getName());
-        holder.btnFilter.setTag(filter.getName());
+        holder.btnFilter.setTag(filter.getTag());
     }
 
     @Override

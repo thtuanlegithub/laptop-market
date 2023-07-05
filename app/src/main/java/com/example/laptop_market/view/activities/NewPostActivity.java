@@ -1,15 +1,21 @@
 package com.example.laptop_market.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -21,11 +27,14 @@ import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.NewPostActivityPresenter;
+import com.example.laptop_market.view.adapters.ImageForNewPostAdapter;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewPostActivity extends AppCompatActivity implements IPostContract.View.NewPostActivityView, ILaptopContract.View.NewPostActivityView {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -43,16 +52,19 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private EditText edtNewPostPrice;
     private EditText edtTitle;
     private EditText edtDescription;
-    private EditText edtPhoneNumber;
+    private EditText edtSellerPhoneNumber;
     private EditText edtSellerName;
     private EditText edtSellerAddress;
     private AppCompatButton NewPostOpenImageBtt;
     private AppCompatButton NewPostBttDangTin;
     private ArrayList<Uri> ListPictures;
+    private RecyclerView rcvImageForNewPost;
+    private List<Bitmap> imageList;
     private IPostContract.Presenter.NewPostActivityPresenter postActivityPresenter;
     private ILaptopContract.Presenter.NewPostActivityPresenter laptopActivityPresenter;
     private Laptop laptop;
 
+    private  ImageForNewPostAdapter imageForNewPostAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +79,22 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
         findView();
 
+        GridLayoutManager gridLayoutManagerImageForNewPost = new GridLayoutManager(this,1, RecyclerView.HORIZONTAL,false);
+        rcvImageForNewPost.setLayoutManager(gridLayoutManagerImageForNewPost);
+
+        imageList = new ArrayList<>();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.slide_show1);
+        imageList.add(bitmap);
+        imageList.add(bitmap);
+        imageList.add(bitmap);
+        imageList.add(bitmap);
+
+        imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, position -> {
+            // Xử lý sự kiện khi người dùng nhấn nút close
+            imageList.remove(position);
+            imageForNewPostAdapter.notifyDataSetChanged();
+        });
+        rcvImageForNewPost.setAdapter(imageForNewPostAdapter);
     }
 
     private void findView(){
@@ -84,11 +112,12 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         newPostOriginCountry = findViewById(R.id.newPostOriginCountry);
         edtNewPostPrice = findViewById(R.id.edtNewPostPrice);
         edtTitle = findViewById(R.id.edtTitle);
-        edtPhoneNumber = findViewById(R.id.edtPhoneNumber);
+        edtSellerPhoneNumber = findViewById(R.id.edtSellerPhoneNumber);
         edtSellerAddress = findViewById(R.id.edtSellerAddress);
         edtSellerName = findViewById(R.id.edtSellerName);
         NewPostOpenImageBtt = findViewById(R.id.NewPostOpenImageBtt);
         edtDescription=findViewById(R.id.edtDescription);
+        rcvImageForNewPost = findViewById(R.id.rcvImageForNewPost);
         setListener();
     }
     private void ShowToast(String message)
@@ -99,6 +128,12 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     {
         btnNewPostClose.setOnClickListener(view -> {
             finish();
+            //Ẩn bàn phím:
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View currentFocus = this.getCurrentFocus();
+            if (inputMethodManager != null && currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+            }
         });
         NewPostOpenImageBtt.setOnClickListener(
                 view -> {
@@ -184,7 +219,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         post.setDescription(edtDescription.getText().toString());
         post.setSellerAddress(edtSellerAddress.getText().toString());
         post.setSellerName(edtSellerName.getText().toString());
-        post.setSellerPhoneNumber(edtPhoneNumber.getText().toString());
+        post.setSellerPhoneNumber(edtSellerPhoneNumber.getText().toString());
         post.setTitle(edtTitle.getText().toString());
         post.setPostMainImage(encode_img(ListPictures.get(0)));
         postActivityPresenter.OnCreateNewPostClicked(post,laptop);

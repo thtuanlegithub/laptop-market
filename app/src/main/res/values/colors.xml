@@ -12,4 +12,8 @@
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="bottom_nav_item_active">#F5BD40</color>
     <color name="bottom_nav_item_inactive">#B2B2B2</color>
+    <color name="order_processing">#FCEAAB</color>
+    <color name="order_delivering">#9BCAD2</color>
+    <color name="order_finish">#ADDC92</color>
+    <color name="order_cancel">#E06969</color>
 </resources>

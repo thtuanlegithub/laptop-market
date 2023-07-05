@@ -1,4 +1,4 @@
-package com.example.laptop_market.view.adapters;
+package com.example.laptop_market.view.adapters.Sell;
 
 import android.content.Intent;
 import android.view.LayoutInflater;

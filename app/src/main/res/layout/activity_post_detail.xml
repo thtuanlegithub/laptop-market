@@ -129,6 +129,7 @@
                         </LinearLayout>
 
                         <Button
+                            android:id="@+id/btnSavePost"
                             android:layout_marginTop="45dp"
                             android:layout_marginEnd="10dp"
                             android:layout_width="80dp"
@@ -247,6 +248,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_buy_now"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCallNow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

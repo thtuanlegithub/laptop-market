@@ -56,30 +56,78 @@
                     android:textSize="16dp"/>
             </LinearLayout>
             <LinearLayout
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
+                    android:drawableTop="@drawable/ic_add_img"
+                    android:background="#E4E4E4"
+                    android:text="Thêm ảnh"
+                    android:textSize="13dp"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:drawablePadding="-5dp"
+                    android:textColor="#F09D38"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvImageForNewPost"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
                 android:orientation="vertical">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/NewPostOpenImageBtt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/upload_image"/>
+                    android:layout_height="100dp"
+                    android:paddingTop="15dp"
+                    android:drawableTop="@drawable/ic_img_btn"
+                    android:background="#E4E4E4"
+                    android:text="Đăng từ 1 đến 5 hình"
+                    android:textStyle="normal"
+                    android:drawablePadding="-10dp"
+                    android:textColor="#6B6D6D"/>
+
                 <RelativeLayout
                     android:id="@+id/newPostStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Tình trạng"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostStatus"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -94,15 +142,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Hãng"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostBrand"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -117,15 +179,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Bộ xử lý"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostCPU"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -140,15 +216,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="RAM"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostRAM"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -163,15 +253,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Loại ổ cứng"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostHardDiskType"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -186,15 +290,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Dung lượng ổ cứng"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostHardDiskSize"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -209,15 +327,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Card màn hình"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostGraphicType"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -232,15 +364,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Kích cỡ màn hình"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostGraphicSize"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -255,15 +401,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Bảo hành"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostWarranty"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -278,15 +438,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     >
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:paddingLeft="15dp"
+                        android:layout_height="wrap_content"
                         android:hint="Xuất xứ"
-                        android:textSize="16dp"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:background="@drawable/outline_combobox" />
+                        app:hintTextAppearance="@style/HintTextAppearance"
+                        app:hintAnimationEnabled="true"
+                        android:background="@drawable/outline_combobox"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtNewPostOriginCountry"
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="15dp"
+                            android:paddingTop="5dp"
+                            android:background="#FAFAFA"
+                            android:textSize="16dp"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -295,18 +469,29 @@
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
-                <EditText
-                    android:id="@+id/edtNewPostPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:paddingLeft="15dp"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="Giá bán"
-                    android:inputType="numberDecimal"
-                    android:textSize="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/outline_combobox" />
+                    app:hintTextAppearance="@style/HintTextAppearance"
+                    app:hintAnimationEnabled="true"
+                    android:background="@drawable/outline_combobox"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNewPostPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingTop="5dp"
+                        android:background="#FAFAFA"
+                        android:textSize="16dp"
+                        android:inputType="number"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <LinearLayout
                 android:background="#E4E4E4"
@@ -325,31 +510,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
-                <EditText
-                    android:id="@+id/edtTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:paddingLeft="15dp"
-                    android:hint="Tiêu đề tin đăng"
-                    android:inputType="text"
-                    android:textSize="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/outline_combobox" />
-                <EditText
-                    android:id="@+id/edtDescription"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:gravity="top"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Tiêu đề tin đăng"
+                    app:hintTextAppearance="@style/HintTextAppearance"
+                    app:hintAnimationEnabled="true"
+                    android:background="@drawable/outline_combobox"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingTop="5dp"
+                        android:background="#FAFAFA"
+                        android:textSize="16dp"
+                        android:inputType="number"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
                     android:hint="Mô tả chi tiết"
-                    android:inputType="textMultiLine"
-                    android:textSize="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/outline_combobox" />
+                    app:hintTextAppearance="@style/HintTextAppearance"
+                    app:hintAnimationEnabled="true"
+                    android:background="@drawable/outline_combobox"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingTop="5dp"
+                        android:background="#FAFAFA"
+                        android:textSize="16dp"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <LinearLayout
                 android:background="#E4E4E4"
@@ -368,38 +574,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp">
-                <EditText
-                    android:id="@+id/edtPhoneNumber"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:paddingLeft="15dp"
+                    android:layout_height="wrap_content"
                     android:hint="Số điện thoại"
-                    android:textSize="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/outline_combobox" />
-                <EditText
-                    android:id="@+id/edtSellerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:paddingLeft="15dp"
+                    app:hintTextAppearance="@style/HintTextAppearance"
+                    app:hintAnimationEnabled="true"
+                    android:background="@drawable/outline_combobox"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtSellerPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingTop="5dp"
+                        android:background="#FAFAFA"
+                        android:textSize="16dp"
+                        android:inputType="number"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="Họ tên"
-                    android:textSize="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/outline_combobox" />
-                <EditText
-                    android:id="@+id/edtSellerAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:paddingLeft="15dp"
+                    app:hintTextAppearance="@style/HintTextAppearance"
+                    app:hintAnimationEnabled="true"
+                    android:background="@drawable/outline_combobox"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtSellerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingTop="5dp"
+                        android:background="#FAFAFA"
+                        android:textSize="16dp"
+                        android:inputType="text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="Địa chỉ"
-                    android:textSize="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="@drawable/outline_combobox" />
+                    app:hintTextAppearance="@style/HintTextAppearance"
+                    app:hintAnimationEnabled="true"
+                    android:background="@drawable/outline_combobox"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtSellerAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingTop="5dp"
+                        android:background="#FAFAFA"
+                        android:textSize="16dp"
+                        android:inputType="text"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 

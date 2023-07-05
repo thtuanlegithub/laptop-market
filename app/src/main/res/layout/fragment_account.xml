@@ -128,7 +128,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="20dp"/>
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSavedPost"
+                android:id="@+id/btnSavedPostList"
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"

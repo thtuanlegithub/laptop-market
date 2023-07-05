@@ -2,6 +2,8 @@ package com.example.laptop_market.contracts;
 
 import com.example.laptop_market.model.account.Account;
 
+import java.lang.reflect.Executable;
+
 public interface IAccountContract {
     interface Model{
         // region Login Fuction
@@ -41,6 +43,12 @@ public interface IAccountContract {
         void CheckSignedInAccount(OnCheckingSignInAccountListener listener);
         interface  OnCheckingSignInAccountListener{
             void OnFinishCheckingSignInAccount(boolean isLogin);
+        }
+        void ClickSavePost(String postID, OnFinishSavePostListener listener);
+        void ClickRemoveSavePost(String postID, OnFinishSavePostListener listener);
+        void LoadSavePostButton(String postID, OnFinishSavePostListener listener);
+        interface OnFinishSavePostListener{
+            void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error);
         }
     }
     interface View{

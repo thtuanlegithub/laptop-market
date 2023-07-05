@@ -342,4 +342,23 @@ public class PostModel implements IPostContract.Model {
             listener.OnFinishLoadingPostInPostDetail(null,e);
         });
     }
+    //region GetSellerPhoneNumber
+
+    @Override
+    public void GetSellerPhoneNumber(String postID, OnLoadSellerPhoneNumber listener) {
+        db.collection(PostTable.TABLE_NAME).document(postID).get().addOnCompleteListener(task -> {
+           if (task.isSuccessful()) {
+               DocumentSnapshot documentSnapshot = task.getResult();
+               if (documentSnapshot.exists()){
+                   String phoneNumber = documentSnapshot.getString(PostTable.SELLER_PHONE_NUMBER);
+                   listener.OnFinishLoadSellerPhoneNumber(true, phoneNumber, null);
+               }
+           }
+           else {
+               listener.OnFinishLoadSellerPhoneNumber(false, null, task.getException());
+           }
+        });
+    }
+
+    //endregion
 }

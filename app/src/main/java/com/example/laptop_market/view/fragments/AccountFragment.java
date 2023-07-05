@@ -23,6 +23,7 @@ import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class AccountFragment extends Fragment implements IAccountContract.View.AccountFragmentView {
@@ -49,7 +50,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         txtAccountName = view.findViewById(R.id.txtAccountName);
         btnSellOrder = view.findViewById(R.id.btnSellOrder);
         btnBuyOrder = view.findViewById(R.id.btnBuyOrder);
-        btnSavedPost = view.findViewById(R.id.btnSavedPost);
+        btnSavedPost = view.findViewById(R.id.btnSavedPostList);
         btnYourRating = view.findViewById(R.id.btnYourRating);
         btnAccountSettings = view.findViewById(R.id.btnAccountSettings);
         btnFeedback = view.findViewById(R.id.btnFeedback);
@@ -111,7 +112,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         });
     }
     public void ShowToast(String message) {
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+        Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
     @Override
     public void LoadAccount(Account account) {
