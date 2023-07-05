@@ -50,9 +50,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         this.homeBaseFragment = homeBaseFragment;
-
     }
 
+    public SearchResultFragment() {
+        // Required empty public constructor
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

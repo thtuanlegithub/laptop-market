@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
+import com.example.laptop_market.utils.elses.FragmentActivityType;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
@@ -32,7 +35,7 @@ import java.util.List;
 
 public class PostDetailActivity extends AppCompatActivity implements IPostContract.View.PostDetailActivityView
         , ILaptopContract.View.PostDetailActivityView, IAccountContract.View.PostDetailActivityView {
-    private Button btnPostDetailClose, btnSavePost;
+    private Button btnPostDetailClose, btnSavePost, btnCallNow;
     private ImageView imgPostDetailShop;
     private ViewPager viewPagerImagePostDetail;
     private ILaptopContract.Presenter.PostDetailActivityPresenter laptopPresenter;
@@ -55,12 +58,14 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private int currentImagePage;
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
+    private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
 
         // get view
+        preferenceManager = new PreferenceManager(getApplicationContext());
         laptopPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
         postPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
         accountPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
@@ -76,6 +81,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         btnSavePost = findViewById(R.id.btnSavePost);
 
         // check seller or customer
+        btnCallNow = findViewById(R.id.btnCallNow);
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
@@ -115,6 +121,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             postPresenter.OnSavePostClicked(this.postSearchResult.getPostId(), isSaved);
         });
 
+        btnCallNow.setOnClickListener(v -> {
+            postPresenter.OnPhoneDialClicked(this.postSearchResult.getPostId());
+        });
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -135,12 +144,19 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     }
     private void InitData()
     {
+        boolean isFromLogin = preferenceManager.getBoolean("IsFromLogin");
+        Intent intent = getIntent();
+        if (isFromLogin){
+            postSearchResult = (PostSearchResult) intent.getSerializableExtra("PostDetailActivity");
+            preferenceManager.putBoolean("IsFromLogin", false);
+        }
+        else{
+            postSearchResult = (PostSearchResult) intent.getSerializableExtra(PostTable.TABLE_NAME);
+        }
         currentImagePage = 1;
         isloadLaptopFinish = false;
         isLoadAccountFinish = false;
         isLoadPostFinish = false;
-        Intent intent = getIntent();
-        postSearchResult = (PostSearchResult) intent.getSerializableExtra(PostTable.TABLE_NAME);
         postPresenter.OnLoadingPostInPostDetail(postSearchResult.getPostId());
         laptopPresenter.OnLoadingLaptopInPostDetail(postSearchResult.getLaptopId());
         accountPresenter.OnLoadingAccountInPostDetail(postSearchResult.getAccountId());
@@ -215,5 +231,23 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     protected void onResume() {
         super.onResume();
         postPresenter.LoadSavePostButton(this.postSearchResult.getPostId());
+    }
+
+    @Override
+    public void ShowPhoneDialIntent(String phoneNumber) {
+        // Create an intent with the ACTION_DIAL action and the phone number
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+    }
+
+    @Override
+    public void LoginAccount() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
+        preferenceManager.putSerializable("PostDetailActivity", postSearchResult);
+        preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.POST_DETAILS_ACTIVITY);
+        startActivity(intent);
+        finish();
     }
 }

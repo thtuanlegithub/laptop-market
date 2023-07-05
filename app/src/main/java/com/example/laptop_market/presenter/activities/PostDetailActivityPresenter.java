@@ -64,48 +64,80 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
 
     @Override
     public void LoadSavePostButton(String postID) {
-        accountModel.LoadSavePostButton(postID, new IAccountContract.Model.OnFinishSavePostListener() {
-            @Override
-            public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
-                if (isSuccess){
-                    if (isSaved)
-                        postView.LoadRemoveSavePostButton();
-                    else
-                        postView.LoadSavePostButton();
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if(isLogin){
+                accountModel.LoadSavePostButton(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                    @Override
+                    public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                        if (isSuccess){
+                            if (isSaved)
+                                postView.LoadRemoveSavePostButton();
+                            else
+                                postView.LoadSavePostButton();
+                        }
+                        else
+                            error.printStackTrace();
+                    }
+                });
+            }
+            /*
+            else {
+                Load default UI (button "Lưu tin")
+            }
+            */
+        });
+
+    }
+
+    @Override
+    public void OnSavePostClicked(String postID, boolean isSaved) {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin){
+                if (!isSaved){
+                    accountModel.ClickSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                        @Override
+                        public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                            if (isSuccess)
+                                postView.LoadRemoveSavePostButton();
+                            else
+                                error.printStackTrace();
+                        }
+                    });
                 }
+                else {
+                    accountModel.ClickRemoveSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                        @Override
+                        public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                            if (isSuccess)
+                                postView.LoadSavePostButton();
+                            else
+                                error.printStackTrace();
+                        }
+                    });
+                }
+            }
+            else {
+                postView.LoginAccount();
+            }
+        });
+
+    }
+
+    @Override
+    public void OnPhoneDialClicked(String postID) {
+        postModel.GetSellerPhoneNumber(postID, new IPostContract.Model.OnLoadSellerPhoneNumber() {
+            @Override
+            public void OnFinishLoadSellerPhoneNumber(boolean isSuccess, String phoneNumber, Exception error) {
+                if (isSuccess)
+                    postView.ShowPhoneDialIntent(phoneNumber);
                 else
                     error.printStackTrace();
             }
         });
     }
 
-    @Override
-    public void OnSavePostClicked(String postID, boolean isSaved) {
-        if (!isSaved){
-            accountModel.ClickSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
-                @Override
-                public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
-                    if (isSuccess)
-                        postView.LoadRemoveSavePostButton();
-                    else
-                        error.printStackTrace();
-                }
-            });
-        }
-        else {
-            accountModel.ClickRemoveSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
-                @Override
-                public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
-                    if (isSuccess)
-                        postView.LoadSavePostButton();
-                    else
-                        error.printStackTrace();
-                }
-            });
-        }
-    }
+//endregion
 
-    //endregion
     //region Account presenter
     @Override
     public void OnLoadingAccountInPostDetail(String accountId) {

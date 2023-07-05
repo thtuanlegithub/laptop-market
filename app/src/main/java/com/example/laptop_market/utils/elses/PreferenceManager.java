@@ -2,9 +2,16 @@ package com.example.laptop_market.utils.elses;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
 import com.example.laptop_market.utils.tables.Constants;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -73,5 +80,42 @@ public class PreferenceManager {
 
     public int getInt(String key, int defaultValue) {
         return sharedPreferences.getInt(key, defaultValue);
+    }
+
+    public void putSerializable(String key, Serializable value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(value);
+            objectOutputStream.close();
+            byte[] objectBytes = byteArrayOutputStream.toByteArray();
+            editor.putString(key, Base64.encodeToString(objectBytes, Base64.DEFAULT));
+            editor.apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public Serializable getSerializable( String key) {
+        String objectString = sharedPreferences.getString(key, null);
+        if (objectString != null) {
+            byte[] objectBytes = Base64.decode(objectString, Base64.DEFAULT);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(objectBytes);
+            try {
+                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                Serializable object = (Serializable) objectInputStream.readObject();
+                objectInputStream.close();
+                return object;
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public void removeKey( String key) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
+        editor.apply();
     }
 }

@@ -27,6 +27,9 @@ import com.example.laptop_market.utils.elses.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
+import com.example.laptop_market.view.activities.PostDetailActivity;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class LoginFragment extends Fragment implements IAccountContract.View.LoginFragmentView{
@@ -145,7 +148,6 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
 
     @Override
     public void LoginSuccess() {
-        Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
         preferenceManager = new PreferenceManager(getContext());
         Intent intent = null;
         int PreviousFragment = preferenceManager.getInt(FragmentActivityType.FRAGMENT_ACTIVITY,0);
@@ -153,6 +155,12 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         {
             case FragmentActivityType.NEW_POST_ACTIVITY:
                 intent = new Intent(getContext(), NewPostActivity.class);
+                break;
+            case FragmentActivityType.POST_DETAILS_ACTIVITY:
+                PostSearchResult postSearchResult = (PostSearchResult) preferenceManager.getSerializable("PostDetailActivity");
+                intent = new Intent(getContext(), PostDetailActivity.class);
+                intent.putExtra("PostDetailActivity", postSearchResult);
+                preferenceManager.putBoolean("IsFromLogin", true);
                 break;
             case FragmentActivityType.NOTIFICATION_ACTIVITY:
 
