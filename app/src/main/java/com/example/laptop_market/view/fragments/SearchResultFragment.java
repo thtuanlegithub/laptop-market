@@ -16,12 +16,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.presenter.fragments.SearchResultFragmentPresenter;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.BrandTable;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.view.adapters.FilterAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
@@ -35,6 +39,9 @@ import java.util.List;
 
 public class SearchResultFragment extends Fragment implements IStringFilterSearchContract.View.SearchResultFragmentView
         , IPostContract.View.SearchResultFragmentView {
+    public static final int ADAPTER_TYPE0_CLICK = 1;
+    public static final int SEARCH_CLICK = 2;
+    private int searchResultFragmentType;
     private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
     private RecyclerView rcvFilter;
@@ -47,8 +54,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private IStringFilterSearchContract.Presenter.SearchResultFragmentPresenter stringSearchpresenter;
     private IPostContract.Presenter.SearchResultFragmentPresenter postPreseneter;
     private ProgressBar isLoading;
+    private SearchFilterPost searchFilterPost;
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
+        searchFilterPost = new SearchFilterPost();
         this.homeBaseFragment = homeBaseFragment;
 
     }
@@ -59,6 +68,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         preferenceManager = new PreferenceManager(getContext());
         stringSearchpresenter = new SearchResultFragmentPresenter(getContext(),this,this);
         postPreseneter = new SearchResultFragmentPresenter(getContext(),this,this);
+        preferenceManager.putSerializable(Constants.KEY_FILTER_SEARCH,searchFilterPost);
 
     }
     private List<Filter> getListFilter(){
@@ -114,7 +124,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),1,0,false);
         rcvFilter.setLayoutManager(gridLayoutManager);
 
-        FilterAdapter filterAdapter = new FilterAdapter(getListFilter());
+        FilterAdapter filterAdapter = new FilterAdapter(getListFilter(),getContext());
         rcvFilter.setAdapter(filterAdapter);
         //
 
@@ -126,7 +136,6 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         BrandAdapter brandAdapter = new BrandAdapter(getListBrand());
         rcvBrand.setAdapter(brandAdapter);
         //
-
         //Xử lý sự kiện edit text touch
         edtTextSearchResult = view.findViewById(R.id.edtTextSearchResult);
         edtTextSearchResult.setOnTouchListener(new View.OnTouchListener() {
@@ -153,34 +162,70 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         return view;
     }
 
-    private List<Post> getListPostSearchResult() {
-        List<Post> postSearchResultList = new ArrayList<>();
-      /*  postSearchResultList.add(new Post("0","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-        postSearchResultList.add(new Post("1","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-        postSearchResultList.add(new Post("2","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-        postSearchResultList.add(new Post("3","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-        postSearchResultList.add(new Post("4","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-        postSearchResultList.add(new Post("5","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-        postSearchResultList.add(new Post("6","Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM","26,000,000 đ",R.drawable.slide_show1,"TPHCM"));
-*/
-        return postSearchResultList;
-    }
 
     @Override
     public void LoadSearchingFragment(String itemString) {
         isLoading.setVisibility(View.VISIBLE);
         rcvPostSearchResult.setVisibility(View.GONE);
         edtTextSearchResult.setText(itemString);
-        postPreseneter.OnSearchPost(itemString);
+        if(preferenceManager.getBoolean("isFromHomeFragment")) {
+            cleanSearchFilterPost();
+            postPreseneter.OnSearchPost(itemString);
+            preferenceManager.putBoolean("isFromHomeFragment", false);
+        }
+        else{
+            searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            searchFilterPost.setSearchPost(itemString);
+            postPreseneter.OnSearchPostByFilter(searchFilterPost);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        stringSearchpresenter.OnLoadingPageView();
+        searchResultFragmentType = preferenceManager.getInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,0);
+        preferenceManager.removeKey(Constants.KEY_POST_SEARCH_RESULT_TYPE);
+        if(searchResultFragmentType == ADAPTER_TYPE0_CLICK)
+        {
+            cleanSearchFilterPost();
+            isLoading.setVisibility(View.VISIBLE);
+            rcvPostSearchResult.setVisibility(View.GONE);
+            String brand = preferenceManager.getString(BrandTable.BRAND_NAME);
+            preferenceManager.removeKey(BrandTable.BRAND_NAME);
+            searchFilterPost.getListBrandName().add(brand);
+            postPreseneter.OnSearchPostByFilter(searchFilterPost);
+            preferenceManager.putSerializable(Constants.KEY_FILTER_SEARCH,searchFilterPost);
+        }
+        else if(searchResultFragmentType == SEARCH_CLICK){
+
+            stringSearchpresenter.OnLoadingPageView();
+
+        }
+        else
+        {
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                isLoading.setVisibility(View.VISIBLE);
+                rcvPostSearchResult.setVisibility(View.GONE);
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+                postPreseneter.OnSearchPostByFilter(searchFilterPost);
+            }
+        }
     }
-
-
+    private void cleanSearchFilterPost()
+    {
+        searchFilterPost.setSearchPost("");
+        searchFilterPost.setMaximumPrice(50000000);
+        searchFilterPost.setMinimumPrice(0);
+        searchFilterPost.getListGuarantee().clear();;
+        searchFilterPost.getListGraphics().clear();
+        searchFilterPost.getListRam().clear();
+        searchFilterPost.getListScreenSize().clear();
+        searchFilterPost.getListCPU().clear();
+        searchFilterPost.getListHardDriveSize().clear();
+        searchFilterPost.getListHardDrive().clear();
+        searchFilterPost.getListBrandName().clear();
+    }
     @Override
     public void FinishLoadingSearchPost(ArrayList<PostSearchResult> posts) {
         PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(posts, homeBaseFragment);

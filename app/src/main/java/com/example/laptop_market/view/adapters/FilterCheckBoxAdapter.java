@@ -3,6 +3,7 @@ package com.example.laptop_market.view.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -12,11 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.model.filter.Filter;
+import com.example.laptop_market.utils.tables.SearchFilterPost;
+import com.example.laptop_market.view.activities.FilterActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilterCheckBoxAdapter extends RecyclerView.Adapter<FilterCheckBoxAdapter.FilterCheckBoxViewHolder> {
+    public static final int BRAND_NAME = 1;
+    public static final int GUARANTEE = 2;
+    public static final int CPU = 3;
+    public static final int RAM = 4;
+    public static final int HARD_DRIVE = 5;
+    public static final int HARD_DRIVE_SIZE = 6;
+    public static final int GRAPHICS = 7;
+    public static final int SCREEN_SIZE = 8;
+    private SearchFilterPost searchFilterPost;
     private List<Filter> listFilterCheckBox;
+    private ArrayList<String> listcheckedCheckBox;
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -27,8 +42,10 @@ public class FilterCheckBoxAdapter extends RecyclerView.Adapter<FilterCheckBoxAd
         this.onItemClickListener = listener;
     }
 
-    public FilterCheckBoxAdapter(List<Filter> listFilterCheckBox){
+    public FilterCheckBoxAdapter(List<Filter> listFilterCheckBox, SearchFilterPost searchFilterPost, int type){
         this.listFilterCheckBox = listFilterCheckBox;
+        this.searchFilterPost = searchFilterPost;
+        this.listcheckedCheckBox = loadListString(type);
     }
     @NonNull
     @Override
@@ -43,8 +60,24 @@ public class FilterCheckBoxAdapter extends RecyclerView.Adapter<FilterCheckBoxAd
         if(currentFilter==null){
             return;
         }
+        if(listcheckedCheckBox.contains(currentFilter.getName()))
+            holder.cbFilter.setChecked(true);
         holder.txtFilterCheckBox.setText(currentFilter.getName());
         holder.cbFilter.setSelected(true);
+        holder.cbFilter.setTag(currentFilter.getName());
+        holder.cbFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                String tag = compoundButton.getTag().toString();
+                if(checked)
+                {
+                    listcheckedCheckBox.add(tag);
+                }
+                else{
+                    listcheckedCheckBox.remove(tag);
+                }
+            }
+        });
         if(currentFilter.getImage()!=700052)
         {
             holder.imgFilterCheckBox.setImageResource(currentFilter.getImage());
@@ -102,6 +135,28 @@ public class FilterCheckBoxAdapter extends RecyclerView.Adapter<FilterCheckBoxAd
             txtFilterCheckBox = itemView.findViewById(R.id.txtFilterCheckBox);
             cbFilter = itemView.findViewById(R.id.cbFilter);
             imgFilterCheckBox = itemView.findViewById(R.id.imgFilterCheckBox);
+        }
+    }
+    private ArrayList<String> loadListString( int type) {
+        switch (type) {
+            case BRAND_NAME:
+                return searchFilterPost.getListBrandName();
+            case GUARANTEE:
+                return searchFilterPost.getListGuarantee();
+            case CPU:
+                return searchFilterPost.getListCPU();
+            case RAM:
+                return searchFilterPost.getListRam();
+            case HARD_DRIVE:
+                return searchFilterPost.getListHardDrive();
+            case HARD_DRIVE_SIZE:
+                return searchFilterPost.getListHardDriveSize();
+            case GRAPHICS:
+                return searchFilterPost.getListGraphics();
+            case SCREEN_SIZE:
+                return searchFilterPost.getListScreenSize();
+            default:
+                return new ArrayList<>();
         }
     }
 }

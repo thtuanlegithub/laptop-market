@@ -51,6 +51,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private ArrayList<Uri> ListPictures;
     private IPostContract.Presenter.NewPostActivityPresenter postActivityPresenter;
     private ILaptopContract.Presenter.NewPostActivityPresenter laptopActivityPresenter;
+    private Laptop laptop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,18 +119,17 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 }
         );
         NewPostBttDangTin.setOnClickListener(view -> {
-            Laptop laptop = new Laptop();
+            laptop = new Laptop();
             laptop.setLaptopName(edtTitle.getText().toString());
             laptop.setBrandID("Dell");
-            laptop.setPrice(100000d);
-            laptop.setStatus("Còn thời gian bảo hành");
+            laptop.setPrice(1000000);
             laptop.setCpu("Intel i7");
             laptop.setRam("8GB ram");
             laptop.setHardDrive("SSD");
             laptop.setHardDriveSize("256gb");
             laptop.setGraphics("NVIDIA");
             laptop.setScreenSize("15.6 inch");
-            laptop.setGuarantee("Còn tg bảo hành");
+            laptop.setGuarantee("Còn bảo hành");
             laptop.setOrigin("Trung Quốc");
             laptop.setImgLists(ListPictures);
             laptop.setNumOfImage(ListPictures.size());
@@ -187,7 +187,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         post.setSellerPhoneNumber(edtPhoneNumber.getText().toString());
         post.setTitle(edtTitle.getText().toString());
         post.setPostMainImage(encode_img(ListPictures.get(0)));
-        postActivityPresenter.OnCreateNewPostClicked(post);
+        postActivityPresenter.OnCreateNewPostClicked(post,laptop);
     }
 
     @Override

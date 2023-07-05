@@ -11,8 +11,7 @@ import java.util.ArrayList;
 public class Laptop {
     private String laptopName;
     private String brandID;
-    private Double price;
-    private String status;
+    private int price;
     private String cpu;
     private String ram;
     private String hardDrive;
@@ -31,11 +30,10 @@ public class Laptop {
 
     }
 
-    public Laptop(String laptopName, String brandID, Double price, String status, String cpu, String ram, String hardDrive, String hardDriveSize, String graphics, String screenSize, String guarantee, String origin, ArrayList<Uri> listImages) {
+    public Laptop(String laptopName, String brandID, int price, String cpu, String ram, String hardDrive, String hardDriveSize, String graphics, String screenSize, String guarantee, String origin, ArrayList<Uri> listImages) {
         this.laptopName = laptopName;
         this.brandID = brandID;
         this.price = price;
-        this.status = status;
         this.cpu = cpu;
         this.ram = ram;
         this.hardDrive = hardDrive;
@@ -63,20 +61,12 @@ public class Laptop {
         this.brandID = brandID;
     }
 
-    public Double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         this.price = price;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getCpu() {

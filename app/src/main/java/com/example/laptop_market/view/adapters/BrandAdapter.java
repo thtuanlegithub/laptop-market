@@ -1,6 +1,8 @@
 package com.example.laptop_market.view.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +15,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.model.brand.Brand;
+import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.BrandTable;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.view.fragments.HomeBaseFragment;
+import com.example.laptop_market.view.fragments.SearchResultFragment;
 
 import java.util.List;
 
 public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHolder> {
-    private int BRAND_TYPE_HOME = 0;
-    private int BRAND_TYPE_SEARCH = 1;
+    private final int BRAND_TYPE_HOME = 0;
+    private final int BRAND_TYPE_SEARCH = 1;
     private List<Brand> listBrand;
+    private HomeBaseFragment homeBaseFragment;
+    private SearchResultFragment searchResultFragment;
+    private PreferenceManager preferenceManager;
     public BrandAdapter(List<Brand> listBrand){
         this.listBrand = listBrand;
     }
+
+    public BrandAdapter(List<Brand> listBrand, HomeBaseFragment homeBaseFragment, Context context) {
+        this.listBrand = listBrand;
+        this.homeBaseFragment = homeBaseFragment;
+        searchResultFragment = new SearchResultFragment(homeBaseFragment);
+        preferenceManager = new PreferenceManager(context);
+    }
+
     @NonNull
     @Override
     public BrandViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +58,11 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         if(brand.getType()==BRAND_TYPE_HOME) {
             holder.txtBrand.setText(brand.getBrandName());
             holder.imgBrand.setImageResource(brand.getImg());
+            holder.itemView.setOnClickListener(view -> {
+                preferenceManager.putString(BrandTable.BRAND_NAME, brand.getBrandName());
+                preferenceManager.putInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,SearchResultFragment.ADAPTER_TYPE0_CLICK);
+                homeBaseFragment.replaceFragment(searchResultFragment);
+            });
         }
         else{
             holder.txtBrand.setText(brand.getBrandName());

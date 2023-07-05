@@ -66,6 +66,13 @@ public class InternetDisconnectedFragment extends Fragment {
         toolBarPostFragment = view.findViewById(R.id.toolBarPostFragment);
         toolBarAccountFragment = view.findViewById(R.id.toolBarAccountFragment);
         toolBarDefault = view.findViewById(R.id.toolBarDefault);
+        setLisener();
+        loadToolBar();
+        isCreated = true;
+        return view;
+    }
+    private void setLisener()
+    {
         internetConnectionLayout.setOnTouchListener((view1, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -85,9 +92,6 @@ public class InternetDisconnectedFragment extends Fragment {
         internetConnectionLayout.setOnClickListener(view1 -> {
             mainActivity.showFragment(previousFragment);
         });
-        loadToolBar();
-        isCreated = true;
-        return view;
     }
     private void getFragmentType()
     {

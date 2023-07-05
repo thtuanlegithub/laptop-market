@@ -38,7 +38,6 @@ public class LaptopModel implements ILaptopContract.Model {
         hashMap.put(LaptopTable.LAPTOP_NAME, laptop.getLaptopName());
         hashMap.put(LaptopTable.BRAND_ID, laptop.getBrandID());
         hashMap.put(LaptopTable.PRICE, laptop.getPrice());
-        hashMap.put(LaptopTable.STATUS, laptop.getStatus());
         hashMap.put(LaptopTable.CPU, laptop.getCpu());
         hashMap.put(LaptopTable.RAM, laptop.getRam());
         hashMap.put(LaptopTable.HARD_DRIVE, laptop.getHardDrive());

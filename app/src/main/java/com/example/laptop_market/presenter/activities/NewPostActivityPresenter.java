@@ -34,8 +34,8 @@ public class NewPostActivityPresenter implements ILaptopContract.Presenter.NewPo
     }
 
     @Override
-    public void OnCreateNewPostClicked(Post post) {
-        postModel.CreateNewPost(post,(isSuccess, error) -> {
+    public void OnCreateNewPostClicked(Post post,Laptop laptop) {
+        postModel.CreateNewPost(post,laptop, (isSuccess, error) -> {
             if(isSuccess)
                 postView.CreatePostSuccess();
             else

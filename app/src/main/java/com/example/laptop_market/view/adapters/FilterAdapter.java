@@ -10,16 +10,26 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.activities.FilterActivity;
 import com.example.laptop_market.R;
 import com.example.laptop_market.model.filter.Filter;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.example.laptop_market.view.fragments.HomeBaseFragment;
 
 import java.util.List;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
     private List<Filter> listFilter;
-    public FilterAdapter(List<Filter> listFilter){
+    private SearchFilterPost searchFilterPost;
+    private PreferenceManager preferenceManager;
+    private Context context;
+    public FilterAdapter(List<Filter> listFilter, Context context){
         this.listFilter = listFilter;
+        this.context = context;
+        preferenceManager = new PreferenceManager(context);
     }
     @NonNull
     @Override
@@ -53,9 +63,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
            btnFilter = itemView.findViewById(R.id.btnFilter);
 
            btnFilter.setOnClickListener(v -> {
+               if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+               {
+                   searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+               }
                Context context = btnFilter.getContext();
                Intent intent = new Intent(context,FilterActivity.class);
-                intent.putExtra("filter",btnFilter.getTag().toString());
+               intent.putExtra("filter",btnFilter.getTag().toString());
+               intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
                context.startActivity(intent);
 
            });

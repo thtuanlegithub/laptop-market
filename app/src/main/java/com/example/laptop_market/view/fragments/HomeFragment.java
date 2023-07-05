@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.model.brand.Brand;
 
@@ -31,6 +33,7 @@ public class HomeFragment extends Fragment {
     public SearchFragment searchFragment = null;
     private EditText edtTextHome = null;
     private RecyclerView rcvBrand;
+    private PreferenceManager preferenceManager;
     public class ImageSliderAdapter extends PagerAdapter{
         private List<Integer> imageList;
         private Context context;
@@ -85,44 +88,48 @@ public class HomeFragment extends Fragment {
         ViewPager viewPager = view.findViewById(R.id.slide_show_view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(requireContext(),imageList);
         viewPager.setAdapter(adapter);
-
+        preferenceManager = new PreferenceManager(getContext());
         // Tạo danh mục tìm kiếm
         rcvBrand = view.findViewById(R.id.rcvBrand);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),2);
         rcvBrand.setLayoutManager(gridLayoutManager);
 
-        BrandAdapter brandAdapter = new BrandAdapter(getListBrand());
+        BrandAdapter brandAdapter = new BrandAdapter(getListBrand(),homeBaseFragment, getContext());
         rcvBrand.setAdapter(brandAdapter);
         //
         linearLayoutFragmentHome = view.findViewById(R.id.linearLayoutFragmentHome);
         linearLayoutFragmentHome.requestFocus();
         //Sự kiện search
-
         edtTextHome = view.findViewById(R.id.edtTextHome);
-            edtTextHome.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        // Xử lý khi EditText được nhấn
-                        if (searchFragment == null) {
-                            searchFragment = new SearchFragment(homeBaseFragment);
-                        }
-                        if (homeBaseFragment != null && searchFragment != null) {
-                            homeBaseFragment.searchFragment = searchFragment;
-                            homeBaseFragment.replaceFragment(searchFragment);
-                            homeBaseFragment.isSearch = true;
-                        }
-                        // Hiển thị bàn phím
-                        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        inputMethodManager.showSoftInput(edtTextHome, InputMethodManager.SHOW_IMPLICIT);
-                        return true;
-                    }
-                    return false;
-                }
-            });
+        setListener();
+
         return view;
     }
-
+    private void setListener()
+    {
+        edtTextHome.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    preferenceManager.putBoolean("isFromHomeFragment",true);
+                    // Xử lý khi EditText được nhấn
+                    if (searchFragment == null) {
+                        searchFragment = new SearchFragment(homeBaseFragment);
+                    }
+                    if (homeBaseFragment != null && searchFragment != null) {
+                        homeBaseFragment.searchFragment = searchFragment;
+                        homeBaseFragment.replaceFragment(searchFragment);
+                        homeBaseFragment.isSearch = true;
+                    }
+                    // Hiển thị bàn phím
+                    InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.showSoftInput(edtTextHome, InputMethodManager.SHOW_IMPLICIT);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
     private List<Brand> getListBrand() {
         List<Brand> listBrand = new ArrayList<>();
         listBrand.add(new Brand(R.drawable.brand_logo_apple,"Apple",0));
