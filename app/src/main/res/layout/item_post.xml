@@ -7,7 +7,7 @@
     android:layout_marginTop="2dp"
     android:background="@color/white">
     <ImageView
-        android:id="@+id/imgPostActive"
+        android:id="@+id/imgPost"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginLeft="10dp"
@@ -26,13 +26,13 @@
             android:layout_weight="1"
             >
             <TextView
-                android:id="@+id/titlePostActive"
+                android:id="@+id/titlePost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM"
                 android:textColor="@color/black" />
             <TextView
-                android:id="@+id/pricePostActive"
+                android:id="@+id/pricePost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="26,000,000 đ"
@@ -41,7 +41,7 @@
                 android:layout_marginTop="5dp"/>
         </LinearLayout>
         <TextView
-            android:id="@+id/addressPostActive"
+            android:id="@+id/addressPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

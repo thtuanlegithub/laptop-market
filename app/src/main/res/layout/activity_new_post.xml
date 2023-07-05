@@ -128,7 +128,6 @@
                             android:textSize="16dp"
                             android:inputType="number"/>
                     </com.google.android.material.textfield.TextInputLayout>
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -531,7 +530,7 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
-                        android:inputType="number"/>
+                        android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"

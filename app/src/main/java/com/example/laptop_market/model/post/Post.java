@@ -16,7 +16,6 @@ public class Post {
 
     public Post() {
     }
-
     public Post(String postID, String laptopID, String accountID, String title, String description, String sellerPhoneNumber, String sellerName, String sellerAddress) {
         this.postID = postID;
         this.laptopID = laptopID;

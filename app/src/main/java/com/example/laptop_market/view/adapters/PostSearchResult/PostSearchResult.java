@@ -3,6 +3,8 @@ package com.example.laptop_market.view.adapters.PostSearchResult;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.example.laptop_market.model.post.Post;
+
 import java.io.Serializable;
 
 public class PostSearchResult implements Serializable {
@@ -32,6 +34,12 @@ public class PostSearchResult implements Serializable {
     }
 
     public PostSearchResult() {
+    }
+
+    public PostSearchResult(String title, double price, String address){
+        this.title = title;
+        this.price = price;
+        this.address = address;
     }
 
     public Bitmap getImage() {
