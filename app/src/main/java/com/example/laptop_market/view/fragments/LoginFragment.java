@@ -27,6 +27,7 @@ import com.example.laptop_market.utils.elses.ValidateData;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class LoginFragment extends Fragment implements IAccountContract.View.LoginFragmentView{
@@ -145,7 +146,6 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
 
     @Override
     public void LoginSuccess() {
-        Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
         preferenceManager = new PreferenceManager(getContext());
         Intent intent = null;
         int PreviousFragment = preferenceManager.getInt(FragmentActivityType.FRAGMENT_ACTIVITY,0);

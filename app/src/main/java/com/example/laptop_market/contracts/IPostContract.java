@@ -25,6 +25,12 @@ public interface IPostContract {
             void OnFinishLoadingPostInPostDetail(Post post, Exception error);
         }
         //endregion
+        //region Load seller's phone number
+        void GetSellerPhoneNumber(String postID, OnLoadSellerPhoneNumber listener);
+        interface  OnLoadSellerPhoneNumber{
+            void OnFinishLoadSellerPhoneNumber(boolean isSuccess, String phoneNumber, Exception error);
+        }
+        //endregion
     }
     interface View{
         interface NewPostActivityView{
@@ -39,6 +45,7 @@ public interface IPostContract {
             void FailedLoadingPostDetail(Exception error);
             void LoadSavePostButton();
             void LoadRemoveSavePostButton();
+            void ShowPhoneDialIntent(String phoneNumber);
         }
 
         interface PostFragmentView{
@@ -57,6 +64,7 @@ public interface IPostContract {
             void OnLoadingPostInPostDetail(String postID);
             void LoadSavePostButton(String postID);
             void OnSavePostClicked(String postID, boolean isSaved);
+            void OnPhoneDialClicked(String postID);
         }
         interface PostFragmentPresenter{
             void CreateNewPost();

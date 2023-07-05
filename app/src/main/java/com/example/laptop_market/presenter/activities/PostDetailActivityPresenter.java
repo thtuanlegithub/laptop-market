@@ -105,7 +105,21 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
         }
     }
 
-    //endregion
+    @Override
+    public void OnPhoneDialClicked(String postID) {
+        postModel.GetSellerPhoneNumber(postID, new IPostContract.Model.OnLoadSellerPhoneNumber() {
+            @Override
+            public void OnFinishLoadSellerPhoneNumber(boolean isSuccess, String phoneNumber, Exception error) {
+                if (isSuccess)
+                    postView.ShowPhoneDialIntent(phoneNumber);
+                else
+                    error.printStackTrace();
+            }
+        });
+    }
+
+//endregion
+
     //region Account presenter
     @Override
     public void OnLoadingAccountInPostDetail(String accountId) {

@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ import java.util.List;
 
 public class PostDetailActivity extends AppCompatActivity implements IPostContract.View.PostDetailActivityView
         , ILaptopContract.View.PostDetailActivityView, IAccountContract.View.PostDetailActivityView {
-    private Button btnPostDetailClose, btnSavePost;
+    private Button btnPostDetailClose, btnSavePost, btnCallNow;
     private ImageView imgPostDetailShop;
     private ViewPager viewPagerImagePostDetail;
     private ILaptopContract.Presenter.PostDetailActivityPresenter laptopPresenter;
@@ -72,6 +73,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
         btnSavePost = findViewById(R.id.btnSavePost);
+        btnCallNow = findViewById(R.id.btnCallNow);
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
@@ -105,6 +107,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             postPresenter.OnSavePostClicked(this.postSearchResult.getPostId(), isSaved);
         });
 
+        btnCallNow.setOnClickListener(v -> {
+            postPresenter.OnPhoneDialClicked(this.postSearchResult.getPostId());
+        });
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -205,5 +210,13 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     protected void onResume() {
         super.onResume();
         postPresenter.LoadSavePostButton(this.postSearchResult.getPostId());
+    }
+
+    @Override
+    public void ShowPhoneDialIntent(String phoneNumber) {
+        // Create an intent with the ACTION_DIAL action and the phone number
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
     }
 }
