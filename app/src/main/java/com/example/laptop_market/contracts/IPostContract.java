@@ -46,6 +46,7 @@ public interface IPostContract {
             void LoadSavePostButton();
             void LoadRemoveSavePostButton();
             void ShowPhoneDialIntent(String phoneNumber);
+            void LoginAccount();
         }
 
         interface PostFragmentView{

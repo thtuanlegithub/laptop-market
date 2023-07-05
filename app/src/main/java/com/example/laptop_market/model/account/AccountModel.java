@@ -79,8 +79,8 @@ public class AccountModel implements IAccountContract.Model {
                         documentSnapshot -> {
                             account.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
                             account.setEmail(documentSnapshot.getString(AccountTable.EMAIL));
-                            account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
-                            account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
+                            preferenceManager.putString(Constants.KEY_USER_NAME, account.getAccountName());
+                            preferenceManager.putString(Constants.KEY_USER_EMAIL, account.getEmail());
                             listener.OnLoadingListener(true,account);
                         }
                 );
@@ -184,17 +184,18 @@ public class AccountModel implements IAccountContract.Model {
 
     @Override
     public void LoadSavePostButton(String postID, OnFinishSavePostListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String userID = firebaseUser.getUid();
         db.collection(AccountTable.TABLE_NAME).document(userID).get().addOnCompleteListener(task -> {
-           if(task.isSuccessful()){
-               DocumentSnapshot documentSnapshot = task.getResult();
-               ArrayList<String> savedPostList = (ArrayList<String>) documentSnapshot.get(AccountTable.SAVED_POSTS);
-               boolean isExisted = savedPostList.contains(postID);
-               listener.OnFinishSavePost(true, isExisted, null);
-           }
-           else{
-               listener.OnFinishSavePost(false, false, task.getException());
-           }
+            if(task.isSuccessful()){
+                DocumentSnapshot documentSnapshot = task.getResult();
+                ArrayList<String> savedPostList = (ArrayList<String>) documentSnapshot.get(AccountTable.SAVED_POSTS);
+                boolean isExisted = savedPostList.contains(postID);
+                listener.OnFinishSavePost(true, isExisted, null);
+            }
+            else{
+                listener.OnFinishSavePost(false, false, task.getException());
+            }
         });
     }
     //endregion

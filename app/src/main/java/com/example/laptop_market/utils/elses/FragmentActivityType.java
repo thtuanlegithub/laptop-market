@@ -11,4 +11,5 @@ public class FragmentActivityType {
     public static final int SAVED_POST_ACTIVITY = 7;
     public static final int YOUR_RATING_ACTIVITY = 8;
     public static final int ACCOUNT_SETTINGS_ACTIVITY = 9;
+    public static final int POST_DETAILS_ACTIVITY = 10;
 }

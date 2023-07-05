@@ -64,45 +64,63 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
 
     @Override
     public void LoadSavePostButton(String postID) {
-        accountModel.LoadSavePostButton(postID, new IAccountContract.Model.OnFinishSavePostListener() {
-            @Override
-            public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
-                if (isSuccess){
-                    if (isSaved)
-                        postView.LoadRemoveSavePostButton();
-                    else
-                        postView.LoadSavePostButton();
-                }
-                else
-                    error.printStackTrace();
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if(isLogin){
+                accountModel.LoadSavePostButton(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                    @Override
+                    public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                        if (isSuccess){
+                            if (isSaved)
+                                postView.LoadRemoveSavePostButton();
+                            else
+                                postView.LoadSavePostButton();
+                        }
+                        else
+                            error.printStackTrace();
+                    }
+                });
             }
+            /*
+            else {
+                Load default UI (button "Lưu tin")
+            }
+            */
         });
+
     }
 
     @Override
     public void OnSavePostClicked(String postID, boolean isSaved) {
-        if (!isSaved){
-            accountModel.ClickSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
-                @Override
-                public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
-                    if (isSuccess)
-                        postView.LoadRemoveSavePostButton();
-                    else
-                        error.printStackTrace();
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin){
+                if (!isSaved){
+                    accountModel.ClickSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                        @Override
+                        public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                            if (isSuccess)
+                                postView.LoadRemoveSavePostButton();
+                            else
+                                error.printStackTrace();
+                        }
+                    });
                 }
-            });
-        }
-        else {
-            accountModel.ClickRemoveSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
-                @Override
-                public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
-                    if (isSuccess)
-                        postView.LoadSavePostButton();
-                    else
-                        error.printStackTrace();
+                else {
+                    accountModel.ClickRemoveSavePost(postID, new IAccountContract.Model.OnFinishSavePostListener() {
+                        @Override
+                        public void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error) {
+                            if (isSuccess)
+                                postView.LoadSavePostButton();
+                            else
+                                error.printStackTrace();
+                        }
+                    });
                 }
-            });
-        }
+            }
+            else {
+                postView.LoginAccount();
+            }
+        });
+
     }
 
     @Override
