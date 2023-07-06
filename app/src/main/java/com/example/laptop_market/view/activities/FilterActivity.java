@@ -69,8 +69,15 @@ public class FilterActivity extends AppCompatActivity {
     }
     private void initSeekBar()
     {
-        seekBarMaxPrice.setProgress(searchFilterPost.getMaximumPrice());
-        seekBarMinPrice.setProgress(searchFilterPost.getMinimumPrice());
+        int min = searchFilterPost.getMinimumPrice();
+        int max = searchFilterPost.getMaximumPrice();
+        seekBarMaxPrice.setProgress(max);
+        seekBarMinPrice.setProgress(min);
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        String minValueFormatted = formatter.format(min);
+        String maxValueFormatted = formatter.format(max);
+        minimumPriceTextView.setText(minValueFormatted);
+        maximumPriceTextView.setText(maxValueFormatted);
     }
     private void setListener()
     {
@@ -81,7 +88,7 @@ public class FilterActivity extends AppCompatActivity {
             maxValueFormatted = maxValueFormatted.replaceAll("\\.", "");
             int minValue = Integer.parseInt(minValueFormatted);
             int maxValue = Integer.parseInt(maxValueFormatted);
-            if(maxValue < minValue)
+            if(maxValue < minValue || maxValue == 0)
             {
                 Toast.makeText(getApplicationContext(), "Giá tiền không hợp lệ", Toast.LENGTH_SHORT).show();
                 return;

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,9 @@ public class PictureDetailActivity extends AppCompatActivity {
     private TextView totalPictureTextView;
     private TextView currentPictureTextView;
     private int currentImagePage;
+    private LinearLayout mutiplePictureLayout;
+    private ArrayList<Bitmap> listbitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,7 @@ public class PictureDetailActivity extends AppCompatActivity {
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
+        mutiplePictureLayout = findViewById(R.id.mutiplePictureLayout);
         setListener();
         getData();
     }
@@ -46,42 +51,67 @@ public class PictureDetailActivity extends AppCompatActivity {
     private void getData()
     {
         Intent intent = getIntent();
-        String filePath = intent.getStringExtra("data_file");
-
-        if (filePath != null) {
-            try {
-                // Đọc dữ liệu từ file JSON
-                File file = new File(filePath);
-                FileInputStream inputStream = new FileInputStream(file);
-                byte[] buffer = new byte[(int) file.length()];
-                inputStream.read(buffer);
-                inputStream.close();
-                String data = new String(buffer, "UTF-8");
-
-                // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JSONObject
-                JSONObject jsonObject = new JSONObject(data);
-                int numOfPicture = jsonObject.getInt(LaptopTable.NUM_OF_IMAGE);
-                // Truy xuất các giá trị từ đối tượng JSONObject
-                ArrayList<Bitmap> listbitmap = new ArrayList<>();
-                for(int i=0;i<numOfPicture;i++)
-                {
-                    String imageString = jsonObject.getString(Constants.KEY_IMAGE+i);
+        boolean isSingleImage = intent.getBooleanExtra("isSingleImage",false);
+        listbitmap = new ArrayList<>();
+        if(isSingleImage)
+        {
+            String filePath = intent.getStringExtra("image_file");
+            if(filePath!=null) {
+                try {
+                    File file = new File(filePath);
+                    FileInputStream inputStream = new FileInputStream(file);
+                    byte[] buffer = new byte[(int) file.length()];
+                    inputStream.read(buffer);
+                    inputStream.close();
+                    String data = new String(buffer, "UTF-8");
+                    JSONObject jsonObject = new JSONObject(data);
+                    String imageString = jsonObject.getString(Constants.KEY_IMAGE);
                     Bitmap bitmap = getBitMapFromString(imageString);
                     listbitmap.add(bitmap);
+                    ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(), listbitmap);
+                    viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
+                    mutiplePictureLayout.setVisibility(View.GONE);
+                    file.delete();
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
                 }
-                ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(),listbitmap);
-                viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
-                currentImagePage = jsonObject.getInt(Constants.KEY_POSITION_IMAGE);
-                viewPagerImagePostDetail.setCurrentItem(currentImagePage);
-                totalPictureTextView.setText(String.valueOf(numOfPicture));
-                file.delete();
-                // Xử lý các giá trị ở đây
-                // ...
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
             }
         }
+        else {
+            String filePath = intent.getStringExtra("data_file");
 
+            if (filePath != null) {
+                try {
+                    // Đọc dữ liệu từ file JSON
+                    File file = new File(filePath);
+                    FileInputStream inputStream = new FileInputStream(file);
+                    byte[] buffer = new byte[(int) file.length()];
+                    inputStream.read(buffer);
+                    inputStream.close();
+                    String data = new String(buffer, "UTF-8");
+
+                    // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JSONObject
+                    JSONObject jsonObject = new JSONObject(data);
+                    int numOfPicture = jsonObject.getInt(LaptopTable.NUM_OF_IMAGE);
+                    // Truy xuất các giá trị từ đối tượng JSONObject
+                    for (int i = 0; i < numOfPicture; i++) {
+                        String imageString = jsonObject.getString(Constants.KEY_IMAGE + i);
+                        Bitmap bitmap = getBitMapFromString(imageString);
+                        listbitmap.add(bitmap);
+                    }
+                    ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(), listbitmap);
+                    viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
+                    currentImagePage = jsonObject.getInt(Constants.KEY_POSITION_IMAGE);
+                    viewPagerImagePostDetail.setCurrentItem(currentImagePage);
+                    totalPictureTextView.setText(String.valueOf(numOfPicture));
+                    file.delete();
+                    // Xử lý các giá trị ở đây
+                    // ...
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     //endregion
     //region Convert String to Bitmap Function

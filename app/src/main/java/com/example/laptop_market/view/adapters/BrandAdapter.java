@@ -30,8 +30,10 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
     private HomeBaseFragment homeBaseFragment;
     private SearchResultFragment searchResultFragment;
     private PreferenceManager preferenceManager;
-    public BrandAdapter(List<Brand> listBrand){
+    public BrandAdapter(List<Brand> listBrand, SearchResultFragment searchResultFragment, Context context){
         this.listBrand = listBrand;
+        this.searchResultFragment = searchResultFragment;
+        preferenceManager = new PreferenceManager(context);
     }
 
     public BrandAdapter(List<Brand> listBrand, HomeBaseFragment homeBaseFragment, Context context) {
@@ -68,6 +70,11 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
             holder.txtBrand.setText(brand.getBrandName());
             holder.imgBrand.setImageResource(brand.getImg());
             holder.layoutBrand.setBackgroundResource(R.drawable.white_square);
+            holder.itemView.setOnClickListener(view -> {
+                preferenceManager.putString(BrandTable.BRAND_NAME, brand.getBrandName());
+                preferenceManager.putInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,SearchResultFragment.ADAPTER_TYPE0_CLICK);
+                searchResultFragment.clickOnBrandButton();
+            });
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     300,
                     LinearLayout.LayoutParams.WRAP_CONTENT

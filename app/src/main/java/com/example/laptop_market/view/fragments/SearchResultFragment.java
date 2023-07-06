@@ -34,6 +34,7 @@ import com.example.laptop_market.model.brand.Brand;
 import com.example.laptop_market.model.filter.Filter;
 import com.example.laptop_market.model.post.Post;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,7 +137,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         GridLayoutManager gridLayoutManager2 = new GridLayoutManager(requireContext(),1,0,false);
         rcvBrand.setLayoutManager(gridLayoutManager2);
 
-        BrandAdapter brandAdapter = new BrandAdapter(getListBrand());
+        BrandAdapter brandAdapter = new BrandAdapter(getListBrand(),this, getContext());
         rcvBrand.setAdapter(brandAdapter);
         //
         //Xử lý sự kiện edit text touch
@@ -167,44 +168,57 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
     private void reloadListFilter()
     {
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        String textViewHint = "";
         if(searchFilterPost.getListBrandName().size()>0)
         {
             String brand = "";
+            textViewHint += "Laptop ";
             ArrayList<String> list = searchFilterPost.getListBrandName();
             for(int i = 0; i<list.size();i++)
             {
+                textViewHint += list.get(i) + ", ";
                 brand += list.get(i) + ", ";
             }
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             brand = brand.substring(0,brand.length()-2) + " +";
             if (brand.length() > 10) {
                 brand = brand.substring(0, 7) + "..." + " +";
             }
             filterAdapter.updateFilterName(0,brand);
         }
+        if(searchFilterPost.getMinimumPrice()!=0 && searchFilterPost.getMaximumPrice()!=50000000) {
+            if (searchFilterPost.getMinimumPrice() > 0)
+                textViewHint += " có giá trên " + formatter.format(searchFilterPost.getMinimumPrice()) + " và";
+            textViewHint += " có giá dưới " + formatter.format(searchFilterPost.getMaximumPrice());
+        }
         if (searchFilterPost.getListGuarantee().size() > 0) {
             String guarantee = "";
+            textViewHint += " và có tình trạng sử dụng là: ";
             ArrayList<String> list = searchFilterPost.getListGuarantee();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 guarantee += list.get(i) + ", ";
             }
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             guarantee = guarantee.substring(0, guarantee.length() - 2);
-
             if (guarantee.length() > 10) {
                 guarantee = guarantee.substring(0, 7) + "..." + " +";
             } else {
                 guarantee += " +";
             }
-
             filterAdapter.updateFilterName(2, guarantee);
         }
         if (searchFilterPost.getListCPU().size() > 0) {
             String cpu = "";
+            textViewHint += " và có CPU là: ";
             ArrayList<String> list = searchFilterPost.getListCPU();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 cpu += list.get(i) + ", ";
             }
             cpu = cpu.substring(0, cpu.length() - 2);
-
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             if (cpu.length() > 10) {
                 cpu = cpu.substring(0, 7) + "..." + " +";
             } else {
@@ -215,26 +229,30 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         }
         if (searchFilterPost.getListRam().size() > 0) {
             String ram = "";
+            textViewHint += " và có Ram là: ";
             ArrayList<String> list = searchFilterPost.getListRam();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 ram += list.get(i) + ", ";
             }
             ram = ram.substring(0, ram.length() - 2);
-
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             if (ram.length() > 10) {
                 ram = ram.substring(0, 7) + "..." + " +";
             } else {
                 ram += " +";
             }
-
             filterAdapter.updateFilterName(4, ram);
         }
         if (searchFilterPost.getListHardDrive().size() > 0) {
             String hardDrive = "";
+            textViewHint += " và có loại ổ cứng là: ";
             ArrayList<String> list = searchFilterPost.getListHardDrive();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 hardDrive += list.get(i) + ", ";
             }
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             hardDrive = hardDrive.substring(0, hardDrive.length() - 2);
 
             if (hardDrive.length() > 10) {
@@ -247,12 +265,14 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         }
         if (searchFilterPost.getListHardDriveSize().size() > 0) {
             String hardDriveSize = "";
+            textViewHint += " và có dung lượng ổ cứng là: ";
             ArrayList<String> list = searchFilterPost.getListHardDriveSize();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 hardDriveSize += list.get(i) + ", ";
             }
             hardDriveSize = hardDriveSize.substring(0, hardDriveSize.length() - 2);
-
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             if (hardDriveSize.length() > 10) {
                 hardDriveSize = hardDriveSize.substring(0, 7) + "..." + " +";
             } else {
@@ -263,12 +283,14 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         }
         if (searchFilterPost.getListGraphics().size() > 0) {
             String graphics = "";
+            textViewHint += " và có card đồ họa là: ";
             ArrayList<String> list = searchFilterPost.getListGraphics();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 graphics += list.get(i) + ", ";
             }
             graphics = graphics.substring(0, graphics.length() - 2);
-
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             if (graphics.length() > 10) {
                 graphics = graphics.substring(0, 7) + "..." + " +";
             } else {
@@ -279,12 +301,14 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         }
         if (searchFilterPost.getListScreenSize().size() > 0) {
             String screenSize = "";
+            textViewHint += " và có màn hình là: ";
             ArrayList<String> list = searchFilterPost.getListScreenSize();
             for (int i = 0; i < list.size(); i++) {
+                textViewHint += list.get(i) + ", ";
                 screenSize += list.get(i) + ", ";
             }
             screenSize = screenSize.substring(0, screenSize.length() - 2);
-
+            textViewHint = textViewHint.substring(0,textViewHint.length()-2);
             if (screenSize.length() > 10) {
                 screenSize = screenSize.substring(0, 7) + "..." + " +";
             } else {
@@ -293,7 +317,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
             filterAdapter.updateFilterName(8, screenSize);
         }
+        if(textViewHint.length()>25)
+            textViewHint = textViewHint.substring(0,22) + "...";
+        edtTextSearchResult.setHint(textViewHint);
     }
+
     @Override
     public void LoadSearchingFragment(String itemString) {
         isLoading.setVisibility(View.VISIBLE);
@@ -357,6 +385,23 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         searchFilterPost.getListHardDrive().clear();
         searchFilterPost.getListBrandName().clear();
     }
+    public void clickOnBrandButton()
+    {
+        searchResultFragmentType = preferenceManager.getInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,0);
+        preferenceManager.removeKey(Constants.KEY_POST_SEARCH_RESULT_TYPE);
+        if(searchResultFragmentType == ADAPTER_TYPE0_CLICK)
+        {
+            cleanSearchFilterPost();
+            isLoading.setVisibility(View.VISIBLE);
+            rcvPostSearchResult.setVisibility(View.GONE);
+            String brand = preferenceManager.getString(BrandTable.BRAND_NAME);
+            preferenceManager.removeKey(BrandTable.BRAND_NAME);
+            searchFilterPost.getListBrandName().add(brand);
+            postPreseneter.OnSearchPostByFilter(searchFilterPost);
+            preferenceManager.putSerializable(Constants.KEY_FILTER_SEARCH,searchFilterPost);
+            reloadListFilter();
+        }
+    }
     @Override
     public void FinishLoadingSearchPost(ArrayList<PostSearchResult> posts) {
         PostSearchResultAdapter postSearchResultAdapter = new PostSearchResultAdapter(posts, homeBaseFragment);
@@ -365,4 +410,5 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         rcvPostSearchResult.setVisibility(View.VISIBLE);
         //rcvPostSearchResult.notify();
     }
+
 }

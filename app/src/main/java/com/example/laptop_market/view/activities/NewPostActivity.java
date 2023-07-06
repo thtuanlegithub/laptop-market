@@ -90,12 +90,14 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
         imageList = new ArrayList<>();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.slide_show1);
-        imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, position -> {
+        imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, getApplicationContext(), position -> {
             // Xử lý sự kiện khi người dùng nhấn nút close
             imageList.remove(position);
             ListPictures.remove(position);
-            if(ListPictures.size()==0)
+            if(ListPictures.size()==0) {
                 listImageLayout.setVisibility(View.GONE);
+                NewPostOpenImageBtt.setVisibility(View.VISIBLE);
+            }
             imageForNewPostAdapter.notifyDataSetChanged();
         });
         rcvImageForNewPost.setAdapter(imageForNewPostAdapter);
@@ -198,17 +200,21 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == PICK_IMAGE_REQUEST && (resultCode == RESULT_OK || resultCode == RESULT_FIRST_USER)) {
             if (data.getData() != null) {
                 // Xử lý một ảnh duy nhất
                 listImageLayout.setVisibility(View.VISIBLE);
+                NewPostOpenImageBtt.setVisibility(View.GONE);
                 Uri uri = data.getData();
                 ListPictures.add(uri);
+                imageList.add(uriToBitmap(uri));
+                imageForNewPostAdapter.notifyDataSetChanged();
             } else {
                 // Xử lý nhiều ảnh
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {
                     listImageLayout.setVisibility(View.VISIBLE);
+                    NewPostOpenImageBtt.setVisibility(View.GONE);
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         if(ListPictures.size()==5)
                         {
