@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private List<Bitmap> imageList;
     private IPostContract.Presenter.NewPostActivityPresenter postActivityPresenter;
     private ILaptopContract.Presenter.NewPostActivityPresenter laptopActivityPresenter;
+    private LinearLayout listImageLayout;
+    private AppCompatButton addNewImageBtt;
     private Laptop laptop;
 
     private  ImageForNewPostAdapter imageForNewPostAdapter;
@@ -72,6 +76,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         ListPictures = new ArrayList<>();
         laptopActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
         postActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
+        listImageLayout = findViewById(R.id.listImageLayout);
+        addNewImageBtt = findViewById(R.id.addNewImageBtt);
         btnNewPostClose = findViewById(R.id.btnNewPostClose);
         btnNewPostClose.setOnClickListener(view -> {
             finish();
@@ -84,14 +90,12 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
         imageList = new ArrayList<>();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.slide_show1);
-        imageList.add(bitmap);
-        imageList.add(bitmap);
-        imageList.add(bitmap);
-        imageList.add(bitmap);
-
         imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, position -> {
             // Xử lý sự kiện khi người dùng nhấn nút close
             imageList.remove(position);
+            ListPictures.remove(position);
+            if(ListPictures.size()==0)
+                listImageLayout.setVisibility(View.GONE);
             imageForNewPostAdapter.notifyDataSetChanged();
         });
         rcvImageForNewPost.setAdapter(imageForNewPostAdapter);
@@ -135,25 +139,26 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
         });
+        addNewImageBtt.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        });
         NewPostOpenImageBtt.setOnClickListener(
                 view -> {
-                    // Kiểm tra xem quyền đã được cấp hay chưa
-/*                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        // Nếu chưa được cấp, yêu cầu cấp quyền
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                REQUEST_CODE_READ_EXTERNAL_STORAGE);
-                    } else {*/
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-                    //}
-
                 }
         );
         NewPostBttDangTin.setOnClickListener(view -> {
+            if(ListPictures.size()==0)
+            {
+                Toast.makeText(getApplicationContext(),"Vui lòng chọn ít nhất 1 ảnh", Toast.LENGTH_SHORT).show();
+                return;
+            }
             laptop = new Laptop();
             laptop.setLaptopName(edtTitle.getText().toString());
             laptop.setBrandID("Dell");
@@ -194,22 +199,43 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            ListPictures.clear();
             if (data.getData() != null) {
                 // Xử lý một ảnh duy nhất
+                listImageLayout.setVisibility(View.VISIBLE);
                 Uri uri = data.getData();
                 ListPictures.add(uri);
             } else {
                 // Xử lý nhiều ảnh
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {
+                    listImageLayout.setVisibility(View.VISIBLE);
                     for (int i = 0; i < clipData.getItemCount(); i++) {
+                        if(ListPictures.size()==5)
+                        {
+                            Toast.makeText(getApplicationContext(),"Chỉ nhận tối đa 5 ảnh", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                         Uri uri = clipData.getItemAt(i).getUri();
                         ListPictures.add(uri);
+                        imageList.add(uriToBitmap(uri));
+                        imageForNewPostAdapter.notifyDataSetChanged();
                     }
                 }
             }
         }
+    }
+    // Hàm để chuyển từ Uri sang Bitmap
+    private Bitmap uriToBitmap(Uri uri)  {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+            return bitmap;
+        }catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
     }
     //region Create laptop View
     @Override

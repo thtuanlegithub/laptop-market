@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,8 +35,9 @@ public class ImageForNewPostAdapter extends RecyclerView.Adapter<ImageForNewPost
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         Bitmap image = images.get(position);
+        if(position==0)
+            holder.mainImageView.setVisibility(View.VISIBLE);
         holder.imageView.setImageBitmap(image);
-
         holder.closeImageView.setOnClickListener(v -> {
             if (closeClickListener != null) {
                 closeClickListener.onImageCloseClick(position);
@@ -51,11 +53,13 @@ public class ImageForNewPostAdapter extends RecyclerView.Adapter<ImageForNewPost
     public class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         ImageView closeImageView;
+        TextView mainImageView;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             closeImageView = itemView.findViewById(R.id.closeImageView);
+            mainImageView = itemView.findViewById(R.id.mainImageView);
         }
     }
 
