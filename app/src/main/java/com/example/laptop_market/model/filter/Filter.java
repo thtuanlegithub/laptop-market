@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Filter implements Serializable {
     private String name; //default name
+    private String tag;
     private int image;
     private List<String> currentSelectedList;
     private String currentDisplayString;
@@ -12,10 +13,10 @@ public class Filter implements Serializable {
     public Filter(String name) {
         this.name = name;
         this.image = 700052;
+        this.tag = name;
     }
     public Filter(List<String> currentSelectedList){
         this.currentSelectedList = currentSelectedList;
-
     }
     public Filter(int image, String name){
         this.image = image;
@@ -35,5 +36,13 @@ public class Filter implements Serializable {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

@@ -67,15 +67,25 @@
                     android:textSize="16dp"
                     android:text="Giá tối thiểu: "/>
                 <TextView
+                    android:id="@+id/minimumPriceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:textColor="@color/black"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="16dp"
-                    android:text="0 đ"/>
+                    android:text="0"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="16dp"
+                    android:text="đ"/>
             </LinearLayout>
             <SeekBar
+                android:max="50000000"
                 android:id="@+id/seekBarMinPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,15 +106,25 @@
                     android:textSize="16dp"
                     android:text="Giá tối đa: "/>
                 <TextView
+                    android:id="@+id/maximumPriceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:textColor="@color/black"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="16dp"
-                    android:text="30,000,000 đ"/>
+                    android:text="50,000,000"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="16dp"
+                    android:text="đ"/>
             </LinearLayout>
             <SeekBar
+                android:max="50000000"
                 android:id="@+id/seekBarMaxPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

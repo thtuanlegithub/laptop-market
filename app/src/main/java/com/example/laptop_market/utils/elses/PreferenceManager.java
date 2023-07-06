@@ -81,7 +81,6 @@ public class PreferenceManager {
     public int getInt(String key, int defaultValue) {
         return sharedPreferences.getInt(key, defaultValue);
     }
-
     public void putSerializable(String key, Serializable value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -112,7 +111,6 @@ public class PreferenceManager {
         }
         return null;
     }
-
     public void removeKey( String key) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(key);

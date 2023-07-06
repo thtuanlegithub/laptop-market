@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,10 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private List<Bitmap> imageList;
     private IPostContract.Presenter.NewPostActivityPresenter postActivityPresenter;
     private ILaptopContract.Presenter.NewPostActivityPresenter laptopActivityPresenter;
+    private LinearLayout listImageLayout;
+    private AppCompatButton addNewImageBtt;
+    private Laptop laptop;
+
     private  ImageForNewPostAdapter imageForNewPostAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         ListPictures = new ArrayList<>();
         laptopActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
         postActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
+        listImageLayout = findViewById(R.id.listImageLayout);
+        addNewImageBtt = findViewById(R.id.addNewImageBtt);
         btnNewPostClose = findViewById(R.id.btnNewPostClose);
         btnNewPostClose.setOnClickListener(view -> {
             finish();
@@ -82,14 +90,14 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
         imageList = new ArrayList<>();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.slide_show1);
-        imageList.add(bitmap);
-        imageList.add(bitmap);
-        imageList.add(bitmap);
-        imageList.add(bitmap);
-
-        imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, position -> {
+        imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, getApplicationContext(), position -> {
             // Xử lý sự kiện khi người dùng nhấn nút close
             imageList.remove(position);
+            ListPictures.remove(position);
+            if(ListPictures.size()==0) {
+                listImageLayout.setVisibility(View.GONE);
+                NewPostOpenImageBtt.setVisibility(View.VISIBLE);
+            }
             imageForNewPostAdapter.notifyDataSetChanged();
         });
         rcvImageForNewPost.setAdapter(imageForNewPostAdapter);
@@ -133,37 +141,37 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
         });
+        addNewImageBtt.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        });
         NewPostOpenImageBtt.setOnClickListener(
                 view -> {
-                    // Kiểm tra xem quyền đã được cấp hay chưa
-/*                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        // Nếu chưa được cấp, yêu cầu cấp quyền
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                REQUEST_CODE_READ_EXTERNAL_STORAGE);
-                    } else {*/
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-                    //}
-
                 }
         );
         NewPostBttDangTin.setOnClickListener(view -> {
-            Laptop laptop = new Laptop();
+            if(ListPictures.size()==0)
+            {
+                Toast.makeText(getApplicationContext(),"Vui lòng chọn ít nhất 1 ảnh", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            laptop = new Laptop();
             laptop.setLaptopName(edtTitle.getText().toString());
             laptop.setBrandID("Dell");
-            laptop.setPrice(100000d);
-            laptop.setStatus("Còn thời gian bảo hành");
+            laptop.setPrice(1000000);
             laptop.setCpu("Intel i7");
             laptop.setRam("8GB ram");
             laptop.setHardDrive("SSD");
             laptop.setHardDriveSize("256gb");
             laptop.setGraphics("NVIDIA");
             laptop.setScreenSize("15.6 inch");
-            laptop.setGuarantee("Còn tg bảo hành");
+            laptop.setGuarantee("Còn bảo hành");
             laptop.setOrigin("Trung Quốc");
             laptop.setImgLists(ListPictures);
             laptop.setNumOfImage(ListPictures.size());
@@ -192,23 +200,48 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            ListPictures.clear();
+        if (requestCode == PICK_IMAGE_REQUEST && (resultCode == RESULT_OK || resultCode == RESULT_FIRST_USER)) {
             if (data.getData() != null) {
                 // Xử lý một ảnh duy nhất
+                listImageLayout.setVisibility(View.VISIBLE);
+                NewPostOpenImageBtt.setVisibility(View.GONE);
                 Uri uri = data.getData();
                 ListPictures.add(uri);
+                imageList.add(uriToBitmap(uri));
+                imageForNewPostAdapter.notifyDataSetChanged();
             } else {
                 // Xử lý nhiều ảnh
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {
+                    listImageLayout.setVisibility(View.VISIBLE);
+                    NewPostOpenImageBtt.setVisibility(View.GONE);
                     for (int i = 0; i < clipData.getItemCount(); i++) {
+                        if(ListPictures.size()==5)
+                        {
+                            Toast.makeText(getApplicationContext(),"Chỉ nhận tối đa 5 ảnh", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                         Uri uri = clipData.getItemAt(i).getUri();
                         ListPictures.add(uri);
+                        imageList.add(uriToBitmap(uri));
+                        imageForNewPostAdapter.notifyDataSetChanged();
                     }
                 }
             }
         }
+    }
+    // Hàm để chuyển từ Uri sang Bitmap
+    private Bitmap uriToBitmap(Uri uri)  {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+            return bitmap;
+        }catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
     }
     //region Create laptop View
     @Override
@@ -221,7 +254,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         post.setSellerPhoneNumber(edtSellerPhoneNumber.getText().toString());
         post.setTitle(edtTitle.getText().toString());
         post.setPostMainImage(encode_img(ListPictures.get(0)));
-        postActivityPresenter.OnCreateNewPostClicked(post);
+        postActivityPresenter.OnCreateNewPostClicked(post,laptop);
     }
 
     @Override

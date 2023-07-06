@@ -6,6 +6,9 @@ import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
 import com.example.laptop_market.model.filter.StringFilterSearchModel;
 import com.example.laptop_market.model.post.PostModel;
+import com.example.laptop_market.utils.tables.SearchFilterPost;
+
+import org.json.JSONException;
 
 public class SearchResultFragmentPresenter implements IStringFilterSearchContract.Presenter.SearchResultFragmentPresenter
         , IPostContract.Presenter.SearchResultFragmentPresenter {
@@ -33,9 +36,26 @@ public class SearchResultFragmentPresenter implements IStringFilterSearchContrac
 
     @Override
     public void OnSearchPost(String searchPost) {
-        postModel.LoadSearchPost(searchPost,(posts,exception)->{
-            viewPost.FinishLoadingSearchPost(posts);
+        try {
+            postModel.LoadSearchPost(searchPost, (posts, exception) -> {
+                if (exception == null)
+                    viewPost.FinishLoadingSearchPost(posts);
+                else
+                    exception.printStackTrace();
+            });
+        }catch (JSONException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 
+    @Override
+    public void OnSearchPostByFilter(SearchFilterPost searchFilterPost) {
+        postModel.LoadSearchPostByFilter(searchFilterPost,(posts, error) -> {
+            if(error==null)
+                viewPost.FinishLoadingSearchPost(posts);
+            else
+                error.printStackTrace();
         });
     }
 
