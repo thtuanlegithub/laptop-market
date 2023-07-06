@@ -17,9 +17,6 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".view.activities.AccountSettingActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.activities.BuyOrderDetailActivity"
             android:exported="false" />
         <activity

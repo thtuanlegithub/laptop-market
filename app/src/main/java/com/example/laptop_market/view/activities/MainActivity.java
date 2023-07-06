@@ -16,9 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.laptop_market.databinding.ActivityMainBinding;
 import com.example.laptop_market.utils.elses.Connection_Receiver;
 import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.view.fragments.AccountBaseFragment;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
 import com.example.laptop_market.R;
-import com.example.laptop_market.view.fragments.AccountFragment;
 import com.example.laptop_market.view.fragments.BuyFragment;
 import com.example.laptop_market.view.fragments.InternetDisconnectedFragment;
 import com.example.laptop_market.view.fragments.PostFragment;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeBaseFragment homeBaseFragment = null;
     private PostFragment postFragment = null;
     private BuyFragment buyFragment = null;
-    private AccountFragment accountFragment = null;
+    private AccountBaseFragment accountBaseFragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         homeBaseFragment = new HomeBaseFragment();
         buyFragment = new BuyFragment();
         postFragment = new PostFragment();
-        accountFragment = new AccountFragment();
+        accountBaseFragment = new AccountBaseFragment();
         sellFragment = new SellFragment();
         internetDisconnectedFragment = new InternetDisconnectedFragment(this);
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.frame_layout, buyFragment, "buy")
                 .add(R.id.frame_layout, postFragment, "post")
                 .add(R.id.frame_layout,sellFragment,"sell")
-                .add(R.id.frame_layout, accountFragment, "account")
+                .add(R.id.frame_layout, accountBaseFragment, "account")
                 .add(R.id.frame_layout,internetDisconnectedFragment,"internetConnection")
                 .commit();
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     showFragment(buyFragment);
                     break;
                 case R.id.account:
-                    showFragment(accountFragment);
+                    showFragment(accountBaseFragment);
                     break;
             }
             return true;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 .hide(homeBaseFragment)
                 .hide(buyFragment)
                 .hide(postFragment)
-                .hide(accountFragment)
+                .hide(accountBaseFragment)
                 .hide(sellFragment)
                 .hide(internetDisconnectedFragment)
                 .show(fragment)
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 .hide(homeBaseFragment)
                 .hide(buyFragment)
                 .hide(postFragment)
-                .hide(accountFragment)
+                .hide(accountBaseFragment)
                 .hide(sellFragment)
                 .show(internetDisconnectedFragment)
                 .commit();

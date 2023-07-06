@@ -23,7 +23,7 @@
                 android:text="Quản lý đơn bán"/>
         </androidx.appcompat.widget.Toolbar>
         <GridLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/gridRequireLoginForBuy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,12 +55,14 @@
             android:id="@+id/layoutLoginedForSell"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#F5F5F5">
             <com.google.android.material.bottomnavigation.BottomNavigationView
+                app:elevation="0dp"
                 android:id="@+id/navSell"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/white_square"
+                android:background="@drawable/white_shape_bottom_border"
                 android:paddingBottom="5dp"
                 android:elevation="0dp"
                 app:itemIconTint="@drawable/bottom_navigation_colors"
@@ -70,6 +72,7 @@
                 app:menu="@menu/sell_menu"
                 app:labelVisibilityMode="labeled"/>
             <androidx.viewpager2.widget.ViewPager2
+                android:layout_marginTop="-10dp"
                 android:id="@+id/viewPagerSell"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

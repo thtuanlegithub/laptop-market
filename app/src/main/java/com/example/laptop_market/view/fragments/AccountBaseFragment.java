@@ -1,6 +1,5 @@
 package com.example.laptop_market.view.fragments;
 
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,41 +12,43 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.utils.elses.Connection_Receiver;
 
-public class HomeBaseFragment extends Fragment {
+public class AccountBaseFragment extends Fragment {
+
     private FragmentManager fragmentManager;
-    public boolean isSearch = false;
-    public HomeFragment homeFragment;
-    public SearchFragment searchFragment;
-    public SearchResultFragment searchResultFragment;
-    public FrameLayout frameHomeBase;
+    public AccountFragment accountFragment;
+    public AccountSettingFragment accountSettingFragment;
+    public AccountPasswordFragment accountPasswordFragment;
+    public ProfileFragment profileFragment;
+    public FrameLayout frameAccountBase;
 
-    public HomeBaseFragment() {
+    public AccountBaseFragment() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home_base, container, false);
-        //
-        frameHomeBase = view.findViewById(R.id.frameHomeBase);
-        if(homeFragment == null){
-            homeFragment = new HomeFragment(this);
+        View view = inflater.inflate(R.layout.fragment_account_base, container, false);
+
+        frameAccountBase = view.findViewById(R.id.frameAccountBase);
+        if(accountFragment==null){
+            accountFragment = new AccountFragment(this);
         }
-        replaceFragment(homeFragment);
+        replaceFragment(accountFragment);
         return view;
     }
+
     public void replaceFragment(Fragment fragment) {
         fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameHomeBase, fragment);
+        fragmentTransaction.replace(R.id.frameAccountBase, fragment);
         fragmentTransaction.commit();
     }
 }
