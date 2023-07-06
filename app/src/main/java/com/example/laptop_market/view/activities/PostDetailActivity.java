@@ -35,7 +35,7 @@ import java.util.List;
 
 public class PostDetailActivity extends AppCompatActivity implements IPostContract.View.PostDetailActivityView
         , ILaptopContract.View.PostDetailActivityView, IAccountContract.View.PostDetailActivityView {
-    private Button btnPostDetailClose, btnSavePost, btnCallNow;
+    private Button btnPostDetailClose, btnSavePost, btnCallNow, btnBuyNow;
     private ImageView imgPostDetailShop;
     private ViewPager viewPagerImagePostDetail;
     private ILaptopContract.Presenter.PostDetailActivityPresenter laptopPresenter;
@@ -79,9 +79,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
         btnSavePost = findViewById(R.id.btnSavePost);
-
-        // check seller or customer
+        btnBuyNow = findViewById(R.id.btnBuyNow);
         btnCallNow = findViewById(R.id.btnCallNow);
+        // check seller or customer
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
@@ -123,6 +123,12 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
 
         btnCallNow.setOnClickListener(v -> {
             postPresenter.OnPhoneDialClicked(this.postSearchResult.getPostId());
+        });
+
+        btnBuyNow.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BuyOrderDetailActivity.class);
+            intent.putExtra("BuyOrderStatus",4);
+            startActivity(intent);
         });
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

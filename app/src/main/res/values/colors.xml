@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#F5BD40</color>
     <color name="gray">#C0C0C0</color>
+    <color name="red">#EE4D2D</color>
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="bottom_nav_item_active">#F5BD40</color>
     <color name="bottom_nav_item_inactive">#B2B2B2</color>

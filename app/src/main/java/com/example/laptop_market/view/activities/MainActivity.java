@@ -4,18 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.laptop_market.databinding.ActivityMainBinding;
-import com.example.laptop_market.utils.elses.Connection_Receiver;
-import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.elses.ConnectionReceiver;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
 import com.example.laptop_market.R;
 import com.example.laptop_market.view.fragments.AccountFragment;
@@ -29,7 +25,7 @@ import com.example.laptop_market.view.fragments.SellFragment;
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     ActivityMainBinding binding;
-    private Connection_Receiver broadcastReceiver = null;
+    private ConnectionReceiver broadcastReceiver = null;
     private Fragment currentFragment = null;
 
     private InternetDisconnectedFragment internetDisconnectedFragment;
@@ -99,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-        broadcastReceiver = new Connection_Receiver();
+        broadcastReceiver = new ConnectionReceiver();
         registerNetworkBroadcast();
         currentFragment = homeBaseFragment;
         if(!broadcastReceiver.isConnected(getApplicationContext()))

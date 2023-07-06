@@ -50,7 +50,6 @@
                     android:textColor="@color/white"
                     android:backgroundTint="#F09D38"/>
             </LinearLayout>
-
         </GridLayout>
         <LinearLayout
             android:visibility="visible"

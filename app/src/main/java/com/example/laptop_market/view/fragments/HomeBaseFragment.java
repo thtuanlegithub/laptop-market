@@ -1,6 +1,5 @@
 package com.example.laptop_market.view.fragments;
 
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.laptop_market.R;
-import com.example.laptop_market.utils.elses.Connection_Receiver;
 
 /**
  * A simple {@link Fragment} subclass.

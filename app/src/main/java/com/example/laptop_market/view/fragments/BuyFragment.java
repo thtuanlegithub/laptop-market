@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 
 import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,6 +31,7 @@ public class BuyFragment extends Fragment {
     private BottomNavigationView navBuy;
     private FragmentStateAdapter fragmentStateAdapter;
     private int currentSelectedItem = 0;
+    private GridLayout gridRequireLoginForBuy;
     public BuyFragment() {
         // Required empty public constructor
     }
@@ -43,7 +45,7 @@ public class BuyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_buy, container, false);
-
+        gridRequireLoginForBuy = view.findViewById(R.id.gridRequireLoginForBuy);
         fragmentList = new ArrayList<>();
         fragmentList.add(new BuyProcessingFragment());
         fragmentList.add(new BuyDeliveringFragment());
@@ -92,7 +94,7 @@ public class BuyFragment extends Fragment {
                 currentSelectedItem = position;
             }
         });
-
+        gridRequireLoginForBuy.setVisibility(View.GONE);
         return view;
     }
 }

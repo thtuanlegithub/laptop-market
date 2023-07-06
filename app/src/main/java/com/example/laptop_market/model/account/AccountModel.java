@@ -116,7 +116,7 @@ public class AccountModel implements IAccountContract.Model {
                                 account.setFinishData(false);
                                 account.setAccountID(task.getResult().getUser().getUid());
                                 account.setPublishPosts(new ArrayList<>());
-                                account.setCartItems(new ArrayList<>());
+                                account.setRatingOrders(new ArrayList<>());
                                 account.setSavedPosts(new ArrayList<>());
                                 account.setRating(0d);
                                 Map<String, Object> user = new HashMap<>();
