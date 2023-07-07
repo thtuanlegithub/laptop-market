@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context=".view.activities.AccountSettingActivity">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -89,7 +90,6 @@
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtAccountSettingAddress"
-                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -98,15 +98,8 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
-                        android:inputType="number"/>
+                        android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/ic_arrow_right" />
             </RelativeLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

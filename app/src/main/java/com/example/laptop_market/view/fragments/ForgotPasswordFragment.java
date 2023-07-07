@@ -33,7 +33,7 @@ public class ForgotPasswordFragment extends Fragment {
 
         btnForgotPasswordBack = view.findViewById(R.id.btnForgotPasswordBack);
         btnForgotPasswordBack.setOnClickListener(v -> {
-             loginActivity.replaceFragment(loginActivity.loginFragment);
+            loginActivity.replaceFragment(loginActivity.loginFragment);
         });
 
         btnConfirmEmail = view.findViewById(R.id.btnConfirmEmail);

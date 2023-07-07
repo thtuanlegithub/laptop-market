@@ -1,73 +1,45 @@
-package com.example.laptop_market.view.fragments;
-
-import android.os.Bundle;
+package com.example.laptop_market.view.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.laptop_market.R;
-import com.example.laptop_market.model.post.Post;
+import com.example.laptop_market.view.fragments.PostActiveFragment;
+import com.example.laptop_market.view.fragments.PostInactiveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment {
-    public AccountBaseFragment accountBaseFragment;
+public class ProfileActivity extends AppCompatActivity {
     private Button btnProfileBack;
     private ImageView imgProfileAvatar;
-    private FragmentManager fragmentManager;
-    private FrameLayout frameLayoutProfile;
     private List<Fragment> fragmentList;
-    private PostFragment fragmentPost;
+    private FragmentStateAdapter fragmentStateAdapter;
     private BottomNavigationView navProfilePost;
     private ViewPager2 viewPagerPost;
-    private FragmentStateAdapter fragmentStateAdapter;
     private int currentSelectedItem = 0;
-    public ProfileFragment(){
-
-    }
-    public ProfileFragment(AccountBaseFragment accountBaseFragment){
-        this.accountBaseFragment = accountBaseFragment;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
         fragmentList = new ArrayList<>();
         fragmentList.add(new PostActiveFragment());
         fragmentList.add(new PostInactiveFragment());
-
-    }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        imgProfileAvatar = view.findViewById(R.id.imgProfileAvatar);
-        return view;
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        viewPagerPost = view.findViewById(R.id.viewPagerProfilePost);
+        //find view
+        imgProfileAvatar = findViewById(R.id.imgProfileAvatar);
+        viewPagerPost = findViewById(R.id.viewPagerProfilePost);
         fragmentStateAdapter = new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -81,7 +53,7 @@ public class ProfileFragment extends Fragment {
             }
         };
         viewPagerPost.setAdapter(fragmentStateAdapter);
-        navProfilePost = view.findViewById(R.id.navProfilePost);
+        navProfilePost = findViewById(R.id.navProfilePost);
         navProfilePost.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.postActive && currentSelectedItem != 0) {
@@ -108,9 +80,12 @@ public class ProfileFragment extends Fragment {
                 .apply(RequestOptions.circleCropTransform())
                 .into(imgProfileAvatar);
 
-        btnProfileBack = view.findViewById(R.id.btnProfileBack);
+        btnProfileBack = findViewById(R.id.btnProfileBack);
         btnProfileBack.setOnClickListener(v -> {
-            accountBaseFragment.replaceFragment(accountBaseFragment.accountFragment);
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", true);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         });
     }
 

@@ -3,6 +3,7 @@ package com.example.laptop_market.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -114,6 +115,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private void setListener()
     {
         btnPostDetailClose.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", false);
+            setResult(Activity.RESULT_OK, intent);
             finish();
         });
 

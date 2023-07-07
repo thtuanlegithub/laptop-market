@@ -1,9 +1,12 @@
 package com.example.laptop_market.view.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,7 +25,10 @@ import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.view.activities.AccountSettingActivity;
 import com.example.laptop_market.view.activities.LoginActivity;
+import com.example.laptop_market.view.activities.MainActivity;
+import com.example.laptop_market.view.activities.ProfileActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 
@@ -33,13 +39,11 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
     private IFragmentListener fragmentListener;
-    public AccountBaseFragment accountBaseFragment;
     private boolean isLogin = false;
+    private static final int REQUEST_CODE_TRANSITION = 1;
+    private boolean applySlideTransition = false;
     public AccountFragment() {
         // Required empty public constructor
-    }
-    public AccountFragment(AccountBaseFragment accountBaseFragment){
-        this.accountBaseFragment = accountBaseFragment;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,9 +83,11 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
                 startActivity(intent);
             }
             else {
-                accountBaseFragment.profileFragment = new ProfileFragment(accountBaseFragment);
-                accountBaseFragment.replaceFragment(accountBaseFragment.profileFragment);
-
+//                accountBaseFragment.profileFragment = new ProfileFragment(accountBaseFragment);
+//                accountBaseFragment.replaceFragment(accountBaseFragment.profileFragment);
+                Intent intent = new Intent(this.getActivity(), ProfileActivity.class);
+                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+                startActivityForResult(intent,REQUEST_CODE_TRANSITION, bundle);
             }
         });
         btnSellOrder.setOnClickListener(view -> {
@@ -176,15 +182,30 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
 
     @Override
     public void LoadAccountSettings() {
-        if(accountBaseFragment.accountSettingFragment==null){
-            accountBaseFragment.accountSettingFragment = new AccountSettingFragment(accountBaseFragment);
-        }
-        accountBaseFragment.replaceFragment(accountBaseFragment.accountSettingFragment);
+        Intent intent = new Intent(getActivity(), AccountSettingActivity.class);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivityForResult(intent,REQUEST_CODE_TRANSITION,bundle);
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            boolean shouldApplySlideTransition = data.getBooleanExtra("applySlideTransition", false);
+            if (shouldApplySlideTransition) {
+                applySlideTransition = true;
+            }
+            else{
+                applySlideTransition = false;
+            }
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
+        if (getActivity() instanceof MainActivity && applySlideTransition) {
+            MainActivity activity = (MainActivity) getActivity();
+            activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
         accountFragmentPresenter.LoadAccountStatus();
     }
 

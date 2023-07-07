@@ -24,17 +24,14 @@ import com.example.laptop_market.presenter.fragments.SellFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
+import com.example.laptop_market.view.activities.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SellFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class SellFragment extends Fragment implements IOrderContract.View.SellFragmentView {
     private List<Fragment> fragmentList;
     private ViewPager2 viewPagerSell;
@@ -45,6 +42,7 @@ public class SellFragment extends Fragment implements IOrderContract.View.SellFr
     private GridLayout gridRequireLoginForSell;
     private ActivityResultLauncher<Intent> loginLauncher;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
+    private boolean applySlideTransition = true;
     public SellFragment() {
         // Required empty public constructor
     }
@@ -126,10 +124,25 @@ public class SellFragment extends Fragment implements IOrderContract.View.SellFr
         });
         return view;
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            boolean shouldApplySlideTransition = data.getBooleanExtra("applySlideTransition", false);
+            if (shouldApplySlideTransition) {
+                applySlideTransition = true;
+            }
+            else{
+                applySlideTransition = false;
+            }
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
+        if (applySlideTransition) {
+            getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
         sellFragmentPresenter.LoadManageSellOrder();
     }
 

@@ -1,22 +1,16 @@
-package com.example.laptop_market.view.fragments;
+package com.example.laptop_market.view.activities;
 
-import android.media.Image;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.InputType;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.laptop_market.R;
 import com.google.android.material.textfield.TextInputEditText;
 
-
-public class AccountPasswordFragment extends Fragment {
+public class AccountPasswordActivity extends AppCompatActivity {
     private Button btnAccountPasswordBack;
     private ImageView eyeOldPassword;
     private ImageView eyeNewPassword;
@@ -27,38 +21,23 @@ public class AccountPasswordFragment extends Fragment {
     private boolean eyeOldPasswordVisible = false;
     private boolean eyeNewPasswordVisible = false;
     private boolean eyeNewPasswordConfirmVisible = false;
-    public AccountBaseFragment accountBaseFragment;
-    public AccountPasswordFragment(AccountBaseFragment accountBaseFragment){
-        this.accountBaseFragment = accountBaseFragment;
-    }
-    public AccountPasswordFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account_password);
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_account_password, container, false);
-
-        btnAccountPasswordBack = view.findViewById(R.id.btnAccountPasswordBack);
+        btnAccountPasswordBack = findViewById(R.id.btnAccountPasswordBack);
         btnAccountPasswordBack.setOnClickListener(v -> {
-            accountBaseFragment.replaceFragment(accountBaseFragment.accountSettingFragment);
+            finish();
         });
 
-        eyeOldPassword = view.findViewById(R.id.eyeOldPassword);
-        eyeNewPassword = view.findViewById(R.id.eyeNewPassword);
-        eyeNewPasswordConfirm = view.findViewById(R.id.eyeNewPasswordConfirm);
+        eyeOldPassword = findViewById(R.id.eyeOldPassword);
+        eyeNewPassword = findViewById(R.id.eyeNewPassword);
+        eyeNewPasswordConfirm = findViewById(R.id.eyeNewPasswordConfirm);
 
-        edtAccountSettingOldPassword = view.findViewById(R.id.edtAccountSettingOldPassword);
-        edtAccountSettingNewPassword = view.findViewById(R.id.edtAccountSettingNewPassword);
-        edtAccountSettingNewPasswordConfirm = view.findViewById(R.id.edtAccountSettingNewPasswordConfirm);
+        edtAccountSettingOldPassword = findViewById(R.id.edtAccountSettingOldPassword);
+        edtAccountSettingNewPassword = findViewById(R.id.edtAccountSettingNewPassword);
+        edtAccountSettingNewPasswordConfirm = findViewById(R.id.edtAccountSettingNewPasswordConfirm);
 
         eyeOldPassword.setOnClickListener(v -> {
             if(!eyeOldPasswordVisible){
@@ -101,7 +80,5 @@ public class AccountPasswordFragment extends Fragment {
             }
             edtAccountSettingNewPasswordConfirm.setSelection(edtAccountSettingNewPasswordConfirm.getText().length());
         });
-
-        return view;
     }
 }

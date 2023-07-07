@@ -7,10 +7,14 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
+import com.example.laptop_market.view.activities.MainActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
 import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -126,19 +131,21 @@ public class PostFragment extends Fragment implements IPostContract.View.PostFra
         });
         return view;
     }
-
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         postFragmentPresenter.LoadManagePost();
-    }
 
+    }
+    private static final int REQUEST_CODE = 1;
     @Override
     public void CreateNewPost() {
         Intent intent = new Intent(getContext(), NewPostActivity.class);
-        startActivity(intent);
+        //Thiết lập hiệu ứng trượt từ phải sang trái
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
     }
-
     @Override
     public void LoginAccount() {
         Intent intent = new Intent(this.getActivity(), LoginActivity.class);

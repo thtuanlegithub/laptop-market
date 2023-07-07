@@ -17,11 +17,11 @@
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBuyOrderDetailClose"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="-10dp"
-                android:background="@drawable/ic_close"/>
+                android:layout_marginLeft="0dp"
+                android:background="@drawable/ic_back"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,6 +87,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="Tên mặt hàng: "
+                        android:textSize="17dp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:gravity="left"
+                        android:layout_marginLeft="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:textColor="@color/black"
+                        android:text="Laptop ASUS TUF - Gaming A15 - 16GB RAM - RTX 3050 4GB"
+                        />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
