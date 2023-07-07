@@ -19,34 +19,34 @@ import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult
 import java.text.NumberFormat;
 import java.util.List;
 
-public class PostInactiveAdapter extends RecyclerView.Adapter<PostInactiveAdapter.PostInactiveViewHolder> {
-    private List<PostSearchResult> listPostInactive;
-    public PostInactiveAdapter(List<PostSearchResult> listPostInactive){
-        this.listPostInactive = listPostInactive;
+public class SavedPostAdapter extends RecyclerView.Adapter<SavedPostAdapter.SavedPostViewHolder> {
+    private List<PostSearchResult> listSavedPost;
+    public SavedPostAdapter(List<PostSearchResult> listSavedPost){
+        this.listSavedPost = listSavedPost;
     }
 
     @NonNull
     @Override
-    public PostInactiveViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SavedPostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post,parent,false);
-        return new PostInactiveAdapter.PostInactiveViewHolder(view);
+        return new SavedPostAdapter.SavedPostViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostInactiveViewHolder holder, int position) {
-        PostSearchResult postInactive = listPostInactive.get(position);
-        if(postInactive==null){
+    public void onBindViewHolder(@NonNull SavedPostViewHolder holder, int position) {
+        PostSearchResult SavedPost = listSavedPost.get(position);
+        if(SavedPost==null){
             return;
         }
-//        holder.imgPostInactive.setImageBitmap(postInactive.getImage());
-        holder.titlePost.setText(postInactive.getTitle());
+//        holder.imgSavedPost.setImageBitmap(SavedPost.getImage());
+        holder.titlePost.setText(SavedPost.getTitle());
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
-        String formattedPrice = numberFormat.format(postInactive.getPrice());
+        String formattedPrice = numberFormat.format(SavedPost.getPrice());
         holder.pricePost.setText(String.valueOf(formattedPrice));
-        holder.addressPost.setText(postInactive.getAddress());
-        holder.inactiveLabelPost.setVisibility(View.VISIBLE);
+        holder.addressPost.setText(SavedPost.getAddress());
+
 
         // item select
         holder.itemView.setOnClickListener(v -> {
@@ -56,25 +56,23 @@ public class PostInactiveAdapter extends RecyclerView.Adapter<PostInactiveAdapte
 
     @Override
     public int getItemCount() {
-        if(listPostInactive!=null){
-            return listPostInactive.size();
+        if(listSavedPost!=null){
+            return listSavedPost.size();
         }
         return 0;
     }
 
-    public class PostInactiveViewHolder extends RecyclerView.ViewHolder{
+    public class SavedPostViewHolder extends RecyclerView.ViewHolder{
         private ImageView imgPost;
         private TextView titlePost;
         private TextView pricePost;
         private TextView addressPost;
-        private TextView inactiveLabelPost;
-        public PostInactiveViewHolder(@NonNull View itemView) {
+        public SavedPostViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPost = itemView.findViewById(R.id.imgPost);
             titlePost = itemView.findViewById(R.id.titlePost);
             pricePost = itemView.findViewById(R.id.pricePost);
             addressPost = itemView.findViewById(R.id.addressPost);
-            inactiveLabelPost = itemView.findViewById(R.id.inactiveLabelPost);
         }
     }
 }

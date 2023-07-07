@@ -17,6 +17,24 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".view.activities.FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.SellStatisticActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.BuyStatisticActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.RatedPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.SavedPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.NotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activities.AccountPasswordActivity"
             android:exported="false" />
         <activity

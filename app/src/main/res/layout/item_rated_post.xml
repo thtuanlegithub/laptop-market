@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,7 +6,7 @@
     android:layout_marginTop="2dp"
     android:background="@color/white">
     <ImageView
-        android:id="@+id/imgPost"
+        android:id="@+id/imgRatedPost"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginLeft="10dp"
@@ -26,13 +25,13 @@
             android:layout_weight="1"
             >
             <TextView
-                android:id="@+id/titlePost"
+                android:id="@+id/titleRatedPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM"
                 android:textColor="@color/black" />
             <TextView
-                android:id="@+id/pricePost"
+                android:id="@+id/priceRatedPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="26,000,000 đ"
@@ -47,22 +46,43 @@
             app:layout_constraintBottom_toBottomOf="parent"
             >
             <TextView
-                android:id="@+id/addressPost"
+                android:id="@+id/addressRatedPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Thành phố Hồ Chí Minh"/>
-            <TextView
-                android:paddingTop="5dp"
-                android:visibility="gone"
-                android:id="@+id/inactiveLabelPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:textColor="#6B6D6D"
-                android:text="TIN HẾT HẠN"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:paddingTop="5dp"
+                    android:visibility="gone"
+                    android:id="@+id/inactiveLabelRatedPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:textColor="#6B6D6D"
+                    android:text="TIN HẾT HẠN"/>
+                <RatingBar
+                    android:clickable="false"
+                    android:id="@+id/ratingBarRatedPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-55dp"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginBottom="-20dp"
+                    android:numStars="5"
+                    android:progressTint="#F3AD3B"
+                    android:rating="4.5"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:stepSize="0.5"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

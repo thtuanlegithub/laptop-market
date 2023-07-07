@@ -22,7 +22,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_close"/>
+                    android:background="@drawable/ic_back"/>
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/postDetailMessage"
                     android:layout_marginLeft="10dp"

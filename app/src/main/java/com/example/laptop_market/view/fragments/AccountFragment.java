@@ -26,9 +26,14 @@ import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.AccountSettingActivity;
+import com.example.laptop_market.view.activities.BuyStatisticActivity;
+import com.example.laptop_market.view.activities.FeedbackActivity;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
 import com.example.laptop_market.view.activities.ProfileActivity;
+import com.example.laptop_market.view.activities.RatedPostActivity;
+import com.example.laptop_market.view.activities.SavedPostActivity;
+import com.example.laptop_market.view.activities.SellStatisticActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 
@@ -106,7 +111,9 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
             accountFragmentPresenter.ClickAccountSettings();
         });
         btnFeedback.setOnClickListener(view -> {
-            // Create feedback activity
+            Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
         });
         bttLogout.setOnClickListener(view -> {
             MyDialog.showDialog(getContext(), "Bạn có chắc muốn đăng xuất không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
@@ -162,22 +169,30 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
 
     @Override
     public void LoadSellOrder() {
-
+        Intent intent = new Intent(getActivity(), SellStatisticActivity.class);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
     }
 
     @Override
     public void LoadBuyOrder() {
-
+        Intent intent = new Intent(getActivity(), BuyStatisticActivity.class);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
     }
 
     @Override
     public void LoadSavedPost() {
-
+        Intent intent = new Intent(getActivity(), SavedPostActivity.class);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
     }
 
     @Override
     public void LoadYourRating() {
-
+        Intent intent = new Intent(getActivity(), RatedPostActivity.class);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
     }
 
     @Override
