@@ -9,7 +9,9 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
+import com.example.laptop_market.contracts.IFragmentListener;
 import com.example.laptop_market.databinding.ActivityMainBinding;
 import com.example.laptop_market.utils.elses.ConnectionReceiver;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
@@ -22,12 +24,11 @@ import com.example.laptop_market.view.fragments.SearchFragment;
 import com.example.laptop_market.view.fragments.SearchResultFragment;
 import com.example.laptop_market.view.fragments.SellFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IFragmentListener {
     private FragmentManager fragmentManager;
     ActivityMainBinding binding;
     private ConnectionReceiver broadcastReceiver = null;
     private Fragment currentFragment = null;
-
     private InternetDisconnectedFragment internetDisconnectedFragment;
     private SellFragment sellFragment = null;
     private HomeBaseFragment homeBaseFragment = null;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         accountFragment = new AccountFragment();
         sellFragment = new SellFragment();
         internetDisconnectedFragment = new InternetDisconnectedFragment(this);
+
+        // Set listener cho các fragment
+        accountFragment.setFragmentListener(this);
 
         // Thêm fragment vào FragmentManager
         fragmentManager = getSupportFragmentManager();
@@ -156,5 +160,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterNetworkBroadcast();
+    }
+
+    @Override
+    public void OnLogoutListener() {
+        buyFragment.DisplayRequireLoginView();
+        sellFragment.DisplayRequireLoginView();
+        postFragment.DisplayRequireLoginView();
     }
 }

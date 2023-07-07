@@ -1,5 +1,6 @@
 package com.example.laptop_market.view.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,6 +105,7 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         bttLogin.setOnClickListener(view -> {
             String email = txtEmail.getText().toString();
             String password = txtPassword.getText().toString();
+            hidKeyboard();
             boolean isValidEmail = ValidateData.isValidEmail(email);
             if(!isValidEmail){
                 Toast.makeText(getContext(), "Vui lòng kiểm tra lại địa chỉ email", Toast.LENGTH_SHORT).show();
@@ -162,6 +165,13 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
                 intent.putExtra("PostDetailActivity", postSearchResult);
                 preferenceManager.putBoolean("IsFromLogin", true);
                 break;
+            case FragmentActivityType.MANAGE_BUYING_ORDER:
+            case FragmentActivityType.MANAGE_SELLING_ORDER:
+            case FragmentActivityType.MANAGE_POST:
+                intent = new Intent();
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                loginActivity.finish();
+                return;
             case FragmentActivityType.NOTIFICATION_ACTIVITY:
 
                 break;
@@ -194,5 +204,13 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
     @Override
     public void LoginFailed(String message) {
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void hidKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

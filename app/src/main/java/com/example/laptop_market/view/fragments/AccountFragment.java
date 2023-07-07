@@ -11,12 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.contracts.IFragmentListener;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
@@ -32,6 +32,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     private IAccountContract.Presenter.AccountFragmentPresenter accountFragmentPresenter;
     private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
+    private IFragmentListener fragmentListener;
     private boolean isLogin = false;
     public AccountFragment() {
         // Required empty public constructor
@@ -97,6 +98,8 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
                 @Override
                 public void onYesClick() {
                     accountFragmentPresenter.LogoutAccount();
+                    if (fragmentListener != null)
+                        fragmentListener.OnLogoutListener();
                 }
 
                 @Override
@@ -171,5 +174,9 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     public void onResume() {
         super.onResume();
         accountFragmentPresenter.LoadAccountStatus();
+    }
+
+    public void setFragmentListener(IFragmentListener listener){
+        this.fragmentListener = listener;
     }
 }

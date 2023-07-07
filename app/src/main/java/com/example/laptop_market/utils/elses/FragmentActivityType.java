@@ -12,4 +12,7 @@ public class FragmentActivityType {
     public static final int YOUR_RATING_ACTIVITY = 8;
     public static final int ACCOUNT_SETTINGS_ACTIVITY = 9;
     public static final int POST_DETAILS_ACTIVITY = 10;
+    public static final int MANAGE_BUYING_ORDER = 11;
+    public static final int MANAGE_SELLING_ORDER = 12;
+    public static final int MANAGE_POST = 13;
 }

@@ -24,7 +24,7 @@
         </androidx.appcompat.widget.Toolbar>
         <GridLayout
             android:visibility="visible"
-            android:id="@+id/gridRequireLoginForBuy"
+            android:id="@+id/gridRequireLoginForSell"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -41,6 +41,7 @@
                     android:text="Vui lòng đăng nhập để thực hiện chức năng này"
                     android:textSize="16dp"/>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnRequireLoginForSell"
                     android:layout_marginTop="5dp"
                     android:layout_width="200dp"
                     android:layout_gravity="center"
