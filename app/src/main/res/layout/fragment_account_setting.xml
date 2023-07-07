@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.AccountSettingActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusableInTouchMode="true">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -16,12 +16,11 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnAccountSettingClose"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/btnAccountSettingBack"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="-10dp"
-                android:background="@drawable/ic_close"/>
+                android:background="@drawable/ic_back"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -160,6 +159,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:focusable="false"
                         android:id="@+id/edtAccountSettingPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -192,6 +192,7 @@
                 android:paddingTop="3dp"
                 android:layout_marginTop="10dp">
                 <com.google.android.material.textfield.TextInputEditText
+                    android:focusedByDefault="false"
                     android:drawableStart="@drawable/ic_google"
                     android:id="@+id/edtAccountSettingGmail"
                     android:layout_width="match_parent"

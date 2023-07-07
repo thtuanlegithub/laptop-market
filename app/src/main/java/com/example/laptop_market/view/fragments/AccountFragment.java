@@ -33,9 +33,13 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
     private IFragmentListener fragmentListener;
+    public AccountBaseFragment accountBaseFragment;
     private boolean isLogin = false;
     public AccountFragment() {
         // Required empty public constructor
+    }
+    public AccountFragment(AccountBaseFragment accountBaseFragment){
+        this.accountBaseFragment = accountBaseFragment;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,11 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
                 PreferenceManager preferenceManager = new PreferenceManager(getContext());
                 preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.ACCOUNT_FRAGMENT);
                 startActivity(intent);
+            }
+            else {
+                accountBaseFragment.profileFragment = new ProfileFragment(accountBaseFragment);
+                accountBaseFragment.replaceFragment(accountBaseFragment.profileFragment);
+
             }
         });
         btnSellOrder.setOnClickListener(view -> {
@@ -167,7 +176,10 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
 
     @Override
     public void LoadAccountSettings() {
-
+        if(accountBaseFragment.accountSettingFragment==null){
+            accountBaseFragment.accountSettingFragment = new AccountSettingFragment(accountBaseFragment);
+        }
+        accountBaseFragment.replaceFragment(accountBaseFragment.accountSettingFragment);
     }
 
     @Override
