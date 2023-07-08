@@ -72,28 +72,43 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
 
         btnConfirmBuyOrder = findViewById(R.id.btnConfirmBuyOrder);
         btnConfirmBuyOrder.setOnClickListener(view -> {
-            // Đóng gói đối tượng Order tù UI
-            // Sau đó gọi presener + truyền đối tượng để lưu data
-            // Đối tượng cần truyền gồm: Order, SellerID, BuyerID
-            Order newOrder = new Order();
-            // Tạo định dạng ngày giờ
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
-            Date currentDateTime = new Date();
-            // Order info
-            newOrder.setOrderedDate(sdf.format(currentDateTime));
-            newOrder.setOrderStatus(OrderStatus.PROCESSING);
-            newOrder.setTotalAmount(tvBuyOrderDetailTotalAmount.getText().toString());
+            MyDialog.showDialog(this, "Bạn có chắc muốn mua không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+                    // Đóng gói đối tượng Order tù UI
+                    // Sau đó gọi presener + truyền đối tượng để lưu data
+                    // Đối tượng cần truyền gồm: Order, SellerID, BuyerID
+                    Order newOrder = new Order();
+                    // Tạo định dạng ngày giờ
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+                    Date currentDateTime = new Date();
+                    // Order info
+                    newOrder.setOrderedDate(sdf.format(currentDateTime));
+                    newOrder.setOrderStatus(OrderStatus.PROCESSING);
+                    newOrder.setTotalAmount(tvBuyOrderDetailTotalAmount.getText().toString());
 
-            // Buyer info
-            newOrder.setBuyerID(currentBuyer.getAccountID());
-            newOrder.setBuyerName(edtBuyOrderDetailBuyerName.getText().toString().trim());
-            newOrder.setBuyerPhone(edtBuyOrderDetailBuyerPhone.getText().toString().trim());
-            newOrder.setShipAddress(edtBuyOrderDetailBuyerAddress.getText().toString().trim());
+                    // Buyer info
+                    newOrder.setBuyerID(currentBuyer.getAccountID());
+                    newOrder.setBuyerName(edtBuyOrderDetailBuyerName.getText().toString().trim());
+                    newOrder.setBuyerPhone(edtBuyOrderDetailBuyerPhone.getText().toString().trim());
+                    newOrder.setShipAddress(edtBuyOrderDetailBuyerAddress.getText().toString().trim());
 
-            // Seller info
-            newOrder.setSellerID(sellerID);
-            newOrder.setPostID(postID);
-            buyOrderDetailActivityPresenter.OnConfirmBuyingClicked(newOrder, sellerID, currentBuyer.getAccountID());
+                    // Seller info
+                    newOrder.setSellerID(sellerID);
+                    newOrder.setPostID(postID);
+                    buyOrderDetailActivityPresenter.OnConfirmBuyingClicked(newOrder, sellerID, currentBuyer.getAccountID());
+                }
+
+                @Override
+                public void onNoClick() {
+
+                }
+
+                @Override
+                public void onOkClick() {
+
+                }
+            });
         });
 
         btnBuyOrderDetailClose = findViewById(R.id.btnBuyOrderDetailClose);
@@ -308,7 +323,22 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     public void DisplayBuySucessful() {
         Intent resultIntent = new Intent();
         setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        MyDialog.showDialog(this, "Đặt hàng thành công.\nQuay về màn hình trang chủ.", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+            @Override
+            public void onYesClick() {
+
+            }
+
+            @Override
+            public void onNoClick() {
+
+            }
+
+            @Override
+            public void onOkClick() {
+                finish();
+            }
+        });
     }
 
     TextWatcher textWatcher = new TextWatcher() {

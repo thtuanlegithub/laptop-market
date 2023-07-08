@@ -63,11 +63,13 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private PostSearchResult postSearchResult;
     private TextView totalPictureTextView;
     private TextView currentPictureTextView;
+    private TextView tvPostDetailSellerAddress;
     private int currentImagePage;
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
     private PreferenceManager preferenceManager;
     private ActivityResultLauncher<Intent> orderDetailsLauncher;
+    private TextView tvPostDetailDescription;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +79,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         orderDetailsLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK){
-                        // Chuyển qua buy fragment
-                        // finish cái activity này
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 }
         );
@@ -91,7 +94,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         btnPostDetailClose = findViewById(R.id.btnPostDetailClose);
         imgPostDetailShop = findViewById(R.id.imgPostDetailShop);
         postDetailTitleTextView = findViewById(R.id.postDetailTitleTextView);
+        tvPostDetailDescription = findViewById(R.id.tvPostDetailDescription);
         NameShopTextView = findViewById(R.id.NameShopTextView);
+        tvPostDetailSellerAddress = findViewById(R.id.tvPostDetailSellerAddress);
         postDetailPrice = findViewById(R.id.postDetailPrice);
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
@@ -192,7 +197,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         postDetailTitleTextView.setText(post.getTitle());
         NameShopTextView.setText(account.getAccountName());
         totalPictureTextView.setText(String.valueOf(laptop.getNumOfImage()));
-
+        tvPostDetailSellerAddress.setText(post.getSellerAddress());
+        tvPostDetailDescription.setText(post.getDescription());
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
