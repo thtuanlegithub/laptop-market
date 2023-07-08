@@ -44,6 +44,7 @@
                     android:drawablePadding="5dp"
                     />
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnNotificationPostSearchResult"
                     android:layout_marginLeft="10dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp"

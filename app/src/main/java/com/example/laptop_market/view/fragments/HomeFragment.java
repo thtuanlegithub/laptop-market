@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.view.activities.NotificationActivity;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.model.brand.Brand;
 
@@ -28,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private AppCompatButton btnNotificationHome;
     private HomeBaseFragment homeBaseFragment;
     private LinearLayout linearLayoutFragmentHome = null;
     public SearchFragment searchFragment = null;
@@ -80,6 +85,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // Bổ sung giao diện cho trang chủ
+        btnNotificationHome = view.findViewById(R.id.btnNotificationHome);
 
         //Tạo list image để hiển thị slide show ViewPager
         List<Integer> imageList = new ArrayList<>();
@@ -107,6 +113,11 @@ public class HomeFragment extends Fragment {
     }
     private void setListener()
     {
+        btnNotificationHome.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotificationActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
         edtTextHome.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

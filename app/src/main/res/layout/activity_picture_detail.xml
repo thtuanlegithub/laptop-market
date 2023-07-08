@@ -62,8 +62,7 @@
             android:layout_height="wrap_content"
             android:text="1"
             android:textColor="@color/white"
-            android:textSize="30dp"
-            android:textStyle="italic"
+            android:textSize="25dp"
             android:layout_marginRight="3dp"/>
 
         <TextView
@@ -71,8 +70,7 @@
             android:layout_height="wrap_content"
             android:text="/"
             android:textColor="@color/white"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/totalPictureTextView"
@@ -80,8 +78,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textColor="@color/white"
-            android:textSize="30dp"
-            android:textStyle="italic"
+            android:textSize="25dp"
             android:layout_marginLeft="3dp"/>
     </LinearLayout>
 </LinearLayout>
