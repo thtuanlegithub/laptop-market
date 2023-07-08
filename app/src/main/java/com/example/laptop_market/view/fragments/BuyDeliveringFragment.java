@@ -42,15 +42,7 @@ public class BuyDeliveringFragment extends Fragment {
     }
 
     private List<BuyOrder> getListBuyDelivering(){
-        List<BuyOrder> listBuyDelivering = new ArrayList<>();
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyDelivering.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        return  listBuyDelivering;
+        return null;
     }
 
 }

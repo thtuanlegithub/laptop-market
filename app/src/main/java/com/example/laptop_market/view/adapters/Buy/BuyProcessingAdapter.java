@@ -38,13 +38,12 @@ public class BuyProcessingAdapter extends RecyclerView.Adapter<BuyProcessingAdap
             return;
         }
         holder.imgBuyOrder.setImageBitmap(BuyProcessing.getImage());
-        holder.titleBuyOrder.setText(BuyProcessing.getTitle());
+        holder.titleBuyOrder.setText(BuyProcessing.getLaptopName());
 
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        /*NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
-        numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
-        String formattedPrice = numberFormat.format(BuyProcessing.getPrice());
-        holder.priceBuyOrder.setText(formattedPrice);
+        numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân*/
+        holder.priceBuyOrder.setText(BuyProcessing.getPrice());
         holder.addressBuyOrder.setText(BuyProcessing.getAddress());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
