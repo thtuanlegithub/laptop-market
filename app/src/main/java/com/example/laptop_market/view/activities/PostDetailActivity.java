@@ -2,6 +2,7 @@ package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,9 +29,11 @@ import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -62,6 +66,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private LinearLayout layoutButtonSeller;
     private PreferenceManager preferenceManager;
     private boolean backFromOrder = false;
+    private AppCompatButton bttMessenger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         NameShopTextView = findViewById(R.id.NameShopTextView);
         postDetailPrice = findViewById(R.id.postDetailPrice);
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
+        bttMessenger = findViewById(R.id.bttMessenger);
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
@@ -116,6 +122,19 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     }
     private void setListener()
     {
+        btnBuyNow.setOnClickListener(view -> {
+
+        });
+        bttMessenger.setOnClickListener(view -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            {
+                Toast.makeText(getApplicationContext(), "Bạn phải đăng nhập để thực hiện chức nắng này", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(getApplicationContext(),ConversationDetailActivity.class);
+            intent.putExtra(AccountTable.TABLE_NAME,account);
+            startActivity(intent);
+        });            ;
         btnPostDetailClose.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("applySlideTransition", false);
