@@ -9,6 +9,7 @@ import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -230,8 +231,26 @@ public class AccountModel implements IAccountContract.Model {
                 , AccountTable.DESCRIPTION, account.getDescription()).addOnCompleteListener(task -> {
                     if(!task.isSuccessful())
                         listener.OnFinishUpdateAccountInformation(task.getException());
+                    else
+                        listener.OnFinishUpdateAccountInformation(null);
         });
 
+    }
+
+    @Override
+    public void UpdateAccountPassword(String oldPassword, String newPassword, OnFinishUpdateAccountPasswordListener listener) {
+        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            if(!documentSnapshot.getString(AccountTable.PASSWORD).equals(oldPassword))
+                listener.OnFinishUpdateAccountPassword(false, null);
+            else
+                firebaseUser.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.PASSWORD,newPassword);
+                        listener.OnFinishUpdateAccountPassword(true, null);
+                    }
+                }).addOnFailureListener(Throwable::printStackTrace);
+        }).addOnFailureListener(Throwable::printStackTrace);
     }
     //endregion
 }

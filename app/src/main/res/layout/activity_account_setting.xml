@@ -122,7 +122,9 @@
                     android:paddingTop="5dp"
                     android:background="#FAFAFA"
                     android:textSize="17dp"
-                    android:inputType="number"/>
+                    android:inputType="phone">
+
+                </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
                 android:layout_marginTop="25dp"
@@ -158,7 +160,8 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
-                        android:inputType="textPassword" />
+                        android:inputType="none"
+                        android:text="**********"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <ImageView
                     android:layout_width="wrap_content"
@@ -224,6 +227,7 @@
         </LinearLayout>
     </ScrollView>
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveAccountSettingbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#F09D38"

@@ -58,6 +58,10 @@ public interface IAccountContract {
         interface OnFinishUpdateAccountInformationListener{
             void OnFinishUpdateAccountInformation(Exception e);
         }
+        void UpdateAccountPassword(String oldPassword, String newPassword, OnFinishUpdateAccountPasswordListener listener);
+        interface OnFinishUpdateAccountPasswordListener{
+            void OnFinishUpdateAccountPassword(boolean isSuccess, Exception e);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -96,6 +100,12 @@ public interface IAccountContract {
             void FailedLoadingPostDetail(Exception error);
         }
         //endregion
+        //region Account pasword activity view
+        interface AccountPasswordActivityView{
+            void UpdatePasswordSuccess();
+            void WrongOldPassword(String message);
+        }
+        //endregion
     }
     //region Presenter
     interface Presenter{
@@ -130,6 +140,11 @@ public interface IAccountContract {
         //region PostDetail Activity presenter
         interface PostDetailActivityPresenter{
             void OnLoadingAccountInPostDetail(String accountId);
+        }
+        //endregion
+        //region Account pasword activity view
+        interface AccountPasswordActivityPresenter{
+            void UpdatePassword(String oldPassword, String newPassword);
         }
         //endregion
     }

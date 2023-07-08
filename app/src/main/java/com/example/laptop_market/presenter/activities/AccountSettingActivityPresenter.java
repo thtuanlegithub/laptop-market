@@ -2,6 +2,7 @@ package com.example.laptop_market.presenter.activities;
 
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.model.account.AccountModel;
 
 public class AccountSettingActivityPresenter implements IAccountContract.Presenter.AccountSettingActivityPresenter {
     private IAccountContract.View.AccountSettingActivityView view;
@@ -9,6 +10,7 @@ public class AccountSettingActivityPresenter implements IAccountContract.Present
     public AccountSettingActivityPresenter(IAccountContract.View.AccountSettingActivityView view)
     {
         this.view = view;
+        model = new AccountModel();
     }
     @Override
     public void LoadAccountSetting() {
@@ -27,6 +29,9 @@ public class AccountSettingActivityPresenter implements IAccountContract.Present
         model.UpdateAccountInformation(account, e -> {
             if(e!=null)
                 view.Error(e);
+            else
+                view.UpdateAccountSettingSuccess();
         });
     }
+
 }
