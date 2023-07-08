@@ -44,6 +44,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    // Rounded ImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    //multi Dex
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation('com.algolia:algoliasearch-android:3.27.0') {
         exclude group: 'com.android.support'
     }

@@ -243,6 +243,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bttBuyNow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -254,6 +255,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_call_btn"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bttMessenger"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

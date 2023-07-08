@@ -1,8 +1,10 @@
 package com.example.laptop_market.model.account;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Account {
+public class Account implements Serializable {
     private String accountID;
     private String email;
     private String password;
@@ -14,6 +16,7 @@ public class Account {
     private ArrayList<String> publishPosts;
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
+    private ArrayList<String> conversations;
     private String avatar;
 
     public Account() {
@@ -125,6 +128,14 @@ public class Account {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public ArrayList<String> getConversations() {
+        return conversations;
+    }
+
+    public void setConversations(ArrayList<String> conversations) {
+        this.conversations = conversations;
     }
 }
 

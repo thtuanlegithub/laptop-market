@@ -1,5 +1,7 @@
 package com.example.laptop_market.utils.tables;
 
+import java.util.ArrayList;
+
 public class AccountTable {
     public static final String TABLE_NAME = "accounts";
     public static final String ACCOUNT_ID = "accountID";
@@ -13,4 +15,5 @@ public class AccountTable {
     public static final String CART_ITEMS = "cartItems";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String AVARTAR = "avatar";
+    public static final String CONVERSATIONS = "conversations";
 }

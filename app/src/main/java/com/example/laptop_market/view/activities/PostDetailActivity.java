@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -25,6 +26,7 @@ import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
@@ -59,6 +61,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
     private PreferenceManager preferenceManager;
+    private AppCompatButton bttBuyNow;
+    private AppCompatButton bttMessenger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +75,12 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         accountPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
         btnPostDetailClose = findViewById(R.id.btnPostDetailClose);
         imgPostDetailShop = findViewById(R.id.imgPostDetailShop);
+        bttBuyNow = findViewById(R.id.bttBuyNow);
         postDetailTitleTextView = findViewById(R.id.postDetailTitleTextView);
         NameShopTextView = findViewById(R.id.NameShopTextView);
         postDetailPrice = findViewById(R.id.postDetailPrice);
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
+        bttMessenger = findViewById(R.id.bttMessenger);
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
@@ -113,6 +119,14 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     }
     private void setListener()
     {
+        bttBuyNow.setOnClickListener(view -> {
+
+        });
+        bttMessenger.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(),ConversationDetailActivity.class);
+            intent.putExtra(AccountTable.TABLE_NAME,account);
+            startActivity(intent);
+        });            ;
         btnPostDetailClose.setOnClickListener(v -> {
             finish();
         });
