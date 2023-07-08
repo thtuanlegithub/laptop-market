@@ -12,4 +12,5 @@ public class PostTable {
     public static final String SELLER_PHONE_NUMBER = "sellerPhoneNumber";
     public static final String SELLER_NAME = "sellerName";
     public static final String SELLER_ADDRESS = "sellerAddress";
+    public static final String POST_STATUS = "postStatus";
 }

@@ -1,5 +1,6 @@
 package com.example.laptop_market.model.account;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Account {
@@ -14,22 +15,28 @@ public class Account {
     private ArrayList<String> publishPosts;
     private ArrayList<String> savedPosts;
     private ArrayList<String> ratingOrders;
-
+    private ArrayList<String> sellOrders;
+    private ArrayList<String> buyOrders;
     private String avatar;
 
     public Account() {
     }
 
-    public Account(String accountID, String email, String password, String accountName, String address, Double rating, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders) {
+    public Account(String accountID, String email, String password, String accountName, String address, Double rating, String phoneNumber, boolean isFinishData, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders, ArrayList<String> sellOrders, ArrayList<String> buyOrders, String avatar) {
         this.accountID = accountID;
         this.email = email;
         this.password = password;
         this.accountName = accountName;
         this.address = address;
         this.rating = rating;
+        this.phoneNumber = phoneNumber;
+        this.isFinishData = isFinishData;
         this.publishPosts = publishPosts;
         this.savedPosts = savedPosts;
         this.ratingOrders = ratingOrders;
+        this.sellOrders = sellOrders;
+        this.buyOrders = buyOrders;
+        this.avatar = avatar;
     }
 
     public String getAccountID() {
@@ -126,6 +133,22 @@ public class Account {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public ArrayList<String> getSellOrders() {
+        return sellOrders;
+    }
+
+    public void setSellOrders(ArrayList<String> sellOrders) {
+        this.sellOrders = sellOrders;
+    }
+
+    public ArrayList<String> getBuyOrders() {
+        return buyOrders;
+    }
+
+    public void setBuyOrders(ArrayList<String> buyOrders) {
+        this.buyOrders = buyOrders;
     }
 }
 
