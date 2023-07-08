@@ -55,15 +55,30 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@color/white">
-                    <ImageView
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/imgProfileAvatar"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/slide_show1"
-                        android:scaleType="centerCrop"
+                    <RelativeLayout
                         android:layout_gravity="center"
-                        android:background="@drawable/bg_avatar_post_detail"/>
+                        android:layout_width="110dp"
+                        android:layout_height="115dp">
+                        <ImageView
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/imgProfileAvatar"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/slide_show1"
+                            android:scaleType="centerCrop"
+                            android:layout_gravity="top"
+                            android:background="@drawable/bg_avatar_post_detail"/>
+                        <ImageButton
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:id="@+id/imgButtonEditAvatar"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/ic_circle_edit"
+                            />
+                    </RelativeLayout>
+
                     <TextView
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"

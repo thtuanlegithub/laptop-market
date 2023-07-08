@@ -19,7 +19,7 @@
                 android:id="@+id/btnFilterDetailClose"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/ic_close"/>
+                android:background="@drawable/ic_back"/>
             <TextView
                 android:id="@+id/txtFilterClose"
                 android:layout_width="wrap_content"
