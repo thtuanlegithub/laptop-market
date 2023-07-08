@@ -50,6 +50,14 @@ public interface IAccountContract {
         interface OnFinishSavePostListener{
             void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error);
         }
+        void LoadAccountSetting(OnFinishLoadingProfileListener listener);
+        interface OnFinishLoadingProfileListener{
+            void OnFinishLoadingProfile(Account account, Exception e);
+        }
+        void UpdateAccountInformation(Account account, OnFinishUpdateAccountInformationListener listener);
+        interface OnFinishUpdateAccountInformationListener{
+            void OnFinishUpdateAccountInformation(Exception e);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -63,6 +71,11 @@ public interface IAccountContract {
             void LoadSavedPost();
             void LoadYourRating();
             void LoadAccountSettings();
+        }
+        interface AccountSettingActivityView{
+            void LoadProfileData(Account account);
+            void Error(Exception e);
+            void UpdateAccountSettingSuccess();
         }
         //endregion
         //region Login Fragment view
@@ -86,6 +99,12 @@ public interface IAccountContract {
     }
     //region Presenter
     interface Presenter{
+        //region Account Setting activity
+        interface AccountSettingActivityPresenter{
+            void LoadAccountSetting();
+            void UpdateProfileOnClick(Account account);
+        }
+        //endregion
         //region Account Fragment presenter
         interface AccountFragmentPresenter {
             void LoadAccountStatus();

@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.model.account.Account;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class AccountSettingActivity extends AppCompatActivity {
+public class AccountSettingActivity extends AppCompatActivity implements IAccountContract.View.AccountSettingActivityView {
     private TextInputEditText edtAccountSettingPassword;
     private Button btnAccountSettingBack;
     private boolean backFromPassword = false;
@@ -55,5 +57,20 @@ public class AccountSettingActivity extends AppCompatActivity {
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             backFromPassword=false;
         }
+    }
+
+    @Override
+    public void LoadProfileData(Account account) {
+        
+    }
+
+    @Override
+    public void Error(Exception e) {
+
+    }
+
+    @Override
+    public void UpdateAccountSettingSuccess() {
+
     }
 }

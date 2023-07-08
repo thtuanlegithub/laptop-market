@@ -205,5 +205,33 @@ public class AccountModel implements IAccountContract.Model {
             }
         });
     }
+
+    @Override
+    public void LoadAccountSetting(OnFinishLoadingProfileListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+            if(!task.isSuccessful())
+            {
+                listener.OnFinishLoadingProfile(null,task.getException());
+            }
+            else
+            {
+                Account account = task.getResult().toObject(Account.class);
+                listener.OnFinishLoadingProfile(account,null);
+            }
+        });
+    }
+
+    @Override
+    public void UpdateAccountInformation(Account account, OnFinishUpdateAccountInformationListener listener) {
+        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.ACCOUNT_NAME,account.getAccountName()
+                , AccountTable.ADDRESS, account.getAddress()
+                , AccountTable.PHONE_NUMBER, account.getPhoneNumber()
+                , AccountTable.DESCRIPTION, account.getDescription()).addOnCompleteListener(task -> {
+                    if(!task.isSuccessful())
+                        listener.OnFinishUpdateAccountInformation(task.getException());
+        });
+
+    }
     //endregion
 }

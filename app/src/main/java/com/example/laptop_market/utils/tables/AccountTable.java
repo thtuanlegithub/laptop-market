@@ -16,4 +16,5 @@ public class AccountTable {
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String AVARTAR = "avatar";
     public static final String CONVERSATIONS = "conversations";
+    public static final String DESCRIPTION = "description";
 }

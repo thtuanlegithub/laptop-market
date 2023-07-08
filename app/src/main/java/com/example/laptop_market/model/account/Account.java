@@ -12,11 +12,11 @@ public class Account implements Serializable {
     private String address;
     private Double rating;
     private String phoneNumber;
+    private String description;
     private boolean isFinishData;
     private ArrayList<String> publishPosts;
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
-    private ArrayList<String> conversations;
     private ArrayList<String> ratingOrders;
 
     private String avatar;
@@ -132,12 +132,12 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
-    public ArrayList<String> getConversations() {
-        return conversations;
+    public String getDescription() {
+        return description;
     }
 
-    public void setConversations(ArrayList<String> conversations) {
-        this.conversations = conversations;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 
