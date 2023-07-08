@@ -170,8 +170,7 @@ public class ConversationModel implements IConversationContract.Model {
     }
     private void LoadAConversation(Conversation conversation, FinishGetAConversationListener listener)
     {
-        if(conversation!=null)
-            listener.FinishGetAConvesation(conversation,null);
+        listener.FinishGetAConvesation(conversation,null);
     }
 
     @Override

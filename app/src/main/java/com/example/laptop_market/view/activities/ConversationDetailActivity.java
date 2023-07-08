@@ -240,8 +240,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
             conversationRecyclerView.setVisibility(View.VISIBLE);
         }
         Collections.sort(listChatMessages, Comparator.comparing(ChatMessage::getTimeSendMesssage));
-            chatMessageAdapter.notifyDataSetChanged();
-            //chatMessageAdapter.notifyItemRangeInserted(listChatMessages.size(),listChatMessages.size());
+            chatMessageAdapter.notifyItemRangeInserted(listChatMessages.size(),listChatMessages.size());
             conversationRecyclerView.scrollToPosition(listChatMessages.size()-1);
             conversationRecyclerView.setVisibility(View.VISIBLE);
     }

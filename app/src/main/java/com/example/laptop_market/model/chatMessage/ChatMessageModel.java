@@ -166,18 +166,22 @@ public class ChatMessageModel implements IChatMessageContract.Model {
                 listener.OnListeningMessageChange(null,false,error);
             else
             {
-                assert value != null;
-                int totalChatMessage = value.getDocumentChanges().size();
-                for (int i = 0; i < value.getDocumentChanges().size();i++)
+                if(value.isEmpty())
                 {
-                    DocumentChange  dc = value.getDocumentChanges().get(i);
-                    if (dc.getType() == DocumentChange.Type.ADDED) {
-                        ChatMessage chatMessage = dc.getDocument().toObject(ChatMessage.class);
-                        chatMessage.setIdMessage(dc.getDocument().getId());
-                        if(chatMessage.getType() == ChatMessage.IMAGE_TYPE)
-                            chatMessage.setDownloadedImage(new ArrayList<>());
-                        listener.OnListeningMessageChange(chatMessage, i + 1 == totalChatMessage, null);
-
+                    listener.OnListeningMessageChange(null,true,null);
+                }
+                else {
+                    assert value != null;
+                    int totalChatMessage = value.getDocumentChanges().size();
+                    for (int i = 0; i < value.getDocumentChanges().size(); i++) {
+                        DocumentChange dc = value.getDocumentChanges().get(i);
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            ChatMessage chatMessage = dc.getDocument().toObject(ChatMessage.class);
+                            chatMessage.setIdMessage(dc.getDocument().getId());
+                            if (chatMessage.getType() == ChatMessage.IMAGE_TYPE)
+                                chatMessage.setDownloadedImage(new ArrayList<>());
+                            listener.OnListeningMessageChange(chatMessage, i + 1 == totalChatMessage, null);
+                        }
                     }
                 }
             }

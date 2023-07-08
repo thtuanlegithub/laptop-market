@@ -73,17 +73,19 @@ public class ConversationDetailActivityPresenter implements IConversationContrac
                                 view.failedLoading(ex);
                             else {
                                 view.LoadChatMessageInConversationUI(chatMessage, isLastChatMessage);
-                                if(chatMessage.getType()==ChatMessage.IMAGE_TYPE)
-                                    chatMessageModel.LoadImage(chatMessage, new IChatMessageContract.Model.OnFinishDownloadImageListener() {
-                                        @Override
-                                        public void OnFinishDownloadImage(ChatMessage chatMessage, Exception ex) {
-                                            if (ex != null)
-                                                view.failedLoading(ex);
-                                            else {
-                                                view.LoadImageInToConversationUI(chatMessage);
+                                if (chatMessage != null) {
+                                    if (chatMessage.getType() == ChatMessage.IMAGE_TYPE)
+                                        chatMessageModel.LoadImage(chatMessage, new IChatMessageContract.Model.OnFinishDownloadImageListener() {
+                                            @Override
+                                            public void OnFinishDownloadImage(ChatMessage chatMessage, Exception ex) {
+                                                if (ex != null)
+                                                    view.failedLoading(ex);
+                                                else {
+                                                    view.LoadImageInToConversationUI(chatMessage);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                }
                             }
                         }
                     });

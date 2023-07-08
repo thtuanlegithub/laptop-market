@@ -246,74 +246,118 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             if(chatMessage.getDownloadedImage().size()==0)
             {
-                for(int i=0;i<chatMessage.getNumberOfPicture();i++)
+                switch (chatMessage.getNumberOfPicture())
                 {
-                    chatMessage.getDownloadedImage().add(BitmapFactory.decodeResource(binding.getRoot().getResources(), R.drawable.slide_show1));
+                    case 1:
+                        binding.imageView3.setVisibility(View.VISIBLE);
+                        binding.imageView1.setVisibility(View.GONE);
+                        binding.imageView2.setVisibility(View.GONE);
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.GONE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        binding.imageView2.setVisibility(View.VISIBLE);
+                        binding.imageView3.setVisibility(View.VISIBLE);
+                        binding.imageView1.setVisibility(View.GONE);
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.GONE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    case 3:
+                        binding.imageView1.setVisibility(View.VISIBLE);
+                        binding.imageView2.setVisibility(View.VISIBLE);
+                        binding.imageView3.setVisibility(View.VISIBLE);
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.GONE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    case 4:
+                        binding.imageView1.setVisibility(View.GONE);
+                        binding.imageView2.setVisibility(View.VISIBLE);
+                        binding.imageView3.setVisibility(View.VISIBLE);
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.VISIBLE);
+                        binding.imageView6.setVisibility(View.VISIBLE);
+                        break;
+                    case 5:
+                        binding.imageView1.setVisibility(View.VISIBLE);
+                        binding.imageView2.setVisibility(View.VISIBLE);
+                        binding.imageView3.setVisibility(View.VISIBLE);
+                        binding.imageView4.setVisibility(View.VISIBLE);
+                        binding.imageView5.setVisibility(View.VISIBLE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    default:
+                        binding.imageView1.setVisibility(View.VISIBLE);
+                        binding.imageView2.setVisibility(View.VISIBLE);
+                        binding.imageView3.setVisibility(View.VISIBLE);
+                        binding.imageView4.setVisibility(View.VISIBLE);
+                        binding.imageView5.setVisibility(View.VISIBLE);
+                        binding.imageView5.setVisibility(View.VISIBLE);
+                        break;
                 }
             }
-            if(chatMessage.getDownloadedImage().size() != chatMessage.getNumberOfPicture()) {
-                return;
-            }
-            Glide.get(binding.getRoot().getContext()).clearMemory();
-            switch (chatMessage.getNumberOfPicture())
-            {
-                case 1:
-                    Glide.with(binding.getRoot().getContext())
-                            .load(chatMessage.getDownloadedImage().get(0))
-                            .override(180,180)
-                            .into(binding.imageView3);
-                    binding.imageView1.setVisibility(View.GONE);
-                    binding.imageView2.setVisibility(View.GONE);
-                    binding.imageView4.setVisibility(View.GONE);
-                    binding.imageView5.setVisibility(View.GONE);
-                    binding.imageView6.setVisibility(View.GONE);
-                    break;
-                case 2:
-                    Glide.with(binding.getRoot().getContext())
-                            .load(chatMessage.getDownloadedImage().get(1))
-                            .override(180,180)
-                            .into(binding.imageView2);
-                    Glide.with(binding.getRoot().getContext())
-                            .load(chatMessage.getDownloadedImage().get(0))
-                            .override(180,180)
-                            .into(binding.imageView3);
-                    binding.imageView1.setVisibility(View.GONE);
-                    binding.imageView4.setVisibility(View.GONE);
-                    binding.imageView5.setVisibility(View.GONE);
-                    binding.imageView6.setVisibility(View.GONE);
-                    break;
-                case 3:
-                    binding.imageView1.setImageBitmap(ConvertUriToByte(chatMessage.getDownloadedImage().get(2)));
-                    binding.imageView2.setImageBitmap(ConvertUriToByte(chatMessage.getDownloadedImage().get(1)));
-                    binding.imageView3.setImageBitmap(ConvertUriToByte(chatMessage.getDownloadedImage().get(0)));
-                    binding.imageView4.setVisibility(View.GONE);
-                    binding.imageView5.setVisibility(View.GONE);
-                    binding.imageView6.setVisibility(View.GONE);
-                    break;
-                case 4:
-                    binding.imageView1.setVisibility(View.GONE);
-                    binding.imageView2.setImageBitmap(chatMessage.getDownloadedImage().get(1));
-                    binding.imageView3.setImageBitmap(chatMessage.getDownloadedImage().get(0));
-                    binding.imageView4.setVisibility(View.GONE);
-                    binding.imageView5.setImageBitmap(chatMessage.getDownloadedImage().get(3));
-                    binding.imageView6.setImageBitmap(chatMessage.getDownloadedImage().get(2));
-                    break;
-                case 5:
-                    binding.imageView1.setImageBitmap(chatMessage.getDownloadedImage().get(2));
-                    binding.imageView2.setImageBitmap(chatMessage.getDownloadedImage().get(1));
-                    binding.imageView3.setImageBitmap(chatMessage.getDownloadedImage().get(0));
-                    binding.imageView4.setImageBitmap(chatMessage.getDownloadedImage().get(4));
-                    binding.imageView5.setImageBitmap(chatMessage.getDownloadedImage().get(3));
-                    binding.imageView6.setVisibility(View.GONE);
-                    break;
-                default:
-                    binding.imageView1.setImageBitmap(chatMessage.getDownloadedImage().get(2));
-                    binding.imageView2.setImageBitmap(chatMessage.getDownloadedImage().get(1));
-                    binding.imageView3.setImageBitmap(chatMessage.getDownloadedImage().get(0));
-                    binding.imageView4.setImageBitmap(chatMessage.getDownloadedImage().get(5));
-                    binding.imageView5.setImageBitmap(chatMessage.getDownloadedImage().get(4));
-                    binding.imageView6.setImageBitmap(chatMessage.getDownloadedImage().get(3));
-                    break;
+            else {
+                switch (chatMessage.getNumberOfPicture()) {
+                    case 1:
+                        Glide.with(binding.getRoot().getContext())
+                                .load(chatMessage.getDownloadedImage().get(0))
+                                .override(180, 180)
+                                .into(binding.imageView3);
+                        binding.imageView1.setVisibility(View.GONE);
+                        binding.imageView2.setVisibility(View.GONE);
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.GONE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        Glide.with(binding.getRoot().getContext())
+                                .load(chatMessage.getDownloadedImage().get(1))
+                                .override(180, 180)
+                                .into(binding.imageView2);
+                        Glide.with(binding.getRoot().getContext())
+                                .load(chatMessage.getDownloadedImage().get(0))
+                                .override(180, 180)
+                                .into(binding.imageView3);
+                        binding.imageView1.setVisibility(View.GONE);
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.GONE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    case 3:
+                        binding.imageView1.setImageBitmap(ConvertUriToByte(chatMessage.getDownloadedImage().get(2)));
+                        binding.imageView2.setImageBitmap(ConvertUriToByte(chatMessage.getDownloadedImage().get(1)));
+                        binding.imageView3.setImageBitmap(ConvertUriToByte(chatMessage.getDownloadedImage().get(0)));
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setVisibility(View.GONE);
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    case 4:
+                        binding.imageView1.setVisibility(View.GONE);
+                        binding.imageView2.setImageBitmap(chatMessage.getDownloadedImage().get(1));
+                        binding.imageView3.setImageBitmap(chatMessage.getDownloadedImage().get(0));
+                        binding.imageView4.setVisibility(View.GONE);
+                        binding.imageView5.setImageBitmap(chatMessage.getDownloadedImage().get(3));
+                        binding.imageView6.setImageBitmap(chatMessage.getDownloadedImage().get(2));
+                        break;
+                    case 5:
+                        binding.imageView1.setImageBitmap(chatMessage.getDownloadedImage().get(2));
+                        binding.imageView2.setImageBitmap(chatMessage.getDownloadedImage().get(1));
+                        binding.imageView3.setImageBitmap(chatMessage.getDownloadedImage().get(0));
+                        binding.imageView4.setImageBitmap(chatMessage.getDownloadedImage().get(4));
+                        binding.imageView5.setImageBitmap(chatMessage.getDownloadedImage().get(3));
+                        binding.imageView6.setVisibility(View.GONE);
+                        break;
+                    default:
+                        binding.imageView1.setImageBitmap(chatMessage.getDownloadedImage().get(2));
+                        binding.imageView2.setImageBitmap(chatMessage.getDownloadedImage().get(1));
+                        binding.imageView3.setImageBitmap(chatMessage.getDownloadedImage().get(0));
+                        binding.imageView4.setImageBitmap(chatMessage.getDownloadedImage().get(5));
+                        binding.imageView5.setImageBitmap(chatMessage.getDownloadedImage().get(4));
+                        binding.imageView6.setImageBitmap(chatMessage.getDownloadedImage().get(3));
+                        break;
+                }
             }
         }
         private Bitmap ConvertUriToByte(Bitmap bitmap)
