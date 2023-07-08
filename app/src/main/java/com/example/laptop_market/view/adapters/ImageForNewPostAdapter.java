@@ -37,11 +37,17 @@ public class ImageForNewPostAdapter extends RecyclerView.Adapter<ImageForNewPost
     private List<Bitmap> images;
     private OnImageCloseClickListener closeClickListener;
     private Context context;
-
+    private boolean notFromActivityNewPost;
     public ImageForNewPostAdapter(List<Bitmap> images, Context context, OnImageCloseClickListener closeClickListener) {
         this.images = images;
         this.closeClickListener = closeClickListener;
         this.context = context;
+    }
+    public ImageForNewPostAdapter(List<Bitmap> images, Context context, OnImageCloseClickListener closeClickListener, boolean notFromActivityNewPost) {
+        this.images = images;
+        this.closeClickListener = closeClickListener;
+        this.context = context;
+        this.notFromActivityNewPost = notFromActivityNewPost;
     }
 
     @NonNull
@@ -54,8 +60,10 @@ public class ImageForNewPostAdapter extends RecyclerView.Adapter<ImageForNewPost
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         Bitmap image = images.get(position);
-        if(position==0)
-            holder.mainImageView.setVisibility(View.VISIBLE);
+        if(!notFromActivityNewPost) {
+            if (position == 0)
+                holder.mainImageView.setVisibility(View.VISIBLE);
+        }
         holder.imageView.setImageBitmap(image);
         holder.imageView.setOnClickListener(view -> {
             JSONObject data = new JSONObject();

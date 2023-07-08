@@ -34,13 +34,17 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
     <LinearLayout
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_for_statistic">
         <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:gravity="left"
             android:layout_width="match_parent"
@@ -56,33 +60,40 @@
             android:text="20"
             android:textColor="#F09D38"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:textStyle="bold"
             android:textSize="40dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F09D38"
+            android:text="Xem các đơn đã bán"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp"/>
     </LinearLayout>
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_gravity="right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F09D38"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="Xem các đơn đã bán"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18dp"/>
+
     <LinearLayout
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_marginTop="30dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border_for_statistic">
         <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Doanh thu: "
+            android:text="Số tiền đã chi tiêu: "
             android:textStyle="bold"
             android:textSize="20dp"/>
         <TextView
@@ -93,6 +104,8 @@
             android:text="20,000,000"
             android:textColor="#F09D38"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="20dp"
             android:textStyle="bold"
             android:textSize="40dp"/>
     </LinearLayout>

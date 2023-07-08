@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,19 +24,26 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.view.activities.ConversationDetailActivity;
+import com.example.laptop_market.view.activities.ConversationListActivity;
+import com.example.laptop_market.view.activities.NotificationActivity;
+import com.example.laptop_market.view.activities.ProfileActivity;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.model.brand.Brand;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private AppCompatButton btnNotificationHome;
     private HomeBaseFragment homeBaseFragment;
     private LinearLayout linearLayoutFragmentHome = null;
     public SearchFragment searchFragment = null;
     private EditText edtTextHome = null;
     private RecyclerView rcvBrand;
     private PreferenceManager preferenceManager;
+    private AppCompatButton chatMessageBtt;
     public class ImageSliderAdapter extends PagerAdapter{
         private List<Integer> imageList;
         private Context context;
@@ -80,6 +90,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // Bổ sung giao diện cho trang chủ
+        chatMessageBtt = view.findViewById(R.id.chatMessageBtt);
+        rcvBrand = view.findViewById(R.id.rcvBrand);
+        edtTextHome = view.findViewById(R.id.edtTextHome);
+        btnNotificationHome = view.findViewById(R.id.btnNotificationHome);
 
         //Tạo list image để hiển thị slide show ViewPager
         List<Integer> imageList = new ArrayList<>();
@@ -90,23 +104,35 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(adapter);
         preferenceManager = new PreferenceManager(getContext());
         // Tạo danh mục tìm kiếm
-        rcvBrand = view.findViewById(R.id.rcvBrand);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),2);
         rcvBrand.setLayoutManager(gridLayoutManager);
-
         BrandAdapter brandAdapter = new BrandAdapter(getListBrand(),homeBaseFragment, getContext());
         rcvBrand.setAdapter(brandAdapter);
         //
         linearLayoutFragmentHome = view.findViewById(R.id.linearLayoutFragmentHome);
         linearLayoutFragmentHome.requestFocus();
         //Sự kiện search
-        edtTextHome = view.findViewById(R.id.edtTextHome);
         setListener();
 
         return view;
     }
     private void setListener()
     {
+        chatMessageBtt.setOnClickListener(view -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            {
+                Toast.makeText(getContext(), "Bạn phải đăng nhập để thực hiện chức nắng này", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(getContext(), ConversationListActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
+            btnNotificationHome.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotificationActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
         edtTextHome.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

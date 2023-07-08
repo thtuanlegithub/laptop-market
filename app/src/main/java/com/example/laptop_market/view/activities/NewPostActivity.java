@@ -99,6 +99,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
         imageList = new ArrayList<>();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.slide_show1);
+        imageList.add(bitmap);
+        listImageLayout.setVisibility(View.VISIBLE);
         imageForNewPostAdapter =  new ImageForNewPostAdapter(imageList, getApplicationContext(), position -> {
             // Xử lý sự kiện khi người dùng nhấn nút close
             imageList.remove(position);

@@ -27,6 +27,12 @@ public class AccountModel implements IAccountContract.Model {
     private FirebaseFirestore db;
     private PreferenceManager preferenceManager;
     private FirebaseUser firebaseUser;
+    public AccountModel()
+    {
+        firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+    }
 
     public AccountModel(Context context)
     {
@@ -138,6 +144,7 @@ public class AccountModel implements IAccountContract.Model {
     public void LoadAccountWithId(String accountId, OnLoadingAccountWithIdListener listener) {
         db.collection(AccountTable.TABLE_NAME).document(accountId).get().addOnSuccessListener(documentSnapshot -> {
             Account account = documentSnapshot.toObject(Account.class);
+            account.setAccountID(documentSnapshot.getId());
             listener.OnFinishLoadingAccountWithId(account,null);
         }).addOnFailureListener(e -> {
             listener.OnFinishLoadingAccountWithId(null,e);
