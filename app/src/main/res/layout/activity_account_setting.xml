@@ -110,23 +110,19 @@
                 android:background="@drawable/outline_combobox"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="#E4E4E4">
+                android:paddingTop="3dp"
+                android:layout_marginTop="15dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:focusable="false"
                     android:id="@+id/edtAccountSettingPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="3dp"
+                    android:layout_marginBottom="15dp"
+                    android:paddingTop="5dp"
                     android:background="#FAFAFA"
                     android:textSize="17dp"
-                    android:inputType="text"
-                    android:backgroundTint="#E4E4E4"
-                    android:text="0702290135"/>
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
                 android:layout_marginTop="25dp"
@@ -177,6 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Gmail"
+                android:backgroundTint="#E4E4E4"
                 app:hintTextAppearance="@style/HintTextAppearance"
                 app:hintAnimationEnabled="true"
                 android:background="@drawable/outline_combobox"
@@ -185,7 +182,7 @@
                 android:paddingTop="3dp"
                 android:layout_marginTop="10dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:focusedByDefault="false"
+                    android:focusable="false"
                     android:drawableStart="@drawable/ic_google"
                     android:id="@+id/edtAccountSettingGmail"
                     android:layout_width="match_parent"
@@ -197,7 +194,8 @@
                     android:drawablePadding="10dp"
                     android:background="#FAFAFA"
                     android:textSize="16dp"
-                    android:inputType="textPassword" />
+                    android:backgroundTint="#E4E4E4"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
