@@ -59,6 +59,8 @@ public interface IPostContract {
         interface PostFragmentView{
             void CreateNewPost();
             void LoginAccount();
+            void DisplayRequireLoginView();
+            void DisplayManagePostView();
         }
     }
     interface Presenter{
@@ -77,6 +79,7 @@ public interface IPostContract {
         }
         interface PostFragmentPresenter{
             void CreateNewPost();
+            void LoadManagePost();
         }
     }
 }

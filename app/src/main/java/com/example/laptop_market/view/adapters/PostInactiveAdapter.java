@@ -46,7 +46,7 @@ public class PostInactiveAdapter extends RecyclerView.Adapter<PostInactiveAdapte
         String formattedPrice = numberFormat.format(postInactive.getPrice());
         holder.pricePost.setText(String.valueOf(formattedPrice));
         holder.addressPost.setText(postInactive.getAddress());
-
+        holder.inactiveLabelPost.setVisibility(View.VISIBLE);
 
         // item select
         holder.itemView.setOnClickListener(v -> {
@@ -67,12 +67,14 @@ public class PostInactiveAdapter extends RecyclerView.Adapter<PostInactiveAdapte
         private TextView titlePost;
         private TextView pricePost;
         private TextView addressPost;
+        private TextView inactiveLabelPost;
         public PostInactiveViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPost = itemView.findViewById(R.id.imgPost);
             titlePost = itemView.findViewById(R.id.titlePost);
             pricePost = itemView.findViewById(R.id.pricePost);
             addressPost = itemView.findViewById(R.id.addressPost);
+            inactiveLabelPost = itemView.findViewById(R.id.inactiveLabelPost);
         }
     }
 }

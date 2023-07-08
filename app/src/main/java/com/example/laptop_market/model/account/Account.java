@@ -17,12 +17,14 @@ public class Account implements Serializable {
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
     private ArrayList<String> conversations;
+    private ArrayList<String> ratingOrders;
+
     private String avatar;
 
     public Account() {
     }
 
-    public Account(String accountID, String email, String password, String accountName, String address, Double rating, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> cartItems) {
+    public Account(String accountID, String email, String password, String accountName, String address, Double rating, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders) {
         this.accountID = accountID;
         this.email = email;
         this.password = password;
@@ -31,7 +33,7 @@ public class Account implements Serializable {
         this.rating = rating;
         this.publishPosts = publishPosts;
         this.savedPosts = savedPosts;
-        this.cartItems = cartItems;
+        this.ratingOrders = ratingOrders;
     }
 
     public String getAccountID() {
@@ -98,12 +100,12 @@ public class Account implements Serializable {
         this.savedPosts = savedPosts;
     }
 
-    public ArrayList<String> getCartItems() {
-        return cartItems;
+    public ArrayList<String> getRatingOrders() {
+        return ratingOrders;
     }
 
-    public void setCartItems(ArrayList<String> cartItems) {
-        this.cartItems = cartItems;
+    public void setRatingOrders(ArrayList<String> ratingOrders) {
+        this.ratingOrders = ratingOrders;
     }
 
     public boolean isFinishData() {

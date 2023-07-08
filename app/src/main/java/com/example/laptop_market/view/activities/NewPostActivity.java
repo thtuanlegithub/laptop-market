@@ -3,7 +3,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -14,7 +17,11 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,6 +80,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
+
+
         ListPictures = new ArrayList<>();
         laptopActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
         postActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
@@ -135,6 +144,9 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private void setListener()
     {
         btnNewPostClose.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", false);
+            setResult(Activity.RESULT_OK, intent);
             finish();
             //Ẩn bàn phím:
             InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);

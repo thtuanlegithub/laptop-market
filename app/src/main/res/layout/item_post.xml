@@ -40,12 +40,30 @@
                 android:textStyle="bold"
                 android:layout_marginTop="5dp"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/addressPost"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Thành phố Hồ Chí Minh"/>
+            >
+            <TextView
+                android:id="@+id/addressPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thành phố Hồ Chí Minh"/>
+            <TextView
+                android:paddingTop="5dp"
+                android:visibility="gone"
+                android:id="@+id/inactiveLabelPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="#6B6D6D"
+                android:text="TIN HẾT HẠN"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

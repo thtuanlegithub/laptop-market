@@ -2,6 +2,7 @@ package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,9 @@ public class SellOrderDetailActivity extends AppCompatActivity {
 
         btnSellOrderDetailClose = findViewById(R.id.btnSellOrderDetailClose);
         btnSellOrderDetailClose.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", false);
+            setResult(Activity.RESULT_OK, intent);
             finish();
             //Ẩn bàn phím:
             InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);

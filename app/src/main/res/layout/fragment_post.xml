@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragments.PostFragment">
+    tools:context=".view.fragments.PostFragment"
+    android:id="@+id/framePost">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,7 +27,7 @@
                 android:text="Quản lý tin đăng"/>
         </androidx.appcompat.widget.Toolbar>
         <GridLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/gridRequireLoginForPost"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,6 +45,7 @@
                     android:text="Vui lòng đăng nhập để thực hiện chức năng này"
                     android:textSize="16dp"/>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnRequireLoginForPost"
                     android:layout_marginTop="5dp"
                     android:layout_width="200dp"
                     android:layout_gravity="center"
@@ -59,12 +61,14 @@
             android:id="@+id/layoutLoginedForPost"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#F5F5F5">
             <com.google.android.material.bottomnavigation.BottomNavigationView
+                app:elevation="0dp"
                 android:id="@+id/navPost"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/white_square"
+                android:background="@drawable/white_shape_bottom_border"
                 android:paddingBottom="5dp"
                 android:elevation="0dp"
                 app:itemIconTint="@drawable/bottom_navigation_colors"
@@ -73,6 +77,7 @@
                 app:itemTextAppearanceInactive="@style/SellNavigationTextAppearance"
                 app:menu="@menu/post_menu"/>
             <androidx.viewpager2.widget.ViewPager2
+                android:layout_marginTop="-10dp"
                 android:id="@+id/viewPagerPost"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

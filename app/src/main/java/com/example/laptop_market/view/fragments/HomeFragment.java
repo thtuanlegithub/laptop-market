@@ -11,9 +11,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,13 +26,16 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.ConversationDetailActivity;
 import com.example.laptop_market.view.activities.ConversationListActivity;
+import com.example.laptop_market.view.activities.NotificationActivity;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.model.brand.Brand;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private AppCompatButton btnNotificationHome;
     private HomeBaseFragment homeBaseFragment;
     private LinearLayout linearLayoutFragmentHome = null;
     public SearchFragment searchFragment = null;
@@ -87,6 +92,7 @@ public class HomeFragment extends Fragment {
         chatMessageBtt = view.findViewById(R.id.chatMessageBtt);
         rcvBrand = view.findViewById(R.id.rcvBrand);
         edtTextHome = view.findViewById(R.id.edtTextHome);
+        btnNotificationHome = view.findViewById(R.id.btnNotificationHome);
 
         //Tạo list image để hiển thị slide show ViewPager
         List<Integer> imageList = new ArrayList<>();
@@ -112,8 +118,17 @@ public class HomeFragment extends Fragment {
     private void setListener()
     {
         chatMessageBtt.setOnClickListener(view -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            {
+                Toast.makeText(getContext(), "Bạn phải đăng nhập để thực hiện chức nắng này", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(getContext(), ConversationListActivity.class);
-            startActivity(intent);
+            startActivity(intent);});
+        btnNotificationHome.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotificationActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
         });
         edtTextHome.setOnTouchListener(new View.OnTouchListener() {
             @Override

@@ -1,23 +1,33 @@
 package com.example.laptop_market.view.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
 
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
+import com.example.laptop_market.view.activities.MainActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
 import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,21 +50,33 @@ public class PostFragment extends Fragment implements IPostContract.View.PostFra
     private FragmentStateAdapter fragmentStateAdapter;
     private int currentSelectedItem = 0;
     private IPostContract.Presenter.PostFragmentPresenter postFragmentPresenter;
+    private GridLayout gridRequireLoginForPost;
+    private Button btnRequireLoginForPost;
+    private ActivityResultLauncher<Intent> loginLauncher;
     public PostFragment() {
         // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        postFragmentPresenter = new PostFragmentPresenter(getContext(),this);
+        // Set activity result when Login from BuyFragment
+        loginLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK){
+                        DisplayManagePostView();
+                    }
+                }
+        );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        postFragmentPresenter = new PostFragmentPresenter(getContext(),this);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post, container, false);
-
+        gridRequireLoginForPost = view.findViewById(R.id.gridRequireLoginForPost);
+        btnRequireLoginForPost = view.findViewById(R.id.btnRequireLoginForPost);
         fragmentList = new ArrayList<>();
         fragmentList.add(new PostActiveFragment());
         fragmentList.add(new PostInactiveFragment());
@@ -101,26 +123,44 @@ public class PostFragment extends Fragment implements IPostContract.View.PostFra
         fabNewPost.setOnClickListener(view1 -> {
             postFragmentPresenter.CreateNewPost();
         });
-
+        btnRequireLoginForPost.setOnClickListener(view1 -> {
+            Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+            PreferenceManager preferenceManager = new PreferenceManager(getContext());
+            preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.MANAGE_POST);
+            loginLauncher.launch(intent);
+        });
         return view;
     }
-
     @Override
     public void onResume() {
         super.onResume();
-    }
+        getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        postFragmentPresenter.LoadManagePost();
 
+    }
+    private static final int REQUEST_CODE = 1;
     @Override
     public void CreateNewPost() {
         Intent intent = new Intent(getContext(), NewPostActivity.class);
-        startActivity(intent);
+        //Thiết lập hiệu ứng trượt từ phải sang trái
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
     }
-
     @Override
     public void LoginAccount() {
         Intent intent = new Intent(this.getActivity(), LoginActivity.class);
         PreferenceManager preferenceManager = new PreferenceManager(getContext());
         preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.NEW_POST_ACTIVITY);
         startActivity(intent);
+    }
+
+    @Override
+    public void DisplayRequireLoginView() {
+        gridRequireLoginForPost.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void DisplayManagePostView() {
+        gridRequireLoginForPost.setVisibility(View.GONE);
     }
 }

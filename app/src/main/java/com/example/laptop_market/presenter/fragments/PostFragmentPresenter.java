@@ -24,4 +24,14 @@ public class PostFragmentPresenter implements IPostContract.Presenter.PostFragme
                 postFragmentView.LoginAccount();
         });
     }
+
+    @Override
+    public void LoadManagePost() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if(!isLogin)
+                postFragmentView.DisplayRequireLoginView();
+            else
+                postFragmentView.DisplayManagePostView();
+        });
+    }
 }

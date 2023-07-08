@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -30,6 +32,7 @@ import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -37,7 +40,7 @@ import java.util.List;
 
 public class PostDetailActivity extends AppCompatActivity implements IPostContract.View.PostDetailActivityView
         , ILaptopContract.View.PostDetailActivityView, IAccountContract.View.PostDetailActivityView {
-    private Button btnPostDetailClose, btnSavePost, btnCallNow;
+    private Button btnPostDetailClose, btnSavePost, btnCallNow, btnBuyNow;
     private ImageView imgPostDetailShop;
     private ViewPager viewPagerImagePostDetail;
     private ILaptopContract.Presenter.PostDetailActivityPresenter laptopPresenter;
@@ -61,7 +64,6 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
     private PreferenceManager preferenceManager;
-    private AppCompatButton bttBuyNow;
     private AppCompatButton bttMessenger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,6 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         accountPresenter = new PostDetailActivityPresenter(getApplicationContext(),this,this,this);
         btnPostDetailClose = findViewById(R.id.btnPostDetailClose);
         imgPostDetailShop = findViewById(R.id.imgPostDetailShop);
-        bttBuyNow = findViewById(R.id.bttBuyNow);
         postDetailTitleTextView = findViewById(R.id.postDetailTitleTextView);
         NameShopTextView = findViewById(R.id.NameShopTextView);
         postDetailPrice = findViewById(R.id.postDetailPrice);
@@ -85,9 +86,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         layoutButtonCustomer = findViewById(R.id.layoutButtonForCustomer);
         layoutButtonSeller = findViewById(R.id.layoutButtonForSeller);
         btnSavePost = findViewById(R.id.btnSavePost);
-
-        // check seller or customer
+        btnBuyNow = findViewById(R.id.btnBuyNow);
         btnCallNow = findViewById(R.id.btnCallNow);
+        // check seller or customer
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
@@ -119,15 +120,23 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     }
     private void setListener()
     {
-        bttBuyNow.setOnClickListener(view -> {
+        btnBuyNow.setOnClickListener(view -> {
 
         });
         bttMessenger.setOnClickListener(view -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            {
+                Toast.makeText(getApplicationContext(), "Bạn phải đăng nhập để thực hiện chức nắng này", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(getApplicationContext(),ConversationDetailActivity.class);
             intent.putExtra(AccountTable.TABLE_NAME,account);
             startActivity(intent);
         });            ;
         btnPostDetailClose.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", false);
+            setResult(Activity.RESULT_OK, intent);
             finish();
         });
 
@@ -137,6 +146,12 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
 
         btnCallNow.setOnClickListener(v -> {
             postPresenter.OnPhoneDialClicked(this.postSearchResult.getPostId());
+        });
+
+        btnBuyNow.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BuyOrderDetailActivity.class);
+            intent.putExtra("BuyOrderStatus",4);
+            startActivity(intent);
         });
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

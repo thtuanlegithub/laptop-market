@@ -40,6 +40,10 @@ public class ConversationModel implements IConversationContract.Model {
                         listener.FinishReloadAllListConversation(null,0,error,false);
                     }
                     else {
+                        if(value.isEmpty()) {
+                            listener.FinishReloadAllListConversation(null, Conversation.ADD_LIST_CONVERSATION, null, true);
+                        }
+                        else {
                         for (int i =0; i< value.getDocumentChanges().size();i++) {
                             DocumentChange dc = value.getDocumentChanges().get(i);
                             switch (dc.getType()) {
@@ -47,17 +51,16 @@ public class ConversationModel implements IConversationContract.Model {
                                     Conversation conversation = dc.getDocument().toObject(Conversation.class);
                                     conversation.setConversationId(dc.getDocument().getId());
                                     conversation.setSenderId(firebaseUser.getUid());
-                                    if(conversation.getPersonOneId() == firebaseUser.getUid())
+                                    if (conversation.getPersonOneId() == firebaseUser.getUid())
                                         conversation.setReceivedId(conversation.getPersonOneId());
                                     else
                                         conversation.setReceivedId(conversation.getPersonTwoId());
                                     db.collection(AccountTable.TABLE_NAME).document(conversation.getReceivedId()).get().addOnCompleteListener(task -> {
-                                        if(!task.isSuccessful())
-                                            listener.FinishReloadAllListConversation(null,0, task.getException(),false);
-                                        else
-                                        {
+                                        if (!task.isSuccessful())
+                                            listener.FinishReloadAllListConversation(null, 0, task.getException(), false);
+                                        else {
                                             conversation.setConversationName(task.getResult().getString(AccountTable.ACCOUNT_NAME));
-                                            listener.FinishReloadAllListConversation(conversation,Conversation.ADD_LIST_CONVERSATION,null, ++count1 == value.getDocumentChanges().size());
+                                            listener.FinishReloadAllListConversation(conversation, Conversation.ADD_LIST_CONVERSATION, null, ++count1 == value.getDocumentChanges().size());
                                         }
                                     });
                                     break;
@@ -71,6 +74,7 @@ public class ConversationModel implements IConversationContract.Model {
                                     break;
                             }
                         }
+                        }
                     }
                 });
         db.collection(ConversationTable.TABLE_NAME)
@@ -82,32 +86,35 @@ public class ConversationModel implements IConversationContract.Model {
                         listener.FinishReloadAllListConversation(null,0,error,false);
                     }
                     else {
-                        for (int i =0; i< value.getDocumentChanges().size();i++) {
-                            DocumentChange dc =value.getDocumentChanges().get(i);
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    Conversation conversation = dc.getDocument().toObject(Conversation.class);
-                                    conversation.setConversationId(dc.getDocument().getId());
-                                    conversation.setSenderId(firebaseUser.getUid());
-                                    conversation.setReceivedId(conversation.getPersonOneId());
-                                    db.collection(AccountTable.TABLE_NAME).document(conversation.getReceivedId()).get().addOnCompleteListener(task -> {
-                                        if(!task.isSuccessful())
-                                            listener.FinishReloadAllListConversation(null,0, task.getException(),false);
-                                        else
-                                        {
-                                            conversation.setConversationName(task.getResult().getString(AccountTable.ACCOUNT_NAME));
-                                            listener.FinishReloadAllListConversation(conversation,Conversation.ADD_LIST_CONVERSATION,null, ++count2 == value.getDocumentChanges().size());
-                                        }
-                                    });
-                                    break;
-                                case MODIFIED:
-                                    Conversation conversation1 = dc.getDocument().toObject(Conversation.class);
-                                    conversation1.setConversationId(dc.getDocument().getId());
-                                    listener.FinishReloadAllListConversation(conversation1,Conversation.MODIFY_LIST_CONVERSATION,null, true);
-                                    break;
-                                case REMOVED:
-                                    // Xử lý khi có Conversation bị xóa
-                                    break;
+                        if (value.isEmpty())
+                            listener.FinishReloadAllListConversation(null, Conversation.ADD_LIST_CONVERSATION, null, true);
+                        else {
+                            for (int i = 0; i < value.getDocumentChanges().size(); i++) {
+                                DocumentChange dc = value.getDocumentChanges().get(i);
+                                switch (dc.getType()) {
+                                    case ADDED:
+                                        Conversation conversation = dc.getDocument().toObject(Conversation.class);
+                                        conversation.setConversationId(dc.getDocument().getId());
+                                        conversation.setSenderId(firebaseUser.getUid());
+                                        conversation.setReceivedId(conversation.getPersonOneId());
+                                        db.collection(AccountTable.TABLE_NAME).document(conversation.getReceivedId()).get().addOnCompleteListener(task -> {
+                                            if (!task.isSuccessful())
+                                                listener.FinishReloadAllListConversation(null, 0, task.getException(), false);
+                                            else {
+                                                conversation.setConversationName(task.getResult().getString(AccountTable.ACCOUNT_NAME));
+                                                listener.FinishReloadAllListConversation(conversation, Conversation.ADD_LIST_CONVERSATION, null, ++count2 == value.getDocumentChanges().size());
+                                            }
+                                        });
+                                        break;
+                                    case MODIFIED:
+                                        Conversation conversation1 = dc.getDocument().toObject(Conversation.class);
+                                        conversation1.setConversationId(dc.getDocument().getId());
+                                        listener.FinishReloadAllListConversation(conversation1, Conversation.MODIFY_LIST_CONVERSATION, null, true);
+                                        break;
+                                    case REMOVED:
+                                        // Xử lý khi có Conversation bị xóa
+                                        break;
+                                }
                             }
                         }
                     }

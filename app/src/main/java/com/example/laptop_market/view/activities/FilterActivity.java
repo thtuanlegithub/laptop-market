@@ -84,8 +84,10 @@ public class FilterActivity extends AppCompatActivity {
         btnFilterApply.setOnClickListener(view -> {
             String minValueFormatted = minimumPriceTextView.getText().toString();
             minValueFormatted = minValueFormatted.replaceAll("\\.", "");
+            minValueFormatted = minValueFormatted.replaceAll(",", "");
             String maxValueFormatted = maximumPriceTextView.getText().toString();
             maxValueFormatted = maxValueFormatted.replaceAll("\\.", "");
+            maxValueFormatted = maxValueFormatted.replaceAll(",", "");
             int minValue = Integer.parseInt(minValueFormatted);
             int maxValue = Integer.parseInt(maxValueFormatted);
             if(maxValue < minValue || maxValue == 0)

@@ -17,11 +17,11 @@
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBuyOrderDetailClose"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="-10dp"
-                android:background="@drawable/ic_close"/>
+                android:layout_marginLeft="0dp"
+                android:background="@drawable/ic_back"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:gravity="center_vertical"
                     android:layout_marginLeft="0dp"
                     android:paddingLeft="15dp"
-                    android:text="TRANG THÁI ĐƠN HÀNG"
+                    android:text="TRẠNG THÁI ĐƠN HÀNG"
                     android:textSize="16dp"/>
                 <TextView
                     android:id="@+id/txtViewBuyOrderStatus"
@@ -70,6 +70,117 @@
                     android:layout_margin="20dp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/linearLayoutOrderInformation"
+                android:background="#E4E4E4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:text="THÔNG TIN ĐƠN HÀNG"
+                    android:textSize="16dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="Tên mặt hàng: "
+                        android:textSize="17dp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:gravity="left"
+                        android:layout_marginLeft="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:textColor="@color/black"
+                        android:text="Laptop ASUS TUF - Gaming A15 - 16GB RAM - RTX 3050 4GB"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="Tổng giá tiền: "
+                        android:textSize="17dp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:textColor="@color/red"
+                        android:text="100.000.000 VNĐ"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearLayoutOrderTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="Thời gian đặt hàng: "
+                        android:textSize="17dp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:text="15-06-2023 15:56"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearLayoutFinishTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/txtViewFinishTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="Thời gian hoàn thành: "
+                        android:textSize="17dp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:text="25-06-2023 20:08"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayoutShippingInformation1"
+                android:layout_marginTop="10dp"
                 android:background="#E4E4E4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -82,6 +193,7 @@
                     android:textSize="16dp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/linearLayoutShippingInformation2"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -348,6 +460,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/linearLayoutButtonConfirmBuying"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Xác nhận mua"
+                android:textSize="16dp"
+                android:backgroundTint="#F5BD40"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/linearLayoutButtonBuyProcessing"
             android:orientation="horizontal"

@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.adapters.Buy;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
@@ -49,7 +51,8 @@ public class BuyDeliveringAdapter extends RecyclerView.Adapter<BuyDeliveringAdap
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),BuyOrderDetailActivity.class);
                 intent.putExtra("BuyOrderStatus",1);
-                holder.itemView.getContext().startActivity(intent);
+                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+                holder.itemView.getContext().startActivity(intent,bundle);
             }
         });
     }

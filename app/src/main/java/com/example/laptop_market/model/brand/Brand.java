@@ -2,7 +2,7 @@ package com.example.laptop_market.model.brand;
 
 import java.net.URI;
 
-public class Brand {
+public class    Brand {
     private String brandID;
     private String brandName;
     private int img;

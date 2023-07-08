@@ -12,7 +12,7 @@ public class AccountTable {
     public static final String RATING = "rating";
     public static final String PUBLISH_POSTS = "publishPosts";
     public static final String SAVED_POSTS = "savedPosts";
-    public static final String CART_ITEMS = "cartItems";
+    public static final String RATING_ORDERS = "ratingOrders";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String AVARTAR = "avatar";
     public static final String CONVERSATIONS = "conversations";

@@ -83,7 +83,8 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     public void LoadConversationUI(Conversation conversation, int type, boolean isLastAddedConversation) {
         if(type == Conversation.ADD_LIST_CONVERSATION)
         {
-            this.listConversations.add(conversation);
+            if(conversation!=null)
+                this.listConversations.add(conversation);
         }
         else if(type == Conversation.MODIFY_LIST_CONVERSATION)
         {

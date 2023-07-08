@@ -2,8 +2,11 @@ package com.example.laptop_market.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,8 @@ import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.BrandTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
+import com.example.laptop_market.view.activities.ConversationListActivity;
+import com.example.laptop_market.view.activities.NotificationActivity;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.view.adapters.FilterAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
@@ -33,6 +38,7 @@ import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult
 import com.example.laptop_market.model.brand.Brand;
 import com.example.laptop_market.model.filter.Filter;
 import com.example.laptop_market.model.post.Post;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,6 +64,8 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private SearchFilterPost searchFilterPost;
     private List<Filter> listFilter;
     private FilterAdapter filterAdapter;
+    private AppCompatButton btnNotificationPostSearchResult;
+    private AppCompatButton chatMessageBtt;
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         searchFilterPost = new SearchFilterPost();
@@ -114,6 +122,15 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
         isLoading= view.findViewById(R.id.isLoading);
         btnSearchResultBack = view.findViewById(R.id.btnSearchResultBack);
+        chatMessageBtt = view.findViewById(R.id.chatMessageBtt);
+        chatMessageBtt.setOnClickListener(view1 -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            {
+                Toast.makeText(getContext(), "Bạn phải đăng nhập để thực hiện chức nắng này", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(getContext(), ConversationListActivity.class);
+            startActivity(intent);});
         btnSearchResultBack.setOnClickListener(view1 -> {
             homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
             //Ẩn bàn phím:
@@ -123,6 +140,14 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
         });
+
+        btnNotificationPostSearchResult = view.findViewById(R.id.btnNotificationPostSearchResult);
+        btnNotificationPostSearchResult.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotificationActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
+
         //Hiển thị recycler view filter
         rcvFilter = view.findViewById(R.id.rcvFilter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),1,0,false);

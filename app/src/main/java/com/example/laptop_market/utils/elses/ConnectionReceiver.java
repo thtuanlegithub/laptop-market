@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
 
 import com.example.laptop_market.utils.tables.Constants;
 
-public class Connection_Receiver extends BroadcastReceiver {
+public class ConnectionReceiver extends BroadcastReceiver {
     private PreferenceManager preferenceManager;
     @Override
     public void onReceive(Context context, Intent intent) {
