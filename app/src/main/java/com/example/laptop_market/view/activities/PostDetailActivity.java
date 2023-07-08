@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager.widget.ViewPager;
 
@@ -64,6 +65,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
     private PreferenceManager preferenceManager;
+    private boolean backFromOrder = false;
     private AppCompatButton bttMessenger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,8 +152,10 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
 
         btnBuyNow.setOnClickListener(v -> {
             Intent intent = new Intent(this, BuyOrderDetailActivity.class);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
             intent.putExtra("BuyOrderStatus",4);
-            startActivity(intent);
+            backFromOrder = true;
+            startActivity(intent,bundle);
         });
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -259,6 +263,11 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     @Override
     protected void onResume() {
         super.onResume();
+        if(backFromOrder)
+        {
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            backFromOrder = false;
+        }
         postPresenter.LoadSavePostButton(this.postSearchResult.getPostId());
     }
 
