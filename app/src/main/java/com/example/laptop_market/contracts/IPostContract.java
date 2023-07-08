@@ -1,5 +1,7 @@
 package com.example.laptop_market.contracts;
 
+import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.model.account.CurrentBuyer;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
@@ -54,6 +56,7 @@ public interface IPostContract {
             void LoadRemoveSavePostButton();
             void ShowPhoneDialIntent(String phoneNumber);
             void LoginAccount();
+            void LoadOrderDetails(CurrentBuyer currentBuyer);
         }
 
         interface PostFragmentView{
@@ -76,6 +79,7 @@ public interface IPostContract {
             void LoadSavePostButton(String postID);
             void OnSavePostClicked(String postID, boolean isSaved);
             void OnPhoneDialClicked(String postID);
+            void OnBuyNowClicked();
         }
         interface PostFragmentPresenter{
             void CreateNewPost();

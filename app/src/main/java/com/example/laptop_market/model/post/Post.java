@@ -2,7 +2,7 @@ package com.example.laptop_market.model.post;
 
 import java.util.Date;
 
-public class Post {
+public class Post{
     private String postID;
     private String laptopID;
     private String accountID;

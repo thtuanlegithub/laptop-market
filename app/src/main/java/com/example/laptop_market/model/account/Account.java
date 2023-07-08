@@ -18,22 +18,28 @@ public class Account implements Serializable {
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
     private ArrayList<String> ratingOrders;
-
+    private ArrayList<String> sellOrders;
+    private ArrayList<String> buyOrders;
     private String avatar;
 
     public Account() {
     }
 
-    public Account(String accountID, String email, String password, String accountName, String address, Double rating, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders) {
+    public Account(String accountID, String email, String password, String accountName, String address, Double rating, String phoneNumber, boolean isFinishData, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders, ArrayList<String> sellOrders, ArrayList<String> buyOrders, String avatar) {
         this.accountID = accountID;
         this.email = email;
         this.password = password;
         this.accountName = accountName;
         this.address = address;
         this.rating = rating;
+        this.phoneNumber = phoneNumber;
+        this.isFinishData = isFinishData;
         this.publishPosts = publishPosts;
         this.savedPosts = savedPosts;
         this.ratingOrders = ratingOrders;
+        this.sellOrders = sellOrders;
+        this.buyOrders = buyOrders;
+        this.avatar = avatar;
     }
 
     public String getAccountID() {
@@ -134,6 +140,23 @@ public class Account implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+    public ArrayList<String> getSellOrders() {
+        return sellOrders;
+    }
+
+    public void setSellOrders(ArrayList<String> sellOrders) {
+        this.sellOrders = sellOrders;
+    }
+
+    public ArrayList<String> getBuyOrders() {
+        return buyOrders;
+    }
+
+    public void setBuyOrders(ArrayList<String> buyOrders) {
+        this.buyOrders = buyOrders;
+    public ArrayList<String> getConversations() {
+        return conversations;
     }
 
     public void setDescription(String description) {

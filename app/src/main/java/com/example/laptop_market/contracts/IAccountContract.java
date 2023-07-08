@@ -1,6 +1,7 @@
 package com.example.laptop_market.contracts;
 
 import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.model.account.CurrentBuyer;
 
 import java.lang.reflect.Executable;
 
@@ -18,6 +19,10 @@ public interface IAccountContract {
         interface OnLoadingAccountListener
         {
             void OnLoadingListener(boolean isSignIn,Account account);
+        }
+        void GetCurrentAccountInformation(OnGetCurrentAccountInfoListener listener);
+        interface OnGetCurrentAccountInfoListener{
+            void OnFinishGetCurrentAccountInfo(boolean isSuccess, CurrentBuyer currentBuyer, Exception error);
         }
         //endregion
         //region Logout Function

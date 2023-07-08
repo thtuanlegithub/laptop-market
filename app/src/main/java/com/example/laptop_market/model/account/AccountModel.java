@@ -125,12 +125,9 @@ public class AccountModel implements IAccountContract.Model {
                                 account.setPublishPosts(new ArrayList<>());
                                 account.setRatingOrders(new ArrayList<>());
                                 account.setSavedPosts(new ArrayList<>());
+                                account.setBuyOrders(new ArrayList<>());
+                                account.setSellOrders(new ArrayList<>());
                                 account.setRating(0d);
-                                Map<String, Object> user = new HashMap<>();
-                                user.put(AccountTable.EMAIL, account.getEmail());
-                                user.put(AccountTable.PASSWORD, account.getPassword());
-                                user.put(AccountTable.ACCOUNT_NAME, account.getAccountName());
-                                user.put(AccountTable.PUBLISH_POSTS,new ArrayList<String>());
                                 db.collection(AccountTable.TABLE_NAME).document(task.getResult().getUser().getUid()).set(account);
                                 listener.OnCreateAccountResult(SIGNUP_SUCCESS,"Tạo tài khoản thành công");
                             }
@@ -253,4 +250,27 @@ public class AccountModel implements IAccountContract.Model {
         }).addOnFailureListener(Throwable::printStackTrace);
     }
     //endregion
+
+    @Override
+    public void GetCurrentAccountInformation(OnGetCurrentAccountInfoListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null){
+            String userID = firebaseUser.getUid();
+            db.collection(AccountTable.TABLE_NAME).document(userID).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()){
+                        CurrentBuyer currentBuyer = new CurrentBuyer();
+                        currentBuyer.setAccountID(firebaseUser.getUid());
+                        currentBuyer.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
+                        currentBuyer.setPhoneNumber(documentSnapshot.getString(AccountTable.PHONE_NUMBER));
+                        currentBuyer.setAddress(documentSnapshot.getString(AccountTable.ADDRESS));
+                        listener.OnFinishGetCurrentAccountInfo(true, currentBuyer, null);
+                    }
+                } else {
+                    listener.OnFinishGetCurrentAccountInfo(false, null, task.getException());
+                }
+            });
+        }
+    }
 }

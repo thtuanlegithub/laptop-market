@@ -15,38 +15,43 @@
         android:orientation="horizontal"
         android:background="#F5BD40">
         <ImageView
+            android:layout_marginLeft="15dp"
             android:id="@+id/bttBackConversation"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_back_chat"/>
+            android:src="@drawable/ic_back"/>
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imageProfile"
-            android:layout_marginStart="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:background="@drawable/background_avatar"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:riv_oval="true"
-            />
+            tools:ignore="MissingClass" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 android:id="@+id/textReceivedAccName"
                 android:layout_marginRight="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/primary_text"
-                android:textSize="22sp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:text="Nguyễn Phúc Bình"/>
             <TextView

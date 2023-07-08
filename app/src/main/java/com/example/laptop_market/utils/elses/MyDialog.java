@@ -18,6 +18,7 @@ public class MyDialog {
     private MyDialog(Context context) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // Find views

@@ -27,6 +27,7 @@ import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.ConversationDetailActivity;
 import com.example.laptop_market.view.activities.ConversationListActivity;
 import com.example.laptop_market.view.activities.NotificationActivity;
+import com.example.laptop_market.view.activities.ProfileActivity;
 import com.example.laptop_market.view.adapters.BrandAdapter;
 import com.example.laptop_market.model.brand.Brand;
 import com.google.firebase.auth.FirebaseAuth;
@@ -124,8 +125,10 @@ public class HomeFragment extends Fragment {
                 return;
             }
             Intent intent = new Intent(getContext(), ConversationListActivity.class);
-            startActivity(intent);});
-        btnNotificationHome.setOnClickListener(v -> {
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
+            btnNotificationHome.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NotificationActivity.class);
             Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
             startActivity(intent,bundle);

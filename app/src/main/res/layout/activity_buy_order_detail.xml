@@ -102,8 +102,9 @@
                         android:textSize="17dp"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/tvBuyOrderDetailOrderName"
                         android:gravity="left"
-                        android:layout_marginLeft="25dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -126,6 +127,7 @@
                         android:textSize="17dp"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/tvBuyOrderDetailTotalAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -148,6 +150,7 @@
                         android:textSize="17dp"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/tvBuyOrderDetailOrderedTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -161,7 +164,7 @@
                     android:layout_height="40dp"
                     android:gravity="center">
                     <TextView
-                        android:id="@+id/txtViewFinishTime"
+                        android:id="@+id/tvBuyOrderDetailFinishStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -170,6 +173,7 @@
                         android:textSize="17dp"
                         android:layout_weight="1"/>
                     <TextView
+                        android:id="@+id/tvBuyOrderDetailFinishedTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -280,8 +284,8 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtBuyOrderDetailCustomerPhone"
-                        android:enabled="false"
+                        android:id="@+id/edtBuyOrderDetailBuyerPhone"
+                        android:enabled="true"
                         android:focusable="false"
                         android:textColor="@color/black"
                         android:layout_width="match_parent"
@@ -292,8 +296,9 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="17dp"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:text="0702290135"
+                        android:maxLength="10"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -308,9 +313,9 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtBuyOrderDetailCustomerName"
+                        android:id="@+id/edtBuyOrderDetailBuyerName"
                         android:textColor="@color/black"
-                        android:enabled="false"
+                        android:enabled="true"
                         android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -335,9 +340,9 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtBuyOrderDetailCustomerAddress"
+                        android:id="@+id/edtBuyOrderDetailBuyerAddress"
                         android:textColor="@color/black"
-                        android:enabled="false"
+                        android:enabled="true"
                         android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -382,7 +387,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtBuyOrderDetailBuyerPhone"
+                        android:id="@+id/edtBuyOrderDetailSellerPhone"
                         android:textColor="@color/black"
                         android:enabled="false"
                         android:focusable="false"
@@ -409,7 +414,7 @@
                     android:paddingTop="3dp"
                     android:layout_marginTop="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtBuyOrderDetailBuyerName"
+                        android:id="@+id/edtBuyOrderDetailSellerName"
                         android:textColor="@color/black"
                         android:enabled="false"
                         android:focusable="false"
@@ -437,7 +442,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtBuyOrderDetailBuyerAddress"
+                        android:id="@+id/edtBuyOrderDetailSellerAddress"
                         android:textColor="@color/black"
                         android:enabled="false"
                         android:focusable="false"
@@ -468,6 +473,7 @@
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnConfirmBuyOrder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

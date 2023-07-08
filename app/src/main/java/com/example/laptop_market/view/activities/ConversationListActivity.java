@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
@@ -40,7 +41,7 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     private TextView textViewNotConversation;
     private ProgressBar progressBar;
     private IConversationContract.Presenter.ConversationListActivityPresenter conversationListActivityPresenter;
-
+    private boolean backFromConversationDetail = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,18 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     public void onConversationClicked(Conversation conversation) {
         Intent intent = new Intent(getApplicationContext(),ConversationDetailActivity.class);
         intent.putExtra(ConversationTable.TABLE_NAME,conversation);
-        startActivity(intent);
+        backFromConversationDetail = true;
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(backFromConversationDetail)
+        {
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            backFromConversationDetail = false;
+        }
     }
     @Override
     public void failedLoading(Exception ex) {

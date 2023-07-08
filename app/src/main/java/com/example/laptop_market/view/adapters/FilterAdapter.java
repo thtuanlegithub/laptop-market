@@ -2,12 +2,14 @@ package com.example.laptop_market.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.utils.elses.PreferenceManager;
@@ -78,7 +80,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
                Intent intent = new Intent(context,FilterActivity.class);
                intent.putExtra("filter",btnFilter.getTag().toString());
                intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
-               context.startActivity(intent);
+               Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(context, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+               context.startActivity(intent,bundle);
 
            });
         }
