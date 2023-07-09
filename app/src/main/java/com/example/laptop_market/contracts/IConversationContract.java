@@ -28,6 +28,8 @@ public interface IConversationContract {
         void UpdateSeenConversationStatus(Conversation conversation);
         //endregion
         //region load conversation image
+
+        //endregion
     }
     interface Presenter{
         interface ConversationListActivityPresenter{
