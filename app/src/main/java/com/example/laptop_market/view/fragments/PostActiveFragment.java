@@ -9,49 +9,50 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.post.Post;
+import com.example.laptop_market.presenter.fragments.PostFragmentPresenter;
 import com.example.laptop_market.view.adapters.PostActiveAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostActiveFragment extends Fragment {
+public class PostActiveFragment extends Fragment implements IPostContract.View.PostActiveFragmentView {
     private RecyclerView rcvPostActive;
+    private IPostContract.Presenter.PostFragmentPresenter postFragmentPresenter;
+    private ProgressBar progressBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        postFragmentPresenter = new PostFragmentPresenter(getContext(), this);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_active, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
+        progressBar = view.findViewById(R.id.progressBarPostActive);
         rcvPostActive = view.findViewById(R.id.rcvPostActive);
         GridLayoutManager gridLayoutManagerPostActive = new GridLayoutManager(requireContext(),1);
         rcvPostActive.setLayoutManager(gridLayoutManagerPostActive);
-        PostActiveAdapter PostActiveAdapter = new PostActiveAdapter(getListPostActive());
-        rcvPostActive.setAdapter(PostActiveAdapter);
-
+        postFragmentPresenter.LoadPostActive();
         return view;
     }
-
-    private List<PostSearchResult> getListPostActive(){
-        List<PostSearchResult> listPostActive = new ArrayList<>();
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listPostActive.add(new PostSearchResult("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        return  listPostActive;
+    @Override
+    public void DisplayPostActive(ArrayList<PostSearchResult> postSearchResults) {
+        if (postSearchResults == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
+        PostActiveAdapter PostActiveAdapter = new PostActiveAdapter(postSearchResults);
+        rcvPostActive.setAdapter(PostActiveAdapter);
+        progressBar.setVisibility(View.GONE);
     }
-
 }
