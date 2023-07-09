@@ -50,6 +50,10 @@ public interface IPostContract {
             void OnFinishLoadSellerPhoneNumber(boolean isSuccess, String phoneNumber, Exception error);
         }
         //endregion
+        void UpdatePostStatus(String postID, OnUpdatePostStatusListener listener);
+        interface OnUpdatePostStatusListener {
+            void OnFinishUpdatePostStatus(boolean isSuccess, boolean isAvailable, Exception error);
+        }
     }
     interface View{
         interface NewPostActivityView{
@@ -67,6 +71,7 @@ public interface IPostContract {
             void ShowPhoneDialIntent(String phoneNumber);
             void LoginAccount();
             void LoadOrderDetails(CurrentBuyer currentBuyer);
+            void DisplayNotifyButtonStatus(boolean isAvailable);
         }
 
         interface PostFragmentView{
@@ -96,6 +101,7 @@ public interface IPostContract {
             void OnSavePostClicked(String postID, boolean isSaved);
             void OnPhoneDialClicked(String postID);
             void OnBuyNowClicked();
+            void OnChangeStatusClicked(String postID);
         }
         interface PostFragmentPresenter{
             void CreateNewPost();
