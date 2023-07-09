@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayoutBuyCancel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragments.BuyCancelFragment">
-
-    <ProgressBar
-        android:id="@+id/progressBarBuyCancel"
-        android:visibility="visible"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center">
-    </ProgressBar>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvBuyCancel"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp">
-    </androidx.recyclerview.widget.RecyclerView>
-
-</FrameLayout>
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/progressBarBuyCancel"
+            android:visibility="visible"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center">
+        </ProgressBar>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvBuyCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp">
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

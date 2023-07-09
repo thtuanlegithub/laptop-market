@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
     private RecyclerView rcvPostActive;
     private IPostContract.Presenter.PostFragmentPresenter postFragmentPresenter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +38,19 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
         postFragmentPresenter = new PostFragmentPresenter(getContext(), this);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_active, container, false);
-
+        rcvPostActive = view.findViewById(R.id.rcvPostActive);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutPostActive);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                postFragmentPresenter.LoadPostActive();
+                rcvPostActive.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //Hiển thị các đơn bán - đang xử lý
         progressBar = view.findViewById(R.id.progressBarPostActive);
-        rcvPostActive = view.findViewById(R.id.rcvPostActive);
         GridLayoutManager gridLayoutManagerPostActive = new GridLayoutManager(requireContext(),1);
         rcvPostActive.setLayoutManager(gridLayoutManagerPostActive);
         postFragmentPresenter.LoadPostActive();
@@ -54,5 +65,6 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
         PostActiveAdapter PostActiveAdapter = new PostActiveAdapter(postSearchResults);
         rcvPostActive.setAdapter(PostActiveAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvPostActive.setVisibility(View.VISIBLE);
     }
 }
