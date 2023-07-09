@@ -22,6 +22,7 @@ import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
     private List<Filter> listFilter;
@@ -40,6 +41,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             notifyItemChanged(position);
         }
     }
+    public void updateFiltered(int position, boolean isFiltered){
+        if(listFilter != null & position >= 0 && position < listFilter.size()){
+            Filter filter = listFilter.get(position);
+            filter.setFiltered(isFiltered);
+            notifyItemChanged(position);
+        }
+    }
     @NonNull
     @Override
     public FilterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,6 +63,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         }
         holder.btnFilter.setText(filter.getName());
         holder.btnFilter.setTag(filter.getTag());
+        if(filter.getIsFiltered()){
+            holder.btnFilter.setBackgroundResource(R.drawable.outline_rounded_button);
+        }
+        else{
+            holder.btnFilter.setBackgroundResource(R.drawable.rounded_button);
+        }
     }
 
     @Override

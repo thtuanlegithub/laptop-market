@@ -48,7 +48,7 @@ public class PostSearchResultAdapter extends RecyclerView.Adapter<PostSearchResu
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
         String formattedPrice = numberFormat.format(postSearchResult.getPrice());
-        holder.pricePostSearchResult.setText(formattedPrice);
+        holder.pricePostSearchResult.setText(formattedPrice + " VNĐ");
         holder.addressPostSearchResult.setText(postSearchResult.getAddress());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

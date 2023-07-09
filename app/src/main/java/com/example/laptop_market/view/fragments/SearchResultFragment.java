@@ -131,7 +131,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 return;
             }
             Intent intent = new Intent(getContext(), ConversationListActivity.class);
-            startActivity(intent);});
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
+
         btnSearchResultBack.setOnClickListener(view1 -> {
             homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
             //Ẩn bàn phím:
@@ -221,11 +224,22 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 brand = brand.substring(0, 7) + "..." + " +";
             }
             filterAdapter.updateFilterName(0,brand);
+            filterAdapter.updateFiltered(0,true);
+        }
+        else{
+            filterAdapter.updateFilterName(0,listFilter.get(0).getTag());
+            filterAdapter.updateFiltered(0,false);
         }
         if(searchFilterPost.getMinimumPrice()!=0 && searchFilterPost.getMaximumPrice()!=50000000) {
             if (searchFilterPost.getMinimumPrice() > 0)
                 textViewHint += " có giá trên " + formatter.format(searchFilterPost.getMinimumPrice()) + " và";
             textViewHint += " có giá dưới " + formatter.format(searchFilterPost.getMaximumPrice());
+            filterAdapter.updateFilterName(1,"Giá từ: ... +");
+            filterAdapter.updateFiltered(1,true);
+        }
+        else{
+            filterAdapter.updateFilterName(1,listFilter.get(1).getTag());
+            filterAdapter.updateFiltered(1,false);
         }
         if (searchFilterPost.getListGuarantee().size() > 0) {
             String guarantee = "";
@@ -243,6 +257,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 guarantee += " +";
             }
             filterAdapter.updateFilterName(2, guarantee);
+            filterAdapter.updateFiltered(2,true);
+        }
+        else{
+            filterAdapter.updateFilterName(2,listFilter.get(2).getTag());
+            filterAdapter.updateFiltered(2,false);
         }
         if (searchFilterPost.getListCPU().size() > 0) {
             String cpu = "";
@@ -261,6 +280,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
 
             filterAdapter.updateFilterName(3, cpu);
+            filterAdapter.updateFiltered(3,true);
+        }
+        else{
+            filterAdapter.updateFilterName(3,listFilter.get(3).getTag());
+            filterAdapter.updateFiltered(3,false);
         }
         if (searchFilterPost.getListRam().size() > 0) {
             String ram = "";
@@ -278,6 +302,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 ram += " +";
             }
             filterAdapter.updateFilterName(4, ram);
+            filterAdapter.updateFiltered(4,true);
+        }
+        else{
+            filterAdapter.updateFilterName(4,listFilter.get(4).getTag());
+            filterAdapter.updateFiltered(4,false);
         }
         if (searchFilterPost.getListHardDrive().size() > 0) {
             String hardDrive = "";
@@ -297,6 +326,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
 
             filterAdapter.updateFilterName(5, hardDrive);
+            filterAdapter.updateFiltered(5,true);
+        }
+        else{
+            filterAdapter.updateFilterName(5,listFilter.get(5).getTag());
+            filterAdapter.updateFiltered(5,false);
         }
         if (searchFilterPost.getListHardDriveSize().size() > 0) {
             String hardDriveSize = "";
@@ -315,6 +349,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
 
             filterAdapter.updateFilterName(6, hardDriveSize);
+            filterAdapter.updateFiltered(6,true);
+        }
+        else{
+            filterAdapter.updateFilterName(6,listFilter.get(6).getTag());
+            filterAdapter.updateFiltered(6,false);
         }
         if (searchFilterPost.getListGraphics().size() > 0) {
             String graphics = "";
@@ -333,6 +372,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
 
             filterAdapter.updateFilterName(7, graphics);
+            filterAdapter.updateFiltered(7,true);
+        }
+        else{
+            filterAdapter.updateFilterName(7,listFilter.get(7).getTag());
+            filterAdapter.updateFiltered(7,false);
         }
         if (searchFilterPost.getListScreenSize().size() > 0) {
             String screenSize = "";
@@ -351,6 +395,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
 
             filterAdapter.updateFilterName(8, screenSize);
+            filterAdapter.updateFiltered(8,true);
+        }
+        else{
+            filterAdapter.updateFilterName(8,listFilter.get(8).getTag());
+            filterAdapter.updateFiltered(8,false);
         }
         if(textViewHint.length()>25)
             textViewHint = textViewHint.substring(0,22) + "...";

@@ -35,6 +35,8 @@ public class FilterActivity extends AppCompatActivity {
     private SeekBar seekBarMaxPrice;
     private TextView minimumPriceTextView;
     private TextView maximumPriceTextView;
+    private TextView txtFilterClose;
+    private final int stepSize = 1000000;
     public FilterActivity()
     {
 
@@ -56,6 +58,8 @@ public class FilterActivity extends AppCompatActivity {
         rcvFilterCheckbox.setVisibility(View.VISIBLE);
         layoutSeekBar.setVisibility(View.GONE);
         btnFilterApply.setVisibility(View.VISIBLE);
+        txtFilterClose = findViewById(R.id.txtFilterClose);
+
         //
         Intent intent = getIntent();
         if(intent !=null && intent.hasExtra("filter") && intent.hasExtra(SearchFilterPost.SEARCH_NAME)){
@@ -108,8 +112,9 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Thực hiện cập nhật giá trị tối thiểu tương ứng với giá trị của SeekBar
+                int value = progress*stepSize;
                 DecimalFormat formatter = new DecimalFormat("#,###,###");
-                String minValueFormatted = formatter.format(progress);
+                String minValueFormatted = formatter.format(value);
                 minimumPriceTextView.setText(minValueFormatted);
             }
             @Override
@@ -125,8 +130,9 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Thực hiện cập nhật giá trị tối thiểu tương ứng với giá trị của SeekBar
+                int value = progress*stepSize;
                 DecimalFormat formatter = new DecimalFormat("#,###,###");
-                String minValueFormatted = formatter.format(progress);
+                String minValueFormatted = formatter.format(value);
                 maximumPriceTextView.setText(minValueFormatted);
             }
 
@@ -139,6 +145,12 @@ public class FilterActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // Không cần thực hiện gì trong phương thức này
             }
+        });
+
+        txtFilterClose.setOnClickListener(v -> {
+
+
+            finish();
         });
     }
 

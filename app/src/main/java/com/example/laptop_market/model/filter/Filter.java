@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Filter implements Serializable {
+    private boolean isFiltered;
     private String name; //default name
     private String tag;
     private int image;
@@ -44,5 +45,13 @@ public class Filter implements Serializable {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public boolean getIsFiltered() {
+        return isFiltered;
+    }
+
+    public void setFiltered(boolean filtered) {
+        isFiltered = filtered;
     }
 }

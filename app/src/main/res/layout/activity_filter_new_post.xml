@@ -5,37 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.activities.FilterActivity">
+    tools:context=".view.activities.FilterNewPostActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/home_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#F5BD40">
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFilterDetailNewPostClose"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_close"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnFilterDetailClose"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_back"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:id="@+id/txtFilterClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:text="Bỏ lọc"
-                    android:textSize="16dp"
-                    android:padding="15dp"
-                    android:textColor="@color/black"/>
-            </LinearLayout>
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/txtFilterNewPostClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="Bỏ lọc"
+                android:textSize="16dp"
+                android:padding="15dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_marginTop="15dp"
@@ -47,7 +46,7 @@
         android:layout_height="match_parent"
         >
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvFilterCheckbox"
+            android:id="@+id/rcvFilterNewPostRadioButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -56,7 +55,7 @@
 
         <LinearLayout
             android:layout_marginTop="10dp"
-            android:id="@+id/layoutSeekBar"
+            android:id="@+id/layoutSeekBarNewPost"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -72,7 +71,7 @@
                     android:textSize="16dp"
                     android:text="Giá tối thiểu: "/>
                 <TextView
-                    android:id="@+id/minimumPriceTextView"
+                    android:id="@+id/minimumPriceTextViewNewPost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
@@ -91,7 +90,7 @@
             </LinearLayout>
             <SeekBar
                 android:max="50"
-                android:id="@+id/seekBarMinPrice"
+                android:id="@+id/seekBarMinPriceNewPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:thumb="@drawable/bg_thumb"
@@ -111,7 +110,7 @@
                     android:textSize="16dp"
                     android:text="Giá tối đa: "/>
                 <TextView
-                    android:id="@+id/maximumPriceTextView"
+                    android:id="@+id/maximumPriceTextViewNewPost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
@@ -130,7 +129,7 @@
             </LinearLayout>
             <SeekBar
                 android:max="50"
-                android:id="@+id/seekBarMaxPrice"
+                android:id="@+id/seekBarMaxPriceNewPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:thumb="@drawable/bg_thumb"
@@ -141,7 +140,7 @@
 
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnFilterDetailApply"
+        android:id="@+id/btnFilterDetailNewPostApply"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Áp dụng"

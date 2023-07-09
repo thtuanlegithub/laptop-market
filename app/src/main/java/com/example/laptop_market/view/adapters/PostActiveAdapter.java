@@ -44,10 +44,9 @@ public class PostActiveAdapter extends RecyclerView.Adapter<PostActiveAdapter.Po
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
         String formattedPrice = numberFormat.format(postActive.getPrice());
-        holder.pricePost.setText(String.valueOf(formattedPrice));
+        holder.pricePost.setText(formattedPrice + " VNĐ");
         holder.addressPost.setText(postActive.getAddress());
-
-
+        holder.imgPost.setImageBitmap(postActive.getImage());
         // item select
         holder.itemView.setOnClickListener(v -> {
 

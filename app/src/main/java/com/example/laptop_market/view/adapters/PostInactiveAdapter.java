@@ -44,7 +44,7 @@ public class PostInactiveAdapter extends RecyclerView.Adapter<PostInactiveAdapte
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
         String formattedPrice = numberFormat.format(postInactive.getPrice());
-        holder.pricePost.setText(String.valueOf(formattedPrice));
+        holder.pricePost.setText(formattedPrice + " VNĐ");
         holder.addressPost.setText(postInactive.getAddress());
         holder.inactiveLabelPost.setVisibility(View.VISIBLE);
 
