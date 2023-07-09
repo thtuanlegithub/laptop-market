@@ -55,6 +55,18 @@ public interface IAccountContract {
         interface OnFinishSavePostListener{
             void OnFinishSavePost(boolean isSuccess, boolean isSaved, Exception error);
         }
+        void LoadAccountSetting(OnFinishLoadingProfileListener listener);
+        interface OnFinishLoadingProfileListener{
+            void OnFinishLoadingProfile(Account account, Exception e);
+        }
+        void UpdateAccountInformation(Account account, OnFinishUpdateAccountInformationListener listener);
+        interface OnFinishUpdateAccountInformationListener{
+            void OnFinishUpdateAccountInformation(Exception e);
+        }
+        void UpdateAccountPassword(String oldPassword, String newPassword, OnFinishUpdateAccountPasswordListener listener);
+        interface OnFinishUpdateAccountPasswordListener{
+            void OnFinishUpdateAccountPassword(boolean isSuccess, Exception e);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -68,6 +80,11 @@ public interface IAccountContract {
             void LoadSavedPost();
             void LoadYourRating();
             void LoadAccountSettings();
+        }
+        interface AccountSettingActivityView{
+            void LoadProfileData(Account account);
+            void Error(Exception e);
+            void UpdateAccountSettingSuccess();
         }
         //endregion
         //region Login Fragment view
@@ -88,9 +105,21 @@ public interface IAccountContract {
             void FailedLoadingPostDetail(Exception error);
         }
         //endregion
+        //region Account pasword activity view
+        interface AccountPasswordActivityView{
+            void UpdatePasswordSuccess();
+            void WrongOldPassword(String message);
+        }
+        //endregion
     }
     //region Presenter
     interface Presenter{
+        //region Account Setting activity
+        interface AccountSettingActivityPresenter{
+            void LoadAccountSetting();
+            void UpdateProfileOnClick(Account account);
+        }
+        //endregion
         //region Account Fragment presenter
         interface AccountFragmentPresenter {
             void LoadAccountStatus();
@@ -116,6 +145,11 @@ public interface IAccountContract {
         //region PostDetail Activity presenter
         interface PostDetailActivityPresenter{
             void OnLoadingAccountInPostDetail(String accountId);
+        }
+        //endregion
+        //region Account pasword activity view
+        interface AccountPasswordActivityPresenter{
+            void UpdatePassword(String oldPassword, String newPassword);
         }
         //endregion
     }
