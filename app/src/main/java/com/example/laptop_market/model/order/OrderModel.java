@@ -10,6 +10,7 @@ import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.OrderTable;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.Buy.BuyOrder;
+import com.example.laptop_market.view.adapters.Sell.SellOrder;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,8 +60,9 @@ public class OrderModel implements IOrderContract.Model {
         });
     }
 
+    // region Buy order
     @Override
-    public void GetProcessingOrders(OnGetProcessingOrdersListener listener) {
+    public void GetBuyProcessingOrders(OnGetBuyProcessingOrdersListener listener) {
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             String userID = firebaseUser.getUid();
@@ -106,13 +108,13 @@ public class OrderModel implements IOrderContract.Model {
                                         // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
                                         Tasks.whenAllSuccess(loadProductTasks)
                                                 .addOnSuccessListener(results -> {
-                                                    listener.OnFinishGetProcessingOrders(true, processingOrders, null);
+                                                    listener.OnFinishGetBuyProcessingOrders(true, processingOrders, null);
                                                 })
                                                 .addOnFailureListener(exception -> {
-                                                    listener.OnFinishGetProcessingOrders(false, null, exception);
+                                                    listener.OnFinishGetBuyProcessingOrders(false, null, exception);
                                                 });
                                     } else {
-                                        listener.OnFinishGetProcessingOrders(false, null, task1.getException());
+                                        listener.OnFinishGetBuyProcessingOrders(false, null, task1.getException());
                                     }
                                 });
                             }
@@ -121,13 +123,13 @@ public class OrderModel implements IOrderContract.Model {
                 });
             } else {
                 // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-                listener.OnFinishGetProcessingOrders(true, null, null);
+                listener.OnFinishGetBuyProcessingOrders(true, null, null);
             }
         }
     }
 
     @Override
-    public void GetDeliveringOrders(OnGetDeliveringOrdersListener listener) {
+    public void GetBuyDeliveringOrders(OnGetBuyDeliveringOrdersListener listener) {
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             String userID = firebaseUser.getUid();
@@ -173,13 +175,13 @@ public class OrderModel implements IOrderContract.Model {
                                         // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
                                         Tasks.whenAllSuccess(loadProductTasks)
                                                 .addOnSuccessListener(results -> {
-                                                    listener.OnFinishGetDeliveringOrders(true, processingOrders, null);
+                                                    listener.OnFinishGetBuyDeliveringOrders(true, processingOrders, null);
                                                 })
                                                 .addOnFailureListener(exception -> {
-                                                    listener.OnFinishGetDeliveringOrders(false, null, exception);
+                                                    listener.OnFinishGetBuyDeliveringOrders(false, null, exception);
                                                 });
                                     } else {
-                                        listener.OnFinishGetDeliveringOrders(false, null, task1.getException());
+                                        listener.OnFinishGetBuyDeliveringOrders(false, null, task1.getException());
                                     }
                                 });
                             }
@@ -188,13 +190,13 @@ public class OrderModel implements IOrderContract.Model {
                 });
             } else {
                 // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-                listener.OnFinishGetDeliveringOrders(true, null, null);
+                listener.OnFinishGetBuyDeliveringOrders(true, null, null);
             }
         }
     }
 
     @Override
-    public void GetFinishedOrders(OnGetFinishedOrdersListener listener) {
+    public void GetBuyFinishedOrders(OnGetBuyFinishedOrdersListener listener) {
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             String userID = firebaseUser.getUid();
@@ -240,13 +242,13 @@ public class OrderModel implements IOrderContract.Model {
                                         // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
                                         Tasks.whenAllSuccess(loadProductTasks)
                                                 .addOnSuccessListener(results -> {
-                                                    listener.OnGetFinishedOrdersOrders(true, processingOrders, null);
+                                                    listener.OnGetBuyFinishedOrdersOrders(true, processingOrders, null);
                                                 })
                                                 .addOnFailureListener(exception -> {
-                                                    listener.OnGetFinishedOrdersOrders(false, null, exception);
+                                                    listener.OnGetBuyFinishedOrdersOrders(false, null, exception);
                                                 });
                                     } else {
-                                        listener.OnGetFinishedOrdersOrders(false, null, task1.getException());
+                                        listener.OnGetBuyFinishedOrdersOrders(false, null, task1.getException());
                                     }
                                 });
                             }
@@ -255,13 +257,13 @@ public class OrderModel implements IOrderContract.Model {
                 });
             } else {
                 // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-                listener.OnGetFinishedOrdersOrders(true, null, null);
+                listener.OnGetBuyFinishedOrdersOrders(true, null, null);
             }
         }
     }
 
     @Override
-    public void GetCanceledOrders(OnGetCanceledOrdersListener listener) {
+    public void GetBuyCanceledOrders(OnGetBuyCanceledOrdersListener listener) {
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             String userID = firebaseUser.getUid();
@@ -307,13 +309,13 @@ public class OrderModel implements IOrderContract.Model {
                                         // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
                                         Tasks.whenAllSuccess(loadProductTasks)
                                                 .addOnSuccessListener(results -> {
-                                                    listener.OnFinishGetCanceledOrders(true, processingOrders, null);
+                                                    listener.OnFinishGetBuyCanceledOrders(true, processingOrders, null);
                                                 })
                                                 .addOnFailureListener(exception -> {
-                                                    listener.OnFinishGetCanceledOrders(false, null, exception);
+                                                    listener.OnFinishGetBuyCanceledOrders(false, null, exception);
                                                 });
                                     } else {
-                                        listener.OnFinishGetCanceledOrders(false, null, task1.getException());
+                                        listener.OnFinishGetBuyCanceledOrders(false, null, task1.getException());
                                     }
                                 });
                             }
@@ -322,10 +324,277 @@ public class OrderModel implements IOrderContract.Model {
                 });
             } else {
                 // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-                listener.OnFinishGetCanceledOrders(true, null, null);
+                listener.OnFinishGetBuyCanceledOrders(true, null, null);
             }
         }
     }
+    // endregion
+
+    // region Sell order
+    @Override
+    public void GetSellProcessingOrders(OnGetSellProcessingOrdersListener listener) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            // Nếu có người đang đăng nhập
+            if (userID != null) {
+                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
+                // Lấy cái BuyOrder từ bảng Account
+                accountRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            ArrayList<String> sellOrdersID = (ArrayList<String>) documentSnapshot.get(AccountTable.SELL_ORDERS);
+                            if (sellOrdersID != null && !sellOrdersID.isEmpty()) {
+                                Query query = db.collection(OrderTable.TABLE_NAME)
+                                        .whereEqualTo(OrderTable.ORDER_STATUS, OrderStatus.PROCESSING)
+                                        .whereIn("orderID", sellOrdersID);
+
+                                query.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
+                                        ArrayList<SellOrder> processingOrders = new ArrayList<>();
+                                        for (QueryDocumentSnapshot orderDoc : task1.getResult()) {
+                                            SellOrder sellOrder = new SellOrder ();
+                                            sellOrder.setOrderId(orderDoc.getString("orderID"));
+                                            sellOrder.setSellerId(orderDoc.getString(OrderTable.SELLER_ID));
+                                            String postID = orderDoc.getString(OrderTable.POST_ID);
+                                            Task<DocumentSnapshot> getProductTask = db.collection(PostTable.TABLE_NAME)
+                                                    .document(postID)
+                                                    .get()
+                                                    .addOnSuccessListener(productSnapshot -> {
+                                                        if (productSnapshot.exists()) {
+                                                            sellOrder.setLaptopName(productSnapshot.getString(PostTable.TITLE));
+                                                            sellOrder.setImage(getBitMapFromString(productSnapshot.getString(PostTable.POST_MAIN_IMAGE)));
+                                                        }
+                                                    });
+                                            loadProductTasks.add(getProductTask);
+                                            sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
+                                            sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
+                                            processingOrders.add(sellOrder);
+                                        }
+
+                                        // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
+                                        Tasks.whenAllSuccess(loadProductTasks)
+                                                .addOnSuccessListener(results -> {
+                                                    listener.OnFinishGetSellProcessingOrders(true, processingOrders, null);
+                                                })
+                                                .addOnFailureListener(exception -> {
+                                                    listener.OnFinishGetSellProcessingOrders(false, null, exception);
+                                                });
+                                    } else {
+                                        listener.OnFinishGetSellProcessingOrders(false, null, task1.getException());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+                listener.OnFinishGetSellProcessingOrders(true, null, null);
+            }
+        }
+    }
+
+    @Override
+    public void GetSellDeliveringOrders(OnGetSellDeliveringOrdersListener listener) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            // Nếu có người đang đăng nhập
+            if (userID != null) {
+                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
+                // Lấy cái BuyOrder từ bảng Account
+                accountRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            ArrayList<String> sellOrdersID = (ArrayList<String>) documentSnapshot.get(AccountTable.SELL_ORDERS);
+                            if (sellOrdersID != null && !sellOrdersID.isEmpty()) {
+                                Query query = db.collection(OrderTable.TABLE_NAME)
+                                        .whereEqualTo(OrderTable.ORDER_STATUS, OrderStatus.SHIPPING)
+                                        .whereIn("orderID", sellOrdersID);
+
+                                query.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
+                                        ArrayList<SellOrder> processingOrders = new ArrayList<>();
+                                        for (QueryDocumentSnapshot orderDoc : task1.getResult()) {
+                                            SellOrder sellOrder = new SellOrder ();
+                                            sellOrder.setOrderId(orderDoc.getString("orderID"));
+                                            sellOrder.setSellerId(orderDoc.getString(OrderTable.SELLER_ID));
+                                            String postID = orderDoc.getString(OrderTable.POST_ID);
+                                            Task<DocumentSnapshot> getProductTask = db.collection(PostTable.TABLE_NAME)
+                                                    .document(postID)
+                                                    .get()
+                                                    .addOnSuccessListener(productSnapshot -> {
+                                                        if (productSnapshot.exists()) {
+                                                            sellOrder.setLaptopName(productSnapshot.getString(PostTable.TITLE));
+                                                            sellOrder.setImage(getBitMapFromString(productSnapshot.getString(PostTable.POST_MAIN_IMAGE)));
+                                                        }
+                                                    });
+                                            loadProductTasks.add(getProductTask);
+                                            sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
+                                            sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
+                                            processingOrders.add(sellOrder);
+                                        }
+
+                                        // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
+                                        Tasks.whenAllSuccess(loadProductTasks)
+                                                .addOnSuccessListener(results -> {
+                                                    listener.OnFinishGetSellDeliveringOrders(true, processingOrders, null);
+                                                })
+                                                .addOnFailureListener(exception -> {
+                                                    listener.OnFinishGetSellDeliveringOrders(false, null, exception);
+                                                });
+                                    } else {
+                                        listener.OnFinishGetSellDeliveringOrders(false, null, task1.getException());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+                listener.OnFinishGetSellDeliveringOrders(true, null, null);
+            }
+        }
+    }
+
+    @Override
+    public void GetSellFinishedOrders(OnGetSellFinishedOrdersListener listener) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            // Nếu có người đang đăng nhập
+            if (userID != null) {
+                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
+                // Lấy cái BuyOrder từ bảng Account
+                accountRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            ArrayList<String> sellOrdersID = (ArrayList<String>) documentSnapshot.get(AccountTable.SELL_ORDERS);
+                            if (sellOrdersID != null && !sellOrdersID.isEmpty()) {
+                                Query query = db.collection(OrderTable.TABLE_NAME)
+                                        .whereEqualTo(OrderTable.ORDER_STATUS, OrderStatus.FINISHED)
+                                        .whereIn("orderID", sellOrdersID);
+
+                                query.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
+                                        ArrayList<SellOrder> processingOrders = new ArrayList<>();
+                                        for (QueryDocumentSnapshot orderDoc : task1.getResult()) {
+                                            SellOrder sellOrder = new SellOrder ();
+                                            sellOrder.setOrderId(orderDoc.getString("orderID"));
+                                            sellOrder.setSellerId(orderDoc.getString(OrderTable.SELLER_ID));
+                                            String postID = orderDoc.getString(OrderTable.POST_ID);
+                                            Task<DocumentSnapshot> getProductTask = db.collection(PostTable.TABLE_NAME)
+                                                    .document(postID)
+                                                    .get()
+                                                    .addOnSuccessListener(productSnapshot -> {
+                                                        if (productSnapshot.exists()) {
+                                                            sellOrder.setLaptopName(productSnapshot.getString(PostTable.TITLE));
+                                                            sellOrder.setImage(getBitMapFromString(productSnapshot.getString(PostTable.POST_MAIN_IMAGE)));
+                                                        }
+                                                    });
+                                            loadProductTasks.add(getProductTask);
+                                            sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
+                                            sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
+                                            processingOrders.add(sellOrder);
+                                        }
+
+                                        // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
+                                        Tasks.whenAllSuccess(loadProductTasks)
+                                                .addOnSuccessListener(results -> {
+                                                    listener.OnGetSellFinishedOrders(true, processingOrders, null);
+                                                })
+                                                .addOnFailureListener(exception -> {
+                                                    listener.OnGetSellFinishedOrders(false, null, exception);
+                                                });
+                                    } else {
+                                        listener.OnGetSellFinishedOrders(false, null, task1.getException());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+                listener.OnGetSellFinishedOrders(true, null, null);
+            }
+        }
+    }
+
+    @Override
+    public void GetSellCanceledOrders(OnGetSellCanceledOrdersListener listener) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            // Nếu có người đang đăng nhập
+            if (userID != null) {
+                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
+                // Lấy cái BuyOrder từ bảng Account
+                accountRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            ArrayList<String> sellOrdersID = (ArrayList<String>) documentSnapshot.get(AccountTable.SELL_ORDERS);
+                            if (sellOrdersID != null && !sellOrdersID.isEmpty()) {
+                                Query query = db.collection(OrderTable.TABLE_NAME)
+                                        .whereEqualTo(OrderTable.ORDER_STATUS, OrderStatus.CANCELED)
+                                        .whereIn("orderID", sellOrdersID);
+
+                                query.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
+                                        ArrayList<SellOrder> processingOrders = new ArrayList<>();
+                                        for (QueryDocumentSnapshot orderDoc : task1.getResult()) {
+                                            SellOrder sellOrder = new SellOrder ();
+                                            sellOrder.setOrderId(orderDoc.getString("orderID"));
+                                            sellOrder.setSellerId(orderDoc.getString(OrderTable.SELLER_ID));
+                                            String postID = orderDoc.getString(OrderTable.POST_ID);
+                                            Task<DocumentSnapshot> getProductTask = db.collection(PostTable.TABLE_NAME)
+                                                    .document(postID)
+                                                    .get()
+                                                    .addOnSuccessListener(productSnapshot -> {
+                                                        if (productSnapshot.exists()) {
+                                                            sellOrder.setLaptopName(productSnapshot.getString(PostTable.TITLE));
+                                                            sellOrder.setImage(getBitMapFromString(productSnapshot.getString(PostTable.POST_MAIN_IMAGE)));
+                                                        }
+                                                    });
+                                            loadProductTasks.add(getProductTask);
+                                            sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
+                                            sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
+                                            processingOrders.add(sellOrder);
+                                        }
+
+                                        // Chờ cho tất cả các nhiệm vụ tải dữ liệu sản phẩm hoàn thành
+                                        Tasks.whenAllSuccess(loadProductTasks)
+                                                .addOnSuccessListener(results -> {
+                                                    listener.OnFinishGetSellCanceledOrders(true, processingOrders, null);
+                                                })
+                                                .addOnFailureListener(exception -> {
+                                                    listener.OnFinishGetSellCanceledOrders(false, null, exception);
+                                                });
+                                    } else {
+                                        listener.OnFinishGetSellCanceledOrders(false, null, task1.getException());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+                listener.OnFinishGetSellCanceledOrders(true, null, null);
+            }
+        }
+    }
+    // endregion
 
     private Bitmap getBitMapFromString(String encodedImage)
     {

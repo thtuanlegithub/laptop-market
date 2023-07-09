@@ -62,9 +62,9 @@ public class BuyFragmentPresenter implements IOrderContract.Presenter.BuyFragmen
 
     @Override
     public void LoadBuyProcessingOrder() {
-        orderModel.GetProcessingOrders(new IOrderContract.Model.OnGetProcessingOrdersListener() {
+        orderModel.GetBuyProcessingOrders(new IOrderContract.Model.OnGetBuyProcessingOrdersListener() {
             @Override
-            public void OnFinishGetProcessingOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+            public void OnFinishGetBuyProcessingOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
                 if (isSuccess) {
                     buyProcessingFragmentView.DisplayBuyProcessingOrder(orders);
                 } else {
@@ -76,9 +76,9 @@ public class BuyFragmentPresenter implements IOrderContract.Presenter.BuyFragmen
 
     @Override
     public void LoadBuyDeliveringOrder() {
-        orderModel.GetDeliveringOrders(new IOrderContract.Model.OnGetDeliveringOrdersListener() {
+        orderModel.GetBuyDeliveringOrders(new IOrderContract.Model.OnGetBuyDeliveringOrdersListener() {
             @Override
-            public void OnFinishGetDeliveringOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+            public void OnFinishGetBuyDeliveringOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
                 if (isSuccess) {
                     buyDeliveringFragmentView.DisplayBuyDeliveringOrder(orders);
                 } else {
@@ -90,9 +90,9 @@ public class BuyFragmentPresenter implements IOrderContract.Presenter.BuyFragmen
 
     @Override
     public void LoadBuyFinishedOrder() {
-        orderModel.GetFinishedOrders(new IOrderContract.Model.OnGetFinishedOrdersListener() {
+        orderModel.GetBuyFinishedOrders(new IOrderContract.Model.OnGetBuyFinishedOrdersListener() {
             @Override
-            public void OnGetFinishedOrdersOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+            public void OnGetBuyFinishedOrdersOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
                 if (isSuccess) {
                     buyFinishFragmentView.DisplayBuyFinishedOrder(orders);
                 } else {
@@ -104,9 +104,9 @@ public class BuyFragmentPresenter implements IOrderContract.Presenter.BuyFragmen
 
     @Override
     public void LoadBuyCancelOrder() {
-        orderModel.GetCanceledOrders(new IOrderContract.Model.OnGetCanceledOrdersListener() {
+        orderModel.GetBuyCanceledOrders(new IOrderContract.Model.OnGetBuyCanceledOrdersListener() {
             @Override
-            public void OnFinishGetCanceledOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+            public void OnFinishGetBuyCanceledOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
                 if (isSuccess) {
                     buyCancelFragmentView.DisplayCancelFinishedOrder(orders);
                 } else {

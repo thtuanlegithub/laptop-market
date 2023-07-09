@@ -158,7 +158,7 @@ public class Account implements Serializable {
     }
 
     public ArrayList<String> getConversations() {
-        return conversations;
+        return null;
     }
 
     public void setDescription(String description) {
