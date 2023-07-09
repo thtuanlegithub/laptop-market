@@ -170,4 +170,18 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
         });
     }
     //endregion
+
+    @Override
+    public void OnChangeStatusClicked(String postID) {
+        postModel.UpdatePostStatus(postID, new IPostContract.Model.OnUpdatePostStatusListener() {
+            @Override
+            public void OnFinishUpdatePostStatus(boolean isSuccess, boolean isAvailable, Exception error) {
+                if (isSuccess) {
+                    postView.DisplayNotifyButtonStatus(isAvailable);
+                } else {
+                    error.printStackTrace();
+                }
+            }
+        });
+    }
 }

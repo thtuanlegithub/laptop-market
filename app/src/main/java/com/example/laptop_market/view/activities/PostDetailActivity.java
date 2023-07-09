@@ -30,6 +30,7 @@ import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.account.CurrentBuyer;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
+import com.example.laptop_market.model.post.PostStatus;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
@@ -85,6 +86,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private boolean backFromOrder = false;
     private Button btnViewProfileFromPostDetail;
     private AppCompatButton bttMessenger;
+    private AppCompatButton btnNotifyPostStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +133,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         guaranteeTextView = findViewById(R.id.guaranteeTextView);
         originTextView = findViewById(R.id.originTextView);
         btnViewProfileFromPostDetail = findViewById(R.id.btnViewProfileFromPostDetail);
+        btnNotifyPostStatus = findViewById(R.id.btnNotifyPostStatus);
         // init data
         InitData();
 
@@ -138,6 +141,10 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         if(isSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
+            if (postSearchResult.getPostStatus().equals(PostStatus.AVAILABLE))
+                btnNotifyPostStatus.setText("Thông báo hết hàng");
+            else
+                btnNotifyPostStatus.setText("Thông báo còn hàng");
         }
         else{
             layoutButtonCustomer.setVisibility(View.VISIBLE);
@@ -162,6 +169,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
 
     private void setListener()
     {
+        btnNotifyPostStatus.setOnClickListener(view -> {
+            postPresenter.OnChangeStatusClicked(postSearchResult.getPostId());
+        });
         btnViewProfileFromPostDetail.setOnClickListener(view -> {
             /*Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);*/
@@ -375,5 +385,13 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         screenSizeTextView.setText(laptop.getScreenSize());
         guaranteeTextView.setText(laptop.getGuarantee());
         originTextView.setText(laptop.getOrigin());
+    }
+
+    @Override
+    public void DisplayNotifyButtonStatus(boolean isAvailable) {
+        if (isAvailable)
+            btnNotifyPostStatus.setText("Thông báo hết hàng");
+        else
+            btnNotifyPostStatus.setText("Thông báo còn hàng");
     }
 }
