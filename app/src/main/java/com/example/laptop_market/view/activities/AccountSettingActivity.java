@@ -124,6 +124,57 @@ public class AccountSettingActivity extends AppCompatActivity implements IAccoun
                 });
             }
         });
+    }
+    private void loadProfileSetting()
+    {
+        accountSettingActivityPresenter.LoadAccountSetting();
+    }
+    public void onResume() {
+        super.onResume();
+        if(backFromPassword)
+        {
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            backFromPassword=false;
+        }
+    }
+
+    @Override
+    public void LoadProfileData(Account account) {
+        this.account = account;
+        edtAccountSettingName.setText(account.getAccountName());
+        edtAccountSettingGmail.setText(account.getEmail());
+        if(account.getAddress()!=null )
+            edtAccountSettingAddress.setText(account.getAddress());
+        if(account.getPhoneNumber()!=null)
+            edtAccountSettingPhone.setText(account.getPhoneNumber());
+        if(account.getDescription()!=null )
+            edtAccountSettingIntroduction.setText(account.getDescription());
+        setBackCall();
+    }
+
+    @Override
+    public void Error(Exception e) {
+        e.printStackTrace();
+    }
+    public void ShowToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void UpdateAccountSettingSuccess() {
+        ShowToast("Cập nhật thông tin thành công");
+        Intent intent = new Intent();
+        intent.putExtra("applySlideTransition", true);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+        //Ẩn bàn phím:
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View currentFocus = getCurrentFocus();
+        if (inputMethodManager != null && currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
+    }
+    private void setBackCall()
+    {
         edtAccountSettingName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -173,55 +224,5 @@ public class AccountSettingActivity extends AppCompatActivity implements IAccoun
             public void afterTextChanged(Editable editable) {
             }
         });
-    }
-    private void loadProfileSetting()
-    {
-        accountSettingActivityPresenter.LoadAccountSetting();
-    }
-    public void onResume() {
-        super.onResume();
-        if(backFromPassword)
-        {
-            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            backFromPassword=false;
-        }
-    }
-
-    @Override
-    public void LoadProfileData(Account account) {
-        this.account = account;
-        edtAccountSettingName.setText(account.getAccountName());
-        edtAccountSettingGmail.setText(account.getEmail());
-        if(account.getAddress()!=null )
-            edtAccountSettingAddress.setText(account.getAddress());
-        if(account.getPhoneNumber()!=null)
-            edtAccountSettingPhone.setText(account.getPhoneNumber());
-        if(account.getDescription()!=null )
-            edtAccountSettingIntroduction.setText(account.getDescription());
-    }
-
-    @Override
-    public void Error(Exception e) {
-        e.printStackTrace();
-    }
-    public void ShowToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Snackbar.LENGTH_SHORT).show();
-    }
-    @Override
-    public void UpdateAccountSettingSuccess() {
-        ShowToast("Cập nhật thông tin thành công");
-        Intent intent = new Intent();
-        intent.putExtra("applySlideTransition", true);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
-        //Ẩn bàn phím:
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        View currentFocus = getCurrentFocus();
-        if (inputMethodManager != null && currentFocus != null) {
-            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-        }
-    }
-    public void setFragmentListener(IFragmentListener listener){
-        this.fragmentListener = listener;
     }
 }

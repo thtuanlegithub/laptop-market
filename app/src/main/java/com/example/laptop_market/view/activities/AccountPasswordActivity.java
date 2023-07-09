@@ -38,7 +38,6 @@ public class AccountPasswordActivity extends AppCompatActivity implements IAccou
         isEnableChangePassword = false;
         accountPasswordActivityPresenter = new AccountPasswordActivityPresenter(this);
         btnAccountPasswordBack = findViewById(R.id.btnAccountPasswordBack);
-
         btnConfirmPassword = findViewById(R.id.btnConfirmPassword);
         eyeOldPassword = findViewById(R.id.eyeOldPassword);
         eyeNewPassword = findViewById(R.id.eyeNewPassword);
@@ -46,6 +45,8 @@ public class AccountPasswordActivity extends AppCompatActivity implements IAccou
         edtAccountSettingOldPassword = findViewById(R.id.edtAccountSettingOldPassword);
         edtAccountSettingNewPassword = findViewById(R.id.edtAccountSettingNewPassword);
         edtAccountSettingNewPasswordConfirm = findViewById(R.id.edtAccountSettingNewPasswordConfirm);
+        btnConfirmPassword.setEnabled(false);
+        btnConfirmPassword.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.gray));
         setListener();
 
     }

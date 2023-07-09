@@ -40,7 +40,6 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginRight="15dp"
-                    android:src="@drawable/slide_show1"
                     android:scaleType="centerCrop"
                     android:background="@drawable/bg_avatar_post_detail"/>
 
@@ -56,7 +55,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="Đăng nhập/ Đăng ký"
                         android:textColor="@color/black"
                         android:textSize="20dp"
                         android:textStyle="bold" />

@@ -39,7 +39,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
     public BrandAdapter(List<Brand> listBrand, HomeBaseFragment homeBaseFragment, Context context) {
         this.listBrand = listBrand;
         this.homeBaseFragment = homeBaseFragment;
-        searchResultFragment = new SearchResultFragment(homeBaseFragment);
+        this.searchResultFragment = homeBaseFragment.searchResultFragment;
         preferenceManager = new PreferenceManager(context);
     }
 
@@ -63,7 +63,9 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
             holder.itemView.setOnClickListener(view -> {
                 preferenceManager.putString(BrandTable.BRAND_NAME, brand.getBrandName());
                 preferenceManager.putInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,SearchResultFragment.ADAPTER_TYPE0_CLICK);
-                homeBaseFragment.replaceFragment(searchResultFragment);
+                if(homeBaseFragment.searchResultFragment == null)
+                    homeBaseFragment.searchResultFragment = new SearchResultFragment(homeBaseFragment);
+                homeBaseFragment.replaceFragment(homeBaseFragment.searchResultFragment);
             });
         }
         else{
