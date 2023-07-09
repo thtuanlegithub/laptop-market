@@ -47,8 +47,10 @@ public class BuyDeliveringFragment extends Fragment implements IOrderContract.Vi
 
     @Override
     public void DisplayBuyDeliveringOrder(ArrayList<BuyOrder> orders) {
-        if (orders == null)
-            orders = new ArrayList<>();
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         BuyDeliveringAdapter BuyDeliveringAdapter = new BuyDeliveringAdapter(orders);
         rcvBuyDelivering.setAdapter(BuyDeliveringAdapter);
         progressBar.setVisibility(View.GONE);

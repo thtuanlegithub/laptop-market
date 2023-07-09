@@ -49,8 +49,10 @@ public class BuyProcessingFragment extends Fragment implements IOrderContract.Vi
 
     @Override
     public void DisplayBuyProcessingOrder(ArrayList<BuyOrder> orders) {
-        if (orders == null)
-            orders = new ArrayList<>();
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         BuyProcessingAdapter BuyProcessingAdapter = new BuyProcessingAdapter(orders);
         rcvBuyProcessing.setAdapter(BuyProcessingAdapter);
         progressBar.setVisibility(View.GONE);

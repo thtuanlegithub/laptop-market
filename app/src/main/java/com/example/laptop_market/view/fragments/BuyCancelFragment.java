@@ -49,8 +49,10 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
 
     @Override
     public void DisplayCancelFinishedOrder(ArrayList<BuyOrder> orders) {
-        if (orders == null)
-            orders = new ArrayList<>();
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         BuyCancelAdapter buyCancelAdapter = new BuyCancelAdapter(orders);
         rcvBuyCancel.setAdapter(buyCancelAdapter);
         progressBar.setVisibility(View.GONE);

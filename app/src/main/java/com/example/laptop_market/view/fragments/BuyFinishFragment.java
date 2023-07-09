@@ -48,8 +48,10 @@ public class BuyFinishFragment extends Fragment implements IOrderContract.View.B
     }
     @Override
     public void DisplayBuyFinishedOrder(ArrayList<BuyOrder> orders) {
-        if (orders == null)
-            orders = new ArrayList<>();
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         BuyFinishAdapter BuyFinishAdapter = new BuyFinishAdapter(orders);
         rcvBuyFinish.setAdapter(BuyFinishAdapter);
         progressBar.setVisibility(View.GONE);

@@ -48,8 +48,10 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
 
     @Override
     public void DisplaySellFinishedOrder(ArrayList<SellOrder> orders) {
-        if (orders == null)
-            orders = new ArrayList<>();
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         SellFinishAdapter sellFinishAdapter = new SellFinishAdapter(orders);
         rcvSellFinish.setAdapter(sellFinishAdapter);
         progressBar.setVisibility(View.GONE);

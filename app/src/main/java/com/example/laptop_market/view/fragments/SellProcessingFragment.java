@@ -47,8 +47,10 @@ public class SellProcessingFragment extends Fragment implements IOrderContract.V
 
     @Override
     public void DisplaySellProcessingOrder(ArrayList<SellOrder> orders) {
-        if (orders == null)
-            orders = new ArrayList<>();
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         SellProcessingAdapter sellProcessingAdapter = new SellProcessingAdapter(orders);
         rcvSellProcessing.setAdapter(sellProcessingAdapter);
         progressBar.setVisibility(View.GONE);

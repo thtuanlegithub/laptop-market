@@ -12,11 +12,14 @@ import com.algolia.search.saas.Index;
 import com.algolia.search.saas.Query;
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.laptop.Laptop;
+import com.example.laptop_market.model.order.OrderStatus;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.LaptopTable;
+import com.example.laptop_market.utils.tables.OrderTable;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.example.laptop_market.view.adapters.Sell.SellOrder;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONArray;
@@ -63,41 +67,45 @@ public class PostModel implements IPostContract.Model {
         db.collection(PostTable.TABLE_NAME).add(post).addOnCompleteListener(task -> {
             if(task.isSuccessful())
             {
-                Client client = new Client("K1ZCG3UK74", "f7e2dae123a6156b7f7177b5fe321618");
-                Index index = client.getIndex(PostTable.TABLE_NAME);
                 DocumentReference documentReference = task.getResult();
-                try
-                {
-                    JSONObject object = new JSONObject();
-                    object.put(PostTable.POST_ID, documentReference.getId());
-                    object.put(PostTable.TITLE, post.getTitle().toLowerCase());
-                    object.put(LaptopTable.BRAND_ID, laptop.getBrandID());
-                    object.put(LaptopTable.PRICE, laptop.getPrice());
-                    object.put(LaptopTable.CPU, laptop.getCpu());
-                    object.put(LaptopTable.RAM, laptop.getRam());
-                    object.put(LaptopTable.HARD_DRIVE, laptop.getHardDrive());
-                    object.put(LaptopTable.HARD_DRIVE_SIZE, laptop.getHardDriveSize());
-                    object.put(LaptopTable.GRAPHICS, laptop.getGraphics());
-                    object.put(LaptopTable.SCREEN_SIZE, laptop.getScreenSize());
-                    object.put(LaptopTable.GUARANTEE, laptop.getGuarantee());
-                    index.addObjectAsync(object, ((jsonObject, e) -> {
-                        if (e != null)
-                            listener.OnFinishCreatePostListener(false, e);
-                        else{
-                            db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.PUBLISH_POSTS, FieldValue.arrayUnion(task.getResult().getId()))
-                                    .addOnSuccessListener(unused -> {
-                                        listener.OnFinishCreatePostListener(true,null);
-                                    })
-                                    .addOnFailureListener(e1 -> {
-                                        listener.OnFinishCreatePostListener(false,e1);
-                                    });
+                if (documentReference != null) {
+                    String postID = documentReference.getId();
+                    documentReference.update("postID", postID);
+                    Client client = new Client("K1ZCG3UK74", "f7e2dae123a6156b7f7177b5fe321618");
+                    Index index = client.getIndex(PostTable.TABLE_NAME);
+                    try
+                    {
+                        JSONObject object = new JSONObject();
+                        object.put(PostTable.POST_ID, documentReference.getId());
+                        object.put(PostTable.TITLE, post.getTitle().toLowerCase());
+                        object.put(LaptopTable.BRAND_ID, laptop.getBrandID());
+                        object.put(LaptopTable.PRICE, laptop.getPrice());
+                        object.put(LaptopTable.CPU, laptop.getCpu());
+                        object.put(LaptopTable.RAM, laptop.getRam());
+                        object.put(LaptopTable.HARD_DRIVE, laptop.getHardDrive());
+                        object.put(LaptopTable.HARD_DRIVE_SIZE, laptop.getHardDriveSize());
+                        object.put(LaptopTable.GRAPHICS, laptop.getGraphics());
+                        object.put(LaptopTable.SCREEN_SIZE, laptop.getScreenSize());
+                        object.put(LaptopTable.GUARANTEE, laptop.getGuarantee());
+                        index.addObjectAsync(object, ((jsonObject, e) -> {
+                            if (e != null)
+                                listener.OnFinishCreatePostListener(false, e);
+                            else{
+                                db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.PUBLISH_POSTS, FieldValue.arrayUnion(task.getResult().getId()))
+                                        .addOnSuccessListener(unused -> {
+                                            listener.OnFinishCreatePostListener(true,null);
+                                        })
+                                        .addOnFailureListener(e1 -> {
+                                            listener.OnFinishCreatePostListener(false,e1);
+                                        });
 
-                        }
-                    }));
-                }
-                catch (JSONException ex)
-                {
-                    ex.printStackTrace();
+                            }
+                        }));
+                    }
+                    catch (JSONException ex)
+                    {
+                        ex.printStackTrace();
+                    }
                 }
             }
             else{
@@ -343,7 +351,6 @@ public class PostModel implements IPostContract.Model {
         });
     }
     //region GetSellerPhoneNumber
-
     @Override
     public void GetSellerPhoneNumber(String postID, OnLoadSellerPhoneNumber listener) {
         db.collection(PostTable.TABLE_NAME).document(postID).get().addOnCompleteListener(task -> {
@@ -359,6 +366,105 @@ public class PostModel implements IPostContract.Model {
            }
         });
     }
-
     //endregion
+
+    @Override
+    public void LoadPostActive(OnLoadPostActiveListener listener) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            // Nếu có người đang đăng nhập
+            if (userID != null) {
+                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
+                // Lấy cái BuyOrder từ bảng Account
+                accountRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            ArrayList<String> postActiveListID = (ArrayList<String>) documentSnapshot.get(AccountTable.PUBLISH_POSTS);
+                            if (postActiveListID != null && !postActiveListID.isEmpty()) {
+                                com.google.firebase.firestore.Query query = db.collection(PostTable.TABLE_NAME)
+                                        .whereEqualTo(PostTable.POST_STATUS, PostStatus.AVAILABLE)
+                                        .whereIn("postID", postActiveListID);
+
+                                query.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
+                                        for (QueryDocumentSnapshot postDoc : task1.getResult()) {
+                                            PostSearchResult postSearchResult = new PostSearchResult ();
+                                            postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
+                                            postSearchResult.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
+                                            postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                            postSearchResult.setTitle(documentSnapshot.getString(PostTable.TITLE));
+                                            postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                            postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                            postSearchResults.add(postSearchResult);
+                                        }
+                                        listener.OnFinishLoadPostActive(true, postSearchResults, null);
+                                    } else {
+                                        listener.OnFinishLoadPostActive(false, null, task1.getException());
+                                    }
+                                });
+                            } else {
+                                listener.OnFinishLoadPostActive(true, null, null);
+                            }
+                        }
+                    }
+                });
+            }
+        } else {
+            // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+            listener.OnFinishLoadPostActive(true, null, null);
+        }
+    }
+
+    @Override
+    public void LoadPostInActive(OnLoadPostInactiveListener listener) {
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userID = firebaseUser.getUid();
+            // Nếu có người đang đăng nhập
+            if (userID != null) {
+                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
+                // Lấy cái BuyOrder từ bảng Account
+                accountRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            ArrayList<String> postActiveListID = (ArrayList<String>) documentSnapshot.get(AccountTable.PUBLISH_POSTS);
+                            if (postActiveListID != null && !postActiveListID.isEmpty()) {
+                                com.google.firebase.firestore.Query query = db.collection(PostTable.TABLE_NAME)
+                                        .whereEqualTo(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE)
+                                        .whereIn("postID", postActiveListID);
+
+                                query.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
+                                        for (QueryDocumentSnapshot postDoc : task1.getResult()) {
+                                            PostSearchResult postSearchResult = new PostSearchResult ();
+                                            postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
+                                            postSearchResult.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
+                                            postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                            postSearchResult.setTitle(documentSnapshot.getString(PostTable.TITLE));
+                                            postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                            postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                            postSearchResults.add(postSearchResult);
+                                        }
+                                        listener.OnFinishLoadPostInactive(true, postSearchResults, null);
+                                    } else {
+                                        listener.OnFinishLoadPostInactive(false, null, task1.getException());
+                                    }
+                                });
+                            } else {
+                                listener.OnFinishLoadPostInactive(true, null, null);
+                            }
+                        }
+                    }
+                });
+            }
+        } else {
+            // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+            listener.OnFinishLoadPostInactive(true, null, null);
+        }
+    }
 }

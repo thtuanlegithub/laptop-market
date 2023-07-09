@@ -48,8 +48,10 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
 
     @Override
     public void DisplaySellDeliveringOrder(ArrayList<SellOrder> orders) {
-        if (orders.size() == 0)
+        if (orders == null){
             progressBar.setVisibility(View.GONE);
+            return;
+        }
         SellDeliveringAdapter sellDeliveringAdapter = new SellDeliveringAdapter(orders);
         rcvSellDelivering.setAdapter(sellDeliveringAdapter);
         progressBar.setVisibility(View.GONE);

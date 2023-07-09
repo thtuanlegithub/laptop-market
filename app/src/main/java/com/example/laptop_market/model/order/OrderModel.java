@@ -117,6 +117,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnFinishGetBuyProcessingOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnFinishGetBuyProcessingOrders(true, null, null);
                             }
                         }
                     }
@@ -184,6 +186,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnFinishGetBuyDeliveringOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnFinishGetBuyDeliveringOrders(true, null, null);
                             }
                         }
                     }
@@ -251,6 +255,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnGetBuyFinishedOrdersOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnGetBuyFinishedOrdersOrders(true, null, null);
                             }
                         }
                     }
@@ -318,6 +324,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnFinishGetBuyCanceledOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnFinishGetBuyCanceledOrders(true, null, null);
                             }
                         }
                     }
@@ -386,6 +394,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnFinishGetSellProcessingOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnFinishGetSellProcessingOrders(true, null, null);
                             }
                         }
                     }
@@ -452,6 +462,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnFinishGetSellDeliveringOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnFinishGetSellDeliveringOrders(true, null, null);
                             }
                         }
                     }
@@ -518,6 +530,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnGetSellFinishedOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnGetSellFinishedOrders(true, null, null);
                             }
                         }
                     }
@@ -584,6 +598,8 @@ public class OrderModel implements IOrderContract.Model {
                                         listener.OnFinishGetSellCanceledOrders(false, null, task1.getException());
                                     }
                                 });
+                            } else {
+                                listener.OnFinishGetSellCanceledOrders(true, null, null);
                             }
                         }
                     }

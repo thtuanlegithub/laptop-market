@@ -34,6 +34,16 @@ public interface IPostContract {
             void OnFinishLoadingPostInPostDetail(Post post, Exception error);
         }
         //endregion
+        // region Load your own post
+        void LoadPostActive(OnLoadPostActiveListener listener);
+        interface OnLoadPostActiveListener {
+            void OnFinishLoadPostActive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
+        }
+        void LoadPostInActive(OnLoadPostInactiveListener listener);
+        interface OnLoadPostInactiveListener {
+            void OnFinishLoadPostInactive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
+        }
+        // endregion
         //region Load seller's phone number
         void GetSellerPhoneNumber(String postID, OnLoadSellerPhoneNumber listener);
         interface  OnLoadSellerPhoneNumber{
@@ -65,6 +75,12 @@ public interface IPostContract {
             void DisplayRequireLoginView();
             void DisplayManagePostView();
         }
+        interface PostActiveFragmentView {
+            void DisplayPostActive(ArrayList<PostSearchResult> postSearchResults);
+        }
+        interface PostInactiveFragmentView {
+            void DisplayPostInactive(ArrayList<PostSearchResult> postSearchResults);
+        }
     }
     interface Presenter{
         interface NewPostActivityPresenter{
@@ -84,6 +100,8 @@ public interface IPostContract {
         interface PostFragmentPresenter{
             void CreateNewPost();
             void LoadManagePost();
+            void LoadPostActive();
+            void LoadPostInactive();
         }
     }
 }
