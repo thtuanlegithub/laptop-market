@@ -166,11 +166,19 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         preferenceManager.removeKey(Constants.KEY_USER_NAME);
         preferenceManager.removeKey(Constants.KEY_USER_EMAIL);
         preferenceManager.removeKey(AccountTable.AVARTAR);
+        Glide.with(this)
+                .load(R.drawable.avatar_basic)
+                .apply(RequestOptions.circleCropTransform())
+                .into(imgAccount);
         isLogin = false;
     }
 
     @Override
     public void LoadNotLoginAccount() {
+        Glide.with(this)
+                .load(R.drawable.avatar_basic)
+                .apply(RequestOptions.circleCropTransform())
+                .into(imgAccount);
         txtAccountName.setText("Đăng nhập / Đăng ký");
         bttLogout.setVisibility(View.GONE);
         isLogin = false;

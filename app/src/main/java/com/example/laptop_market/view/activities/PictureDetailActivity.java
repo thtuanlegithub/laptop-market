@@ -64,7 +64,10 @@ public class PictureDetailActivity extends AppCompatActivity {
         if(isSetURL)
         {
             String linkImage = intent.getStringExtra(ChatMessageTable.IMAGE);
-            Glide.with(getApplicationContext()).load(linkImage).into(imageViewForURL);
+            if(linkImage == null)
+                Glide.with(getApplicationContext()).load(R.drawable.avatar_basic).into(imageViewForURL);
+            else
+                Glide.with(getApplicationContext()).load(linkImage).into(imageViewForURL);
             mutiplePictureLayout.setVisibility(View.GONE);
             viewPagerImagePostDetail.setVisibility(View.GONE);
         }

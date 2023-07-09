@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IConversationContract;
 import com.example.laptop_market.model.account.Account;
@@ -121,6 +122,10 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
             presenter.LoadAllChatMessageInConversationFromListConversation(conversation);
         }
         else {
+            if(receiverAccount.getAvatar()!=null)
+                Glide.with(getApplicationContext()).load(receiverAccount.getAvatar()).into(imageProfile);
+            else
+                Glide.with(getApplicationContext()).load(R.drawable.avatar_basic).into(imageProfile);
             chatMessageAdapter = new ChatMessageAdapter(listChatMessages,FirebaseAuth.getInstance().getCurrentUser().getUid());
             presenter.LoadAllChatMessageInConversationFromPostDetail(receiverAccount);
         }
@@ -274,8 +279,12 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
     public void LoadAccountMessageInConvesationUI(Account account) {
         //chatMessageAdapter = new ChatMessageAdapter(listChatMessages,account.getAccountID());
         receiverAccount = account;
+
         textReceivedAccName.setText(account.getAccountName());
-        imageProfile.setImageResource(R.drawable.slide_show1);
+        if(account.getAvatar()!=null)
+            Glide.with(getApplicationContext()).load(account.getAvatar()).into(imageProfile);
+        else
+            Glide.with(getApplicationContext()).load(R.drawable.avatar_basic).into(imageProfile);
     }
 
     @Override
@@ -292,19 +301,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
         rcvImageForConversationLayout.setVisibility(View.GONE);
     }
 
-    @Override
-    public void LoadImageInToConversationUI(ChatMessage chatMessage) {
-        for(int i = 0 ;i< listChatMessages.size();i++)
-        {
-            if(listChatMessages.get(i).getIdMessage() == chatMessage.getIdMessage()) {
-                /*listChatMessages.get(i).setDownloadedImage(chatMessage.getDownloadedImage());*/
-                //Collections.sort(listChatMessages, Comparator.comparing(ChatMessage::getTimeSendMesssage));
-                chatMessageAdapter.notifyItemChanged(i);
-                //conversationRecyclerView.setAdapter(chatMessageAdapter);
-                break;
-            }
-        }
-    }
+
 
     // Hàm để chuyển từ Uri sang Bitmap
     private Bitmap uriToBitmap(Uri uri)  {

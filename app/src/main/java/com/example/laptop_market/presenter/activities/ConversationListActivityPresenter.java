@@ -25,4 +25,9 @@ public class ConversationListActivityPresenter implements IConversationContract.
                 view.LoadConversationUI(conversation,type,isLastConversation);
         });
     }
+
+    @Override
+    public void UpdateSeenConversationStatus(Conversation conversation) {
+        conversationModel.UpdateSeenConversationStatus(conversation);
+    }
 }

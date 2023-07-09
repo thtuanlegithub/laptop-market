@@ -120,11 +120,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             layoutButtonSeller.setVisibility(View.GONE);
         }
 
-        // circle avatar of seller
-        Glide.with(this)
-                .load(R.drawable.slide_show1)
-                .apply(RequestOptions.circleCropTransform())
-                .into(imgPostDetailShop);
+
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
 
         // set listener
@@ -261,6 +257,19 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     public void LoadingAccountInPostDetail(Account account) {
         this.account=account;
         isLoadAccountFinish=true;
+        // circle avatar of seller
+        if(account.getAvatar()== null) {
+            Glide.with(this)
+                    .load(R.drawable.avatar_basic)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgPostDetailShop);
+        }
+        else{
+            Glide.with(this)
+                    .load(account.getAvatar())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgPostDetailShop);
+        }
         if(isLoadPostFinish && isloadLaptopFinish)
             LoadData();
     }

@@ -60,6 +60,7 @@ public class ConversationModel implements IConversationContract.Model {
                                             listener.FinishReloadAllListConversation(null, 0, task.getException(), false);
                                         else {
                                             conversation.setConversationName(task.getResult().getString(AccountTable.ACCOUNT_NAME));
+                                            conversation.setConversationImage(task.getResult().getString(AccountTable.AVARTAR));
                                             listener.FinishReloadAllListConversation(conversation, Conversation.ADD_LIST_CONVERSATION, null, ++count1 == value.getDocumentChanges().size());
                                         }
                                     });
@@ -102,6 +103,7 @@ public class ConversationModel implements IConversationContract.Model {
                                                 listener.FinishReloadAllListConversation(null, 0, task.getException(), false);
                                             else {
                                                 conversation.setConversationName(task.getResult().getString(AccountTable.ACCOUNT_NAME));
+                                                conversation.setConversationImage(task.getResult().getString(AccountTable.AVARTAR));
                                                 listener.FinishReloadAllListConversation(conversation, Conversation.ADD_LIST_CONVERSATION, null, ++count2 == value.getDocumentChanges().size());
                                             }
                                         });
@@ -181,6 +183,11 @@ public class ConversationModel implements IConversationContract.Model {
             else
                 listener.FinishCreateConversation(null,null);
         });
+    }
+
+    @Override
+    public void UpdateSeenConversationStatus(Conversation conversation) {
+        db.collection(ConversationTable.TABLE_NAME).document(conversation.getConversationId()).update(ConversationTable.PERSON_NOT_SEEN_ID,"");
     }
 
 }
