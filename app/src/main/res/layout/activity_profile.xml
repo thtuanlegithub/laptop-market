@@ -64,7 +64,6 @@
                             android:id="@+id/imgProfileAvatar"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            android:src="@drawable/slide_show1"
                             android:scaleType="centerCrop"
                             android:layout_gravity="top"
                             android:background="@drawable/bg_avatar_post_detail"/>
@@ -80,10 +79,10 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/accountNameTextView"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tên tài khoản"
                         android:textSize="20dp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
@@ -101,27 +100,60 @@
                         android:scaleX="0.5"
                         android:scaleY="0.5"
                         android:progressTint="#F3AD3B"/>
-                    <TextView
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="10dp"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Giới thiệu: "/>
-                    <TextView
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Địa chỉ: "/>
-                    <TextView
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Số điện thoại liên lạc: "/>
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Giới thiệu: "/>
+                            <TextView
+                                android:id="@+id/descriptionTextView"
+                                android:layout_marginStart="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Địa chỉ: "/>
+                            <TextView
+                                android:id="@+id/AddressTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Số điện thoại liên lạc: "/>
+                            <TextView
+                                android:id="@+id/PhonenumberTextView"
+                                android:layout_marginStart="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_marginTop="10dp"

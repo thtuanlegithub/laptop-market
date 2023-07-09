@@ -52,8 +52,7 @@
                 android:maxLines="1"
                 android:textColor="@color/primary_text"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:text="Nguyễn Phúc Bình"/>
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/textRecentMessage"
                 android:layout_width="match_parent"

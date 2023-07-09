@@ -41,6 +41,7 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     private TextView textViewNotConversation;
     private ProgressBar progressBar;
     private IConversationContract.Presenter.ConversationListActivityPresenter conversationListActivityPresenter;
+    private int count;
     private boolean backFromConversationDetail = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
         listConversations = new ArrayList<>();
         conversationAdapter = new ConversationAdapter(listConversations,this);
         listConversationRecyclerView.setAdapter(conversationAdapter);
+        count = 0;
         setListener();
         setConversationReloadingListener();
     }
@@ -71,6 +73,7 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     }
     @Override
     public void onConversationClicked(Conversation conversation) {
+        conversationListActivityPresenter.UpdateSeenConversationStatus(conversation);
         Intent intent = new Intent(getApplicationContext(),ConversationDetailActivity.class);
         intent.putExtra(ConversationTable.TABLE_NAME,conversation);
         backFromConversationDetail = true;
@@ -106,7 +109,8 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
                 {
                     this.listConversations.get(i).setLastMessage(conversation.getLastMessage());
                     this.listConversations.get(i).setLastMessageTime(conversation.getLastMessageTime());
-                    //conversations.get(i).conversationSeen=documentChange.getDocument().getString(Constants.KEY_SEEN_MESSAGE_ID);
+                    this.listConversations.get(i).setPersonNotSeenId(conversation.getPersonNotSeenId());
+                    conversationAdapter.notifyItemChanged(i);
                     break;
                 }
             }
@@ -114,15 +118,20 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
         Collections.sort(listConversations,(obj1, obj2)->obj2.getLastMessageTime().compareTo(obj1.getLastMessageTime()));
         conversationAdapter.notifyDataSetChanged();
         if(isLastAddedConversation) {
-            listConversationRecyclerView.smoothScrollToPosition(0);
-            listConversationRecyclerView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+
+            count++;
+            if(count == 2)
+            {
+                progressBar.setVisibility(View.GONE);
+                listConversationRecyclerView.smoothScrollToPosition(0);
+                listConversationRecyclerView.setVisibility(View.VISIBLE);
+            }
             LoadConversation(this.listConversations.size());
         }
     }
     private void LoadConversation(int length)
     {
-        if(length==0) {
+        if(length==0 && count == 2) {
             textViewNotConversation.setVisibility(View.VISIBLE);
             listConversationRecyclerView.setVisibility(View.GONE);
         }
@@ -131,5 +140,6 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
             listConversationRecyclerView.setVisibility(View.VISIBLE);
         }
     }
+
 
 }

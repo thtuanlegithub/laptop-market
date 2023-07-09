@@ -1,5 +1,7 @@
 package com.example.laptop_market.contracts;
 
+import android.net.Uri;
+
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.account.CurrentBuyer;
 
@@ -67,6 +69,10 @@ public interface IAccountContract {
         interface OnFinishUpdateAccountPasswordListener{
             void OnFinishUpdateAccountPassword(boolean isSuccess, Exception e);
         }
+        void UploadAvatar(Account account,Uri uri, OnFinishUpdateAvatarListener listener);
+        interface OnFinishUpdateAvatarListener{
+            void OnFinishUpdateAvatar(Exception e);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -111,6 +117,14 @@ public interface IAccountContract {
             void WrongOldPassword(String message);
         }
         //endregion
+
+        //region Profile Detail Activity view
+        interface ProfileActivityView{
+            void LoadProfile(Account account);
+            void FinishUploadImage();
+            void ExceptionCatch(Exception e);
+        }
+        //endregion
     }
     //region Presenter
     interface Presenter{
@@ -150,6 +164,12 @@ public interface IAccountContract {
         //region Account pasword activity view
         interface AccountPasswordActivityPresenter{
             void UpdatePassword(String oldPassword, String newPassword);
+        }
+        //endregion
+        //region Profile Detail Activity view
+        interface ProfileActivityPresenter{
+            void LoadProfile();
+            void UploadImageClicked(Account account, Uri uri);
         }
         //endregion
     }

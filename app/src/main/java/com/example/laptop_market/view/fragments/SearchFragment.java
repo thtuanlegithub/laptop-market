@@ -115,17 +115,15 @@ public class SearchFragment extends Fragment implements  IStringFilterSearchCont
     @Override
     public void PerformSearch() {
         edtTextSearch.setText("");
-        if(searchResultFragment==null){
-            searchResultFragment = new SearchResultFragment(homeBaseFragment);
-        }
 //            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
 //            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //            fragmentTransaction.replace(R.id.frame_layout, searchResultFragment);
 //            fragmentTransaction.addToBackStack(null);
 //            fragmentTransaction.commit();
-        if(homeBaseFragment!=null && searchResultFragment!=null){
-            homeBaseFragment.searchResultFragment = searchResultFragment;
-            homeBaseFragment.replaceFragment(searchResultFragment);
+        if(homeBaseFragment.searchResultFragment == null)
+            homeBaseFragment.searchResultFragment = new SearchResultFragment(homeBaseFragment);
+        if(homeBaseFragment != null){
+            homeBaseFragment.replaceFragment(homeBaseFragment.searchResultFragment);
         }
     }
 

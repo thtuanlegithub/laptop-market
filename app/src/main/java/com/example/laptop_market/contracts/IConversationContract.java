@@ -25,13 +25,17 @@ public interface IConversationContract {
         interface FinishCreateConversationListener{
             void FinishCreateConversation(String conversationId, Exception e);
         }
+        void UpdateSeenConversationStatus(Conversation conversation);
         //endregion
+        //region load conversation image
     }
     interface Presenter{
         interface ConversationListActivityPresenter{
             // Load lại cuộc trò chuyện khi có sự thay đổi
             void LoadListeningNewListConversation();
-            // Khi click vào 1 cuộc trò chuyện
+            // Update trạng thái trong conversation
+            void UpdateSeenConversationStatus(Conversation conversation);
+
         }
         interface ConversationDetailActivityPresenter{
             // Load toàn bộ cuộc trò chuyện của người dùng
@@ -57,7 +61,6 @@ public interface IConversationContract {
             void LoadChatMessageInConversationUI(ChatMessage chatMessage, boolean isAddMessage, boolean isLastAddedChatMessage);
             void LoadAccountMessageInConvesationUI(Account account);
             void SendMessageSuccess(Conversation conversation);
-            void LoadImageInToConversationUI(ChatMessage chatMessage);
         }
     }
 }

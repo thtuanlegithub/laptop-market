@@ -2,6 +2,8 @@ package com.example.laptop_market.view.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,12 +11,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.laptop_market.R;
 import com.example.laptop_market.databinding.ItemContainerConversationBinding;
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.chatMessage.ChatMessage;
 import com.example.laptop_market.model.conversation.Conversation;
 import com.example.laptop_market.utils.listeners.IConversationListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,10 +83,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 binding.textRecentMessage.setTypeface(Typeface.DEFAULT);
             }*/
             if(conversation.getConversationImage()==null || conversation.getConversationImage().isEmpty())
-                binding.imageProfile.setImageResource(R.drawable.slide_show1);
+                Glide.with(binding.getRoot()).load(R.drawable.avatar_basic).into(binding.imageProfile);
             else
-                binding.imageProfile.setImageBitmap(getConversationImage(conversation.getConversationImage()));
+                Glide.with(binding.getRoot()).load(conversation.getConversationImage()).into(binding.imageProfile);
             binding.textConversationName.setText(conversation.getConversationName());
+            if(conversation.getPersonNotSeenId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                binding.textRecentMessage.setTypeface(Typeface.DEFAULT_BOLD);
+                binding.textRecentMessage.setTextColor(Color.BLACK);
+            }
+            else{
+                binding.textRecentMessage.setTypeface(Typeface.DEFAULT);
+                binding.textRecentMessage.setTextColor(binding.getRoot().getResources().getColor(R.color.secondary_text));
+            }
             if(conversation.getLastMessageTime()!=null) {
                 SimpleDateFormat sdfDate;
                 Calendar calendarNow = Calendar.getInstance();
