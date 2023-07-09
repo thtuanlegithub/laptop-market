@@ -31,19 +31,23 @@ public class BuyFragmentPresenter implements IOrderContract.Presenter.BuyFragmen
     public BuyFragmentPresenter(IOrderContract.View.BuyDeliveringFragmentView view, Context context){
         this.buyDeliveringFragmentView = view;
         accountModel = new AccountModel(context);
+        orderModel = new OrderModel(context);
     }
     public BuyFragmentPresenter(IOrderContract.View.BuyFinishFragmentView view, Context context){
         this.buyFinishFragmentView = view;
         accountModel = new AccountModel(context);
+        orderModel = new OrderModel(context);
     }
     public BuyFragmentPresenter(IOrderContract.View.BuyCancelFragmentView view, Context context){
         this.buyCancelFragmentView = view;
         accountModel = new AccountModel(context);
+        orderModel = new OrderModel(context);
     }
 
     public BuyFragmentPresenter(IOrderContract.View.BuyFragmentView view, Context context){
         this.buyFragmentView = view;
         accountModel = new AccountModel(context);
+        orderModel = new OrderModel(context);
     }
 
     @Override
@@ -72,16 +76,43 @@ public class BuyFragmentPresenter implements IOrderContract.Presenter.BuyFragmen
 
     @Override
     public void LoadBuyDeliveringOrder() {
-
+        orderModel.GetDeliveringOrders(new IOrderContract.Model.OnGetDeliveringOrdersListener() {
+            @Override
+            public void OnFinishGetDeliveringOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+                if (isSuccess) {
+                    buyDeliveringFragmentView.DisplayBuyDeliveringOrder(orders);
+                } else {
+                    error.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public void LoadBuyFinishedOrder() {
-
+        orderModel.GetFinishedOrders(new IOrderContract.Model.OnGetFinishedOrdersListener() {
+            @Override
+            public void OnGetFinishedOrdersOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+                if (isSuccess) {
+                    buyFinishFragmentView.DisplayBuyFinishedOrder(orders);
+                } else {
+                    error.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public void LoadBuyCancelOrder() {
-
+        orderModel.GetCanceledOrders(new IOrderContract.Model.OnGetCanceledOrdersListener() {
+            @Override
+            public void OnFinishGetCanceledOrders(boolean isSuccess, ArrayList<BuyOrder> orders, Exception error) {
+                if (isSuccess) {
+                    buyCancelFragmentView.DisplayCancelFinishedOrder(orders);
+                } else {
+                    error.printStackTrace();
+                }
+            }
+        });
     }
 }

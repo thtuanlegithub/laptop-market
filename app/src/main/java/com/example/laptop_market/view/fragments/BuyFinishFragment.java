@@ -11,37 +11,40 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IOrderContract;
+import com.example.laptop_market.presenter.fragments.BuyFragmentPresenter;
 import com.example.laptop_market.view.adapters.Buy.BuyFinishAdapter;
 import com.example.laptop_market.view.adapters.Buy.BuyOrder;
+import com.google.firestore.admin.v1.IndexOrBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class BuyFinishFragment extends Fragment {
+public class BuyFinishFragment extends Fragment implements IOrderContract.View.BuyFinishFragmentView {
     private RecyclerView rcvBuyFinish;
+    public IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        buyFragmentPresenter = new BuyFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_buy_finish, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
         rcvBuyFinish = view.findViewById(R.id.rcvBuyFinish);
         GridLayoutManager gridLayoutManagerBuyFinish = new GridLayoutManager(requireContext(),1);
         rcvBuyFinish.setLayoutManager(gridLayoutManagerBuyFinish);
-        BuyFinishAdapter BuyFinishAdapter = new BuyFinishAdapter(getListBuyFinish());
-        rcvBuyFinish.setAdapter(BuyFinishAdapter);
-
+        buyFragmentPresenter.LoadBuyFinishedOrder();
         return view;
     }
-
-    private List<BuyOrder> getListBuyFinish(){
-        return  null;
+    @Override
+    public void DisplayBuyFinishedOrder(ArrayList<BuyOrder> orders) {
+        BuyFinishAdapter BuyFinishAdapter = new BuyFinishAdapter(orders);
+        rcvBuyFinish.setAdapter(BuyFinishAdapter);
     }
 }

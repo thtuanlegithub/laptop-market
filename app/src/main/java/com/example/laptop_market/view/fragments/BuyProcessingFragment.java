@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IFragmentListener;
 import com.example.laptop_market.contracts.IOrderContract;
 import com.example.laptop_market.model.order.Order;
 import com.example.laptop_market.presenter.fragments.BuyFragmentPresenter;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class BuyProcessingFragment extends Fragment implements IOrderContract.View.BuyProcessingFragmentView {
     private RecyclerView rcvBuyProcessing;
-    private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
+    public IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +44,10 @@ public class BuyProcessingFragment extends Fragment implements IOrderContract.Vi
         return view;
     }
 
-    private List<BuyOrder> getListBuyProcessing(){
-        return null;
-    }
-
     @Override
     public void DisplayBuyProcessingOrder(ArrayList<BuyOrder> orders) {
         BuyProcessingAdapter BuyProcessingAdapter = new BuyProcessingAdapter(orders);
         rcvBuyProcessing.setAdapter(BuyProcessingAdapter);
-        rcvBuyProcessing.setVisibility(View.VISIBLE);
     }
 
     @Override

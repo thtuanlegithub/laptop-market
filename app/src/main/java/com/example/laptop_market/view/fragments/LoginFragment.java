@@ -168,8 +168,8 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
             case FragmentActivityType.MANAGE_BUYING_ORDER:
             case FragmentActivityType.MANAGE_SELLING_ORDER:
             case FragmentActivityType.MANAGE_POST:
-                intent = new Intent();
-                getActivity().setResult(Activity.RESULT_OK, intent);
+                intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
                 loginActivity.finish();
                 return;
             case FragmentActivityType.NOTIFICATION_ACTIVITY:

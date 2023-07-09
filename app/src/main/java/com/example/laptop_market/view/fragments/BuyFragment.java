@@ -7,7 +7,10 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -17,14 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IFragmentListener;
 import com.example.laptop_market.contracts.IOrderContract;
 import com.example.laptop_market.presenter.fragments.BuyFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
+import com.example.laptop_market.view.adapters.Buy.BuyOrder;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -43,6 +49,10 @@ public class BuyFragment extends Fragment implements IOrderContract.View.BuyFrag
     private ActivityResultLauncher<Intent> loginLauncher;
     private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     private boolean applySlideTransition = true;
+    private BuyProcessingFragment buyProcessingFragment;
+    private BuyDeliveringFragment buyDeliveringFragment;
+    private BuyFinishFragment buyFinishFragment;
+    private BuyCancelFragment buyCancelFragment;
     public BuyFragment() {
         // Required empty public constructor
     }
@@ -50,13 +60,13 @@ public class BuyFragment extends Fragment implements IOrderContract.View.BuyFrag
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set activity result when Login from BuyFragment
-        loginLauncher = registerForActivityResult(
+        /*loginLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK){
                         DisplayManageOrderView();
                     }
                 }
-        );
+        );*/
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,13 +75,19 @@ public class BuyFragment extends Fragment implements IOrderContract.View.BuyFrag
         buyFragmentPresenter = new BuyFragmentPresenter(this, this.getContext());
         View view = inflater.inflate(R.layout.fragment_buy, container, false);
         gridRequireLoginForBuy = view.findViewById(R.id.gridRequireLoginForBuy);
+
+        // Create objects
+        buyProcessingFragment = new BuyProcessingFragment();
+        buyDeliveringFragment = new BuyDeliveringFragment();
+        buyFinishFragment = new BuyFinishFragment();
+        buyCancelFragment = new BuyCancelFragment();
+
         fragmentList = new ArrayList<>();
-        fragmentList.add(new BuyProcessingFragment());
-        fragmentList.add(new BuyDeliveringFragment());
-        fragmentList.add(new BuyFinishFragment());
-        fragmentList.add(new BuyCancelFragment());
+        fragmentList.add(buyProcessingFragment);
+        fragmentList.add(buyDeliveringFragment);
+        fragmentList.add(buyFinishFragment);
+        fragmentList.add(buyCancelFragment);
         viewPagerBuy = view.findViewById(R.id.viewPagerBuy);
-        btnRequireLoginForBuy = view.findViewById(R.id.btnRequireLoginForBuy);
         fragmentStateAdapter = new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -114,13 +130,22 @@ public class BuyFragment extends Fragment implements IOrderContract.View.BuyFrag
                 currentSelectedItem = position;
             }
         });
+
+        btnRequireLoginForBuy = view.findViewById(R.id.btnRequireLoginForBuy);
         btnRequireLoginForBuy.setOnClickListener(view1 -> {
             Intent intent = new Intent(this.getActivity(), LoginActivity.class);
             PreferenceManager preferenceManager = new PreferenceManager(getContext());
             preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.MANAGE_BUYING_ORDER);
-            loginLauncher.launch(intent);
+            startActivity(intent);
+            getActivity().finish();
+            //loginLauncher.launch(intent);
         });
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
