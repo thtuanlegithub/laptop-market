@@ -43,7 +43,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     private IAccountContract.Presenter.AccountFragmentPresenter accountFragmentPresenter;
     private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
-    private IFragmentListener fragmentListener;
+    private IFragmentListener.MainActivityListener mainActivityListener;
     private boolean isLogin = false;
     private static final int REQUEST_CODE_TRANSITION = 1;
     private boolean applySlideTransition = false;
@@ -120,8 +120,8 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
                 @Override
                 public void onYesClick() {
                     accountFragmentPresenter.LogoutAccount();
-                    if (fragmentListener != null)
-                        fragmentListener.OnLogoutListener();
+                    if (mainActivityListener != null)
+                        mainActivityListener.OnLogoutListener();
                 }
 
                 @Override
@@ -224,7 +224,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         accountFragmentPresenter.LoadAccountStatus();
     }
 
-    public void setFragmentListener(IFragmentListener listener){
-        this.fragmentListener = listener;
+    public void setMainActivityListener(IFragmentListener.MainActivityListener listener){
+        this.mainActivityListener = listener;
     }
 }

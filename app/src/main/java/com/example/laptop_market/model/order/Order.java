@@ -15,12 +15,14 @@ public class Order {
     private String sellerID;
     private String buyerName;
     private String buyerPhone;
+    private String postServiceName;
+    private String postServiceCode;
 
     public Order (){
 
     }
 
-    public Order(String orderID, String orderedDate, String finishedDate, String shipAddress, String orderRating, String orderStatus, String totalAmount, String postID, String buyerID, String sellerID, String buyerName, String buyerPhone) {
+    public Order(String orderID, String orderedDate, String finishedDate, String shipAddress, String orderRating, String orderStatus, String totalAmount, String postID, String buyerID, String sellerID, String buyerName, String buyerPhone, String postServiceName, String postServiceCode) {
         this.orderID = orderID;
         this.orderedDate = orderedDate;
         this.finishedDate = finishedDate;
@@ -33,6 +35,8 @@ public class Order {
         this.sellerID = sellerID;
         this.buyerName = buyerName;
         this.buyerPhone = buyerPhone;
+        this.postServiceName = postServiceName;
+        this.postServiceCode = postServiceCode;
     }
 
     public String getOrderID() {
@@ -125,5 +129,21 @@ public class Order {
 
     public void setBuyerPhone(String buyerPhone) {
         this.buyerPhone = buyerPhone;
+    }
+
+    public String getPostServiceName() {
+        return postServiceName;
+    }
+
+    public void setPostServiceName(String postServiceName) {
+        this.postServiceName = postServiceName;
+    }
+
+    public String getPostServiceCode() {
+        return postServiceCode;
+    }
+
+    public void setPostServiceCode(String postServiceCode) {
+        this.postServiceCode = postServiceCode;
     }
 }

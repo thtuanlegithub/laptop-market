@@ -157,6 +157,10 @@ public class Account implements Serializable {
         this.buyOrders = buyOrders;
     }
 
+    public ArrayList<String> getConversations() {
+        return null;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

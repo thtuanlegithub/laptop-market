@@ -11,4 +11,6 @@ public class OrderTable {
     public static final String POST_ID = "postID";
     public static final String BUYER_ID = "buyerID";
     public static final String SELLER_ID = "sellerID";
+    public static final String POST_SERVICE_NAME = "postServiceName";
+    public static final String POST_SERVICE_CODE = "postServiceCode";
 }

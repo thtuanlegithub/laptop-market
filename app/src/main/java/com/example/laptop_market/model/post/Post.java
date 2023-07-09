@@ -3,10 +3,12 @@ package com.example.laptop_market.model.post;
 import java.util.Date;
 
 public class Post{
+
     private String postID;
     private String laptopID;
     private String accountID;
     private String title;
+    private String postStatus;
     private String description;
     private String sellerPhoneNumber;
     private String sellerName;
@@ -14,18 +16,23 @@ public class Post{
     private Date pushlishTime;
     private String postMainImage;
 
-    public Post() {
-    }
-    public Post(String postID, String laptopID, String accountID, String title, String description, String sellerPhoneNumber, String sellerName, String sellerAddress) {
+    public Post(String postID, String laptopID, String accountID, String title, String postStatus, String description, String sellerPhoneNumber, String sellerName, String sellerAddress, Date pushlishTime, String postMainImage) {
         this.postID = postID;
         this.laptopID = laptopID;
         this.accountID = accountID;
         this.title = title;
+        this.postStatus = postStatus;
         this.description = description;
         this.sellerPhoneNumber = sellerPhoneNumber;
         this.sellerName = sellerName;
         this.sellerAddress = sellerAddress;
+        this.pushlishTime = pushlishTime;
+        this.postMainImage = postMainImage;
     }
+
+    public Post() {
+    }
+
 
     public Date getPushlishTime() {
         return pushlishTime;
@@ -105,5 +112,13 @@ public class Post{
 
     public void setPostMainImage(String postMainImage) {
         this.postMainImage = postMainImage;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
     }
 }

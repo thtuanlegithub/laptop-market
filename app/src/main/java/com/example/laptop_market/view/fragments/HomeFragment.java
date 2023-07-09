@@ -23,9 +23,12 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.utils.MyDialog;
+import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.activities.ConversationDetailActivity;
 import com.example.laptop_market.view.activities.ConversationListActivity;
+import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.NotificationActivity;
 import com.example.laptop_market.view.activities.ProfileActivity;
 import com.example.laptop_market.view.adapters.BrandAdapter;
@@ -119,14 +122,29 @@ public class HomeFragment extends Fragment {
     private void setListener()
     {
         chatMessageBtt.setOnClickListener(view -> {
-            if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            if (FirebaseAuth.getInstance().getCurrentUser() == null)
             {
-                Toast.makeText(getContext(), "Bạn phải đăng nhập để thực hiện chức nắng này", Toast.LENGTH_SHORT).show();
-                return;
+                MyDialog.showDialog(this.getContext(), "Bạn cần phải đăng nhập để thực hiện chức năng này!", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+                    @Override
+                    public void onYesClick() {
+
+                    }
+
+                    @Override
+                    public void onNoClick() {
+
+                    }
+
+                    @Override
+                    public void onOkClick() {
+
+                    }
+                });
+            } else {
+                Intent intent = new Intent(getContext(), ConversationListActivity.class);
+                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+                startActivity(intent,bundle);
             }
-            Intent intent = new Intent(getContext(), ConversationListActivity.class);
-            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
-            startActivity(intent,bundle);
         });
             btnNotificationHome.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NotificationActivity.class);

@@ -23,7 +23,7 @@ import com.example.laptop_market.view.fragments.SearchFragment;
 import com.example.laptop_market.view.fragments.SearchResultFragment;
 import com.example.laptop_market.view.fragments.SellFragment;
 
-public class MainActivity extends AppCompatActivity implements IFragmentListener {
+public class MainActivity extends AppCompatActivity implements IFragmentListener.MainActivityListener {
     private FragmentManager fragmentManager;
     ActivityMainBinding binding;
     private ConnectionReceiver broadcastReceiver = null;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentListener
         sellFragment = new SellFragment();
         internetDisconnectedFragment = new InternetDisconnectedFragment(this);
 
-        accountFragment.setFragmentListener(this);
+        accountFragment.setMainActivityListener(this);
 
         // Thêm fragment vào FragmentManager
         fragmentManager = getSupportFragmentManager();
@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentListener
         super.onDestroy();
         unregisterNetworkBroadcast();
     }
+
 
     @Override
     public void OnLogoutListener() {
