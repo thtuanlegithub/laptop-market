@@ -60,8 +60,7 @@ public class FilterRadioButtonAdapter extends RecyclerView.Adapter<FilterRadioBu
         if(currentFilter==null){
             return;
         }
-        if(listcheckedRadioButton.contains(currentFilter.getName()))
-            holder.rdFilter.setChecked(true);
+
         holder.txtFilterRadioButton.setText(currentFilter.getName());
         holder.rdFilter.setSelected(true);
         holder.rdFilter.setTag(currentFilter.getName());
