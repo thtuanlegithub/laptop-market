@@ -1,5 +1,7 @@
 package com.example.laptop_market.contracts;
 
+import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.model.account.CurrentBuyer;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
@@ -32,6 +34,16 @@ public interface IPostContract {
             void OnFinishLoadingPostInPostDetail(Post post, Exception error);
         }
         //endregion
+        // region Load your own post
+        void LoadPostActive(OnLoadPostActiveListener listener);
+        interface OnLoadPostActiveListener {
+            void OnFinishLoadPostActive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
+        }
+        void LoadPostInActive(OnLoadPostInactiveListener listener);
+        interface OnLoadPostInactiveListener {
+            void OnFinishLoadPostInactive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
+        }
+        // endregion
         //region Load seller's phone number
         void GetSellerPhoneNumber(String postID, OnLoadSellerPhoneNumber listener);
         interface  OnLoadSellerPhoneNumber{
@@ -54,6 +66,7 @@ public interface IPostContract {
             void LoadRemoveSavePostButton();
             void ShowPhoneDialIntent(String phoneNumber);
             void LoginAccount();
+            void LoadOrderDetails(CurrentBuyer currentBuyer);
         }
 
         interface PostFragmentView{
@@ -61,6 +74,12 @@ public interface IPostContract {
             void LoginAccount();
             void DisplayRequireLoginView();
             void DisplayManagePostView();
+        }
+        interface PostActiveFragmentView {
+            void DisplayPostActive(ArrayList<PostSearchResult> postSearchResults);
+        }
+        interface PostInactiveFragmentView {
+            void DisplayPostInactive(ArrayList<PostSearchResult> postSearchResults);
         }
     }
     interface Presenter{
@@ -76,10 +95,13 @@ public interface IPostContract {
             void LoadSavePostButton(String postID);
             void OnSavePostClicked(String postID, boolean isSaved);
             void OnPhoneDialClicked(String postID);
+            void OnBuyNowClicked();
         }
         interface PostFragmentPresenter{
             void CreateNewPost();
             void LoadManagePost();
+            void LoadPostActive();
+            void LoadPostInactive();
         }
     }
 }

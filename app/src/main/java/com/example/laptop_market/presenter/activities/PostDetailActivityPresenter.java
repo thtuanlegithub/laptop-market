@@ -5,9 +5,13 @@ import android.content.Context;
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.contracts.ILaptopContract;
 import com.example.laptop_market.contracts.IPostContract;
+import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.account.AccountModel;
+import com.example.laptop_market.model.account.CurrentBuyer;
 import com.example.laptop_market.model.laptop.LaptopModel;
 import com.example.laptop_market.model.post.PostModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class PostDetailActivityPresenter implements IPostContract.Presenter.PostDetailActivityPresenter
         , ILaptopContract.Presenter.PostDetailActivityPresenter
@@ -136,7 +140,24 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
         });
     }
 
-//endregion
+    @Override
+    public void OnBuyNowClicked() {
+        accountModel.CheckSignedInAccount(isLogin -> {
+            if (isLogin){
+                accountModel.GetCurrentAccountInformation((isSuccess, currentBuyer, error) -> {
+                    if (isSuccess) {
+                        postView.LoadOrderDetails(currentBuyer);
+                    } else {
+                        error.printStackTrace();
+                    }
+                });
+            } else {
+                postView.LoginAccount();
+           }
+        });
+    }
+
+    //endregion
 
     //region Account presenter
     @Override

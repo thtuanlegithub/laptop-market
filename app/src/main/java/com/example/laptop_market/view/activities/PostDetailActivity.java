@@ -1,5 +1,8 @@
 package com.example.laptop_market.view.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.appcompat.widget.AppCompatButton;
@@ -24,6 +27,7 @@ import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.contracts.ILaptopContract;
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.account.Account;
+import com.example.laptop_market.model.account.CurrentBuyer;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
@@ -61,16 +65,30 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private PostSearchResult postSearchResult;
     private TextView totalPictureTextView;
     private TextView currentPictureTextView;
+    private TextView tvPostDetailSellerAddress;
     private int currentImagePage;
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
     private PreferenceManager preferenceManager;
+    private ActivityResultLauncher<Intent> orderDetailsLauncher;
+    private TextView tvPostDetailDescription;
     private boolean backFromOrder = false;
     private AppCompatButton bttMessenger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
+
+        // Set activity result when Confirm buying from OrderDetails
+        orderDetailsLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK){
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+        );
 
         // get view
         preferenceManager = new PreferenceManager(getApplicationContext());
@@ -80,7 +98,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         btnPostDetailClose = findViewById(R.id.btnPostDetailClose);
         imgPostDetailShop = findViewById(R.id.imgPostDetailShop);
         postDetailTitleTextView = findViewById(R.id.postDetailTitleTextView);
+        tvPostDetailDescription = findViewById(R.id.tvPostDetailDescription);
         NameShopTextView = findViewById(R.id.NameShopTextView);
+        tvPostDetailSellerAddress = findViewById(R.id.tvPostDetailSellerAddress);
         postDetailPrice = findViewById(R.id.postDetailPrice);
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
         bttMessenger = findViewById(R.id.bttMessenger);
@@ -100,11 +120,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             layoutButtonSeller.setVisibility(View.GONE);
         }
 
-        // circle avatar of seller
-        Glide.with(this)
-                .load(R.drawable.slide_show1)
-                .apply(RequestOptions.circleCropTransform())
-                .into(imgPostDetailShop);
+
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
 
         // set listener
@@ -151,6 +167,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         });
 
         btnBuyNow.setOnClickListener(v -> {
+            postPresenter.OnBuyNowClicked();
             Intent intent = new Intent(this, BuyOrderDetailActivity.class);
             Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
             intent.putExtra("BuyOrderStatus",4);
@@ -199,7 +216,8 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         postDetailTitleTextView.setText(post.getTitle());
         NameShopTextView.setText(account.getAccountName());
         totalPictureTextView.setText(String.valueOf(laptop.getNumOfImage()));
-
+        tvPostDetailSellerAddress.setText(post.getSellerAddress());
+        tvPostDetailDescription.setText(post.getDescription());
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true); // Bật chế độ hiển thị hàng nghìn
         numberFormat.setMaximumFractionDigits(0); // Số lượng chữ số phần thập phân
@@ -239,6 +257,19 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     public void LoadingAccountInPostDetail(Account account) {
         this.account=account;
         isLoadAccountFinish=true;
+        // circle avatar of seller
+        if(account.getAvatar()== null) {
+            Glide.with(this)
+                    .load(R.drawable.avatar_basic)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgPostDetailShop);
+        }
+        else{
+            Glide.with(this)
+                    .load(account.getAvatar())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgPostDetailShop);
+        }
         if(isLoadPostFinish && isloadLaptopFinish)
             LoadData();
     }
@@ -287,5 +318,25 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.POST_DETAILS_ACTIVITY);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+        public void LoadOrderDetails(CurrentBuyer currentBuyer) {
+        Intent intent = new Intent(this, BuyOrderDetailActivity.class);
+        intent.putExtra("BuyOrderStatus",4);
+        intent.putExtra("CurrentBuyer", currentBuyer);
+
+        // EncapsulateDataToPassBuyOrderActivity
+        Bundle bundle = new Bundle();
+        bundle.putString("PostID", postSearchResult.getPostId());
+        bundle.putString("OrderName", postSearchResult.getTitle());
+        bundle.putString("TotalAmount", postDetailPrice.getText().toString());
+        bundle.putString("SellerID", postSearchResult.getAccountId());
+        bundle.putString("SellerName", post.getSellerName());
+        bundle.putString("SellerPhoneNumber", post.getSellerPhoneNumber());
+        bundle.putString("SellerAddress", post.getSellerAddress());
+        intent.putExtras(bundle);
+
+        orderDetailsLauncher.launch(intent);
     }
 }

@@ -152,6 +152,7 @@
                             android:layout_gravity="center"
                             android:background="@drawable/ic_location"/>
                         <TextView
+                            android:id="@+id/tvPostDetailSellerAddress"
                             android:layout_gravity="bottom"
                             android:layout_marginBottom="1dp"
                             android:text="Phường Linh Trung, Thành phố Thủ Đức"
@@ -443,6 +444,7 @@
                         android:layout_height="1dp"
                         android:background="@drawable/line"/>
                     <TextView
+                        android:id="@+id/tvPostDetailDescription"
                         android:layout_marginBottom="25dp"
                         android:textSize="15dp"
                         android:textColor="@color/black"

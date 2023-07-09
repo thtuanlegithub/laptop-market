@@ -4,17 +4,25 @@ import com.google.type.DateTime;
 
 public class Order {
     private String orderID;
-    private DateTime orderedDate;
-    private DateTime finishedDate;
+    private String orderedDate;
+    private String finishedDate;
     private String shipAddress;
     private String orderRating;
     private String orderStatus;
-    private Double totalAmount;
+    private String totalAmount;
     private String postID;
     private String buyerID;
     private String sellerID;
+    private String buyerName;
+    private String buyerPhone;
+    private String postServiceName;
+    private String postServiceCode;
 
-    public Order(String orderID, DateTime orderedDate, DateTime finishedDate, String shipAddress, String orderRating, String orderStatus, Double totalAmount, String postID, String buyerID, String sellerID) {
+    public Order (){
+
+    }
+
+    public Order(String orderID, String orderedDate, String finishedDate, String shipAddress, String orderRating, String orderStatus, String totalAmount, String postID, String buyerID, String sellerID, String buyerName, String buyerPhone, String postServiceName, String postServiceCode) {
         this.orderID = orderID;
         this.orderedDate = orderedDate;
         this.finishedDate = finishedDate;
@@ -25,6 +33,10 @@ public class Order {
         this.postID = postID;
         this.buyerID = buyerID;
         this.sellerID = sellerID;
+        this.buyerName = buyerName;
+        this.buyerPhone = buyerPhone;
+        this.postServiceName = postServiceName;
+        this.postServiceCode = postServiceCode;
     }
 
     public String getOrderID() {
@@ -35,19 +47,19 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public DateTime getOrderedDate() {
+    public String getOrderedDate() {
         return orderedDate;
     }
 
-    public void setOrderedDate(DateTime orderedDate) {
+    public void setOrderedDate(String orderedDate) {
         this.orderedDate = orderedDate;
     }
 
-    public DateTime getFinishedDate() {
+    public String getFinishedDate() {
         return finishedDate;
     }
 
-    public void setFinishedDate(DateTime finishedDate) {
+    public void setFinishedDate(String finishedDate) {
         this.finishedDate = finishedDate;
     }
 
@@ -75,11 +87,11 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public Double getTotalAmount() {
+    public String getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -102,4 +114,36 @@ public class Order {
     public String getSellerID() { return sellerID; }
 
     public void setSellerID(String sellerID) { this.sellerID = sellerID; }
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
+    }
+
+    public String getBuyerPhone() {
+        return buyerPhone;
+    }
+
+    public void setBuyerPhone(String buyerPhone) {
+        this.buyerPhone = buyerPhone;
+    }
+
+    public String getPostServiceName() {
+        return postServiceName;
+    }
+
+    public void setPostServiceName(String postServiceName) {
+        this.postServiceName = postServiceName;
+    }
+
+    public String getPostServiceCode() {
+        return postServiceCode;
+    }
+
+    public void setPostServiceCode(String postServiceCode) {
+        this.postServiceCode = postServiceCode;
+    }
 }

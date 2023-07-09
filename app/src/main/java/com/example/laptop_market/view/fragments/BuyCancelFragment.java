@@ -9,17 +9,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IOrderContract;
+import com.example.laptop_market.presenter.fragments.BuyFragmentPresenter;
 import com.example.laptop_market.view.adapters.Buy.BuyCancelAdapter;
 import com.example.laptop_market.view.adapters.Buy.BuyOrder;
+import com.example.laptop_market.view.adapters.Buy.BuyProcessingAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class BuyCancelFragment extends Fragment {
+public class BuyCancelFragment extends Fragment implements IOrderContract.View.BuyCancelFragmentView {
     private RecyclerView rcvBuyCancel;
+    private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
+    private ProgressBar progressBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,27 +35,26 @@ public class BuyCancelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        buyFragmentPresenter = new BuyFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_buy_cancel, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
+        progressBar = view.findViewById(R.id.progressBarBuyCancel);
         rcvBuyCancel = view.findViewById(R.id.rcvBuyCancel);
         GridLayoutManager gridLayoutManagerBuyCancel = new GridLayoutManager(requireContext(),1);
         rcvBuyCancel.setLayoutManager(gridLayoutManagerBuyCancel);
-        BuyCancelAdapter BuyCancelAdapter = new BuyCancelAdapter(getListBuyCancel());
-        rcvBuyCancel.setAdapter(BuyCancelAdapter);
-
+        buyFragmentPresenter.LoadBuyCancelOrder();
         return view;
     }
 
-    private List<BuyOrder> getListBuyCancel(){
-        List<BuyOrder> listBuyCancel = new ArrayList<>();
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        listBuyCancel.add(new BuyOrder("Asus Gaming TUF A15 - Ryzen 7 - 16GB RAM",26000000,"Thành phố Hồ Chí Minh"));
-        return  listBuyCancel;
+    @Override
+    public void DisplayCancelFinishedOrder(ArrayList<BuyOrder> orders) {
+        if (orders == null){
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
+        BuyCancelAdapter buyCancelAdapter = new BuyCancelAdapter(orders);
+        rcvBuyCancel.setAdapter(buyCancelAdapter);
+        progressBar.setVisibility(View.GONE);
     }
 }

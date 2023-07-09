@@ -48,6 +48,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         , IPostContract.View.SearchResultFragmentView {
     public static final int ADAPTER_TYPE0_CLICK = 1;
     public static final int SEARCH_CLICK = 2;
+    public static final int SEARCH_CLICK_FROM_SEARCH_FRAGMENT = 3;
     private int searchResultFragmentType;
     private HomeBaseFragment homeBaseFragment;
     private RecyclerView rcvBrand;
@@ -176,7 +177,15 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Xử lý khi EditText được nhấn
-                    homeBaseFragment.replaceFragment(homeBaseFragment.searchFragment);
+                    preferenceManager.putInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,SEARCH_CLICK);
+                    if (homeBaseFragment.searchFragment == null) {
+                        homeBaseFragment.searchFragment = new SearchFragment(homeBaseFragment);
+                    }
+                    if (homeBaseFragment != null && homeBaseFragment.searchFragment != null) {
+                        searchFragment = homeBaseFragment.searchFragment;
+                        homeBaseFragment.replaceFragment(searchFragment);
+                        homeBaseFragment.isSearch = true;
+                    }
                     // Hiển thị bàn phím
                     InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.showSoftInput(edtTextSearchResult, InputMethodManager.SHOW_IMPLICIT);
@@ -196,6 +205,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
     private void reloadListFilter()
     {
+
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         String textViewHint = "";
         if(searchFilterPost.getListBrandName().size()>0)
@@ -375,9 +385,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             preferenceManager.putBoolean("isFromHomeFragment", false);
         }
         else{
-            searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
             searchFilterPost.setSearchPost(itemString);
             postPreseneter.OnSearchPostByFilter(searchFilterPost);
+            preferenceManager.putSerializable(Constants.KEY_FILTER_SEARCH,searchFilterPost);
+
         }
     }
 
@@ -385,7 +396,6 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     public void onResume() {
         super.onResume();
         searchResultFragmentType = preferenceManager.getInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,0);
-        preferenceManager.removeKey(Constants.KEY_POST_SEARCH_RESULT_TYPE);
         if(searchResultFragmentType == ADAPTER_TYPE0_CLICK)
         {
             cleanSearchFilterPost();
@@ -410,11 +420,13 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
                 postPreseneter.OnSearchPostByFilter(searchFilterPost);
             }
         }
+        preferenceManager.removeKey(Constants.KEY_POST_SEARCH_RESULT_TYPE);
         reloadListFilter();
 
     }
     private void cleanSearchFilterPost()
     {
+        edtTextSearchResult.setText("");
         searchFilterPost.setSearchPost("");
         searchFilterPost.setMaximumPrice(50000000);
         searchFilterPost.setMinimumPrice(0);

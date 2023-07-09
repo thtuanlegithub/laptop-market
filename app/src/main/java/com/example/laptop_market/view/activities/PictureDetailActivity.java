@@ -9,10 +9,14 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.laptop_market.R;
+import com.example.laptop_market.model.chatMessage.ChatMessage;
+import com.example.laptop_market.utils.tables.ChatMessageTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.tables.LaptopTable;
 import com.example.laptop_market.view.adapters.ImageDetailSliderAdapter;
@@ -34,6 +38,7 @@ public class PictureDetailActivity extends AppCompatActivity {
     private int currentImagePage;
     private LinearLayout mutiplePictureLayout;
     private ArrayList<Bitmap> listbitmap;
+    private ImageView imageViewForURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,7 @@ public class PictureDetailActivity extends AppCompatActivity {
         totalPictureTextView = findViewById(R.id.totalPictureTextView);
         currentPictureTextView = findViewById(R.id.currentPictureTextView);
         mutiplePictureLayout = findViewById(R.id.mutiplePictureLayout);
+        imageViewForURL = findViewById(R.id.imageViewForURL);
         setListener();
         getData();
     }
@@ -52,63 +58,75 @@ public class PictureDetailActivity extends AppCompatActivity {
     {
         Intent intent = getIntent();
         boolean isSingleImage = intent.getBooleanExtra("isSingleImage",false);
+        boolean isSetURL = intent.getBooleanExtra("isSingleImageFromURL",false);
+
         listbitmap = new ArrayList<>();
-        if(isSingleImage)
+        if(isSetURL)
         {
-            String filePath = intent.getStringExtra("image_file");
-            if(filePath!=null) {
-                try {
-                    File file = new File(filePath);
-                    FileInputStream inputStream = new FileInputStream(file);
-                    byte[] buffer = new byte[(int) file.length()];
-                    inputStream.read(buffer);
-                    inputStream.close();
-                    String data = new String(buffer, "UTF-8");
-                    JSONObject jsonObject = new JSONObject(data);
-                    String imageString = jsonObject.getString(Constants.KEY_IMAGE);
-                    Bitmap bitmap = getBitMapFromString(imageString);
-                    listbitmap.add(bitmap);
-                    ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(), listbitmap);
-                    viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
-                    mutiplePictureLayout.setVisibility(View.GONE);
-                    file.delete();
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+            String linkImage = intent.getStringExtra(ChatMessageTable.IMAGE);
+            if(linkImage == null)
+                Glide.with(getApplicationContext()).load(R.drawable.avatar_basic).into(imageViewForURL);
+            else
+                Glide.with(getApplicationContext()).load(linkImage).into(imageViewForURL);
+            mutiplePictureLayout.setVisibility(View.GONE);
+            viewPagerImagePostDetail.setVisibility(View.GONE);
         }
         else {
-            String filePath = intent.getStringExtra("data_file");
-
-            if (filePath != null) {
-                try {
-                    // Đọc dữ liệu từ file JSON
-                    File file = new File(filePath);
-                    FileInputStream inputStream = new FileInputStream(file);
-                    byte[] buffer = new byte[(int) file.length()];
-                    inputStream.read(buffer);
-                    inputStream.close();
-                    String data = new String(buffer, "UTF-8");
-
-                    // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JSONObject
-                    JSONObject jsonObject = new JSONObject(data);
-                    int numOfPicture = jsonObject.getInt(LaptopTable.NUM_OF_IMAGE);
-                    // Truy xuất các giá trị từ đối tượng JSONObject
-                    for (int i = 0; i < numOfPicture; i++) {
-                        String imageString = jsonObject.getString(Constants.KEY_IMAGE + i);
+            if (isSingleImage) {
+                String filePath = intent.getStringExtra("image_file");
+                if (filePath != null) {
+                    try {
+                        File file = new File(filePath);
+                        FileInputStream inputStream = new FileInputStream(file);
+                        byte[] buffer = new byte[(int) file.length()];
+                        inputStream.read(buffer);
+                        inputStream.close();
+                        String data = new String(buffer, "UTF-8");
+                        JSONObject jsonObject = new JSONObject(data);
+                        String imageString = jsonObject.getString(Constants.KEY_IMAGE);
                         Bitmap bitmap = getBitMapFromString(imageString);
                         listbitmap.add(bitmap);
+                        ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(), listbitmap);
+                        viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
+                        mutiplePictureLayout.setVisibility(View.GONE);
+                        file.delete();
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
                     }
-                    ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(), listbitmap);
-                    viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
-                    currentImagePage = jsonObject.getInt(Constants.KEY_POSITION_IMAGE);
-                    viewPagerImagePostDetail.setCurrentItem(currentImagePage);
-                    totalPictureTextView.setText(String.valueOf(numOfPicture));
-                    file.delete();
-                    // Xử lý các giá trị ở đây
-                    // ...
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                }
+            } else {
+                String filePath = intent.getStringExtra("data_file");
+
+                if (filePath != null) {
+                    try {
+                        // Đọc dữ liệu từ file JSON
+                        File file = new File(filePath);
+                        FileInputStream inputStream = new FileInputStream(file);
+                        byte[] buffer = new byte[(int) file.length()];
+                        inputStream.read(buffer);
+                        inputStream.close();
+                        String data = new String(buffer, "UTF-8");
+
+                        // Chuyển đổi dữ liệu từ chuỗi JSON sang đối tượng JSONObject
+                        JSONObject jsonObject = new JSONObject(data);
+                        int numOfPicture = jsonObject.getInt(LaptopTable.NUM_OF_IMAGE);
+                        // Truy xuất các giá trị từ đối tượng JSONObject
+                        for (int i = 0; i < numOfPicture; i++) {
+                            String imageString = jsonObject.getString(Constants.KEY_IMAGE + i);
+                            Bitmap bitmap = getBitMapFromString(imageString);
+                            listbitmap.add(bitmap);
+                        }
+                        ImageDetailSliderAdapter imageDetailSliderAdapter = new ImageDetailSliderAdapter(getApplicationContext(), listbitmap);
+                        viewPagerImagePostDetail.setAdapter(imageDetailSliderAdapter);
+                        currentImagePage = jsonObject.getInt(Constants.KEY_POSITION_IMAGE);
+                        viewPagerImagePostDetail.setCurrentItem(currentImagePage);
+                        totalPictureTextView.setText(String.valueOf(numOfPicture));
+                        file.delete();
+                        // Xử lý các giá trị ở đây
+                        // ...
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

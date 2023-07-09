@@ -10,4 +10,5 @@ public class ChatMessageTable {
     public static final String NUMBER_OF_PICTURE = "numberOfPicture";
     public static final String DOWNLOADED_IMAGE = "downloadedImage";
     public static final String CONVERSATION_ID = "conversationId";
+    public static final String IMAGE = "image";
 }

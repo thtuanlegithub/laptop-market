@@ -25,6 +25,8 @@ import com.example.laptop_market.presenter.fragments.AccountFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.AccountTable;
+import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.view.activities.AccountSettingActivity;
 import com.example.laptop_market.view.activities.BuyStatisticActivity;
 import com.example.laptop_market.view.activities.FeedbackActivity;
@@ -43,7 +45,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     private IAccountContract.Presenter.AccountFragmentPresenter accountFragmentPresenter;
     private AppCompatButton bttLogout, btnSellOrder, btnBuyOrder, btnSavedPost, btnYourRating, btnAccountSettings, btnFeedback;
     private PreferenceManager preferenceManager;
-    private IFragmentListener fragmentListener;
+    private IFragmentListener.MainActivityListener mainActivityListener;
     private boolean isLogin = false;
     private static final int REQUEST_CODE_TRANSITION = 1;
     private boolean applySlideTransition = false;
@@ -76,10 +78,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
 
     private void setListener()
     {
-        Glide.with(this)
-                .load(R.drawable.slide_show1)
-                .apply(RequestOptions.circleCropTransform())
-                .into(imgAccount);
+
         txtAccountName.setOnClickListener(v -> {
             if(!isLogin) {
                 Intent intent = new Intent(this.getActivity(), LoginActivity.class);
@@ -120,8 +119,8 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
                 @Override
                 public void onYesClick() {
                     accountFragmentPresenter.LogoutAccount();
-                    if (fragmentListener != null)
-                        fragmentListener.OnLogoutListener();
+                    if (mainActivityListener != null)
+                        mainActivityListener.OnLogoutListener();
                 }
 
                 @Override
@@ -144,6 +143,19 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         txtAccountName.setText(account.getAccountName());
         bttLogout.setVisibility(View.VISIBLE);
         isLogin=true;
+        if(account.getAvatar()==null) {
+            Glide.with(this)
+                    .load(R.drawable.avatar_basic)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgAccount);
+        }
+        else
+        {
+            Glide.with(this)
+                    .load(account.getAvatar())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgAccount);
+        }
     }
 
     @Override
@@ -151,11 +163,22 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         ShowToast("Đăng xuất thành công");
         txtAccountName.setText("Đăng nhập / Đăng ký");
         bttLogout.setVisibility(View.GONE);
+        preferenceManager.removeKey(Constants.KEY_USER_NAME);
+        preferenceManager.removeKey(Constants.KEY_USER_EMAIL);
+        preferenceManager.removeKey(AccountTable.AVARTAR);
+        Glide.with(this)
+                .load(R.drawable.avatar_basic)
+                .apply(RequestOptions.circleCropTransform())
+                .into(imgAccount);
         isLogin = false;
     }
 
     @Override
     public void LoadNotLoginAccount() {
+        Glide.with(this)
+                .load(R.drawable.avatar_basic)
+                .apply(RequestOptions.circleCropTransform())
+                .into(imgAccount);
         txtAccountName.setText("Đăng nhập / Đăng ký");
         bttLogout.setVisibility(View.GONE);
         isLogin = false;
@@ -224,7 +247,7 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
         accountFragmentPresenter.LoadAccountStatus();
     }
 
-    public void setFragmentListener(IFragmentListener listener){
-        this.fragmentListener = listener;
+    public void setMainActivityListener(IFragmentListener.MainActivityListener listener){
+        this.mainActivityListener = listener;
     }
 }

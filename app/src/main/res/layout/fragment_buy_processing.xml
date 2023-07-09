@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.BuyProcessingFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBarBuyProcessing"
+        android:visibility="visible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center">
+    </ProgressBar>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvBuyProcessing"
         android:layout_width="match_parent"

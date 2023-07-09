@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class DownloadImageFunction {
-    private ChatMessage chatMessage;
+   /* private ChatMessage chatMessage;
     public void DownloadImage(ChatMessage chatMessage, FinishDownloadImageListener listener)
     {
         chatMessage.getDownloadedImage().clear();
@@ -50,5 +50,5 @@ public class DownloadImageFunction {
     }
     public interface FinishDownloadImageListener{
         void FinishDownloadImage(ChatMessage chatMessage, Exception ex);
-    }
+    }*/
 }

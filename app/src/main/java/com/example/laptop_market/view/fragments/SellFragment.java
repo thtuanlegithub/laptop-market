@@ -43,6 +43,10 @@ public class SellFragment extends Fragment implements IOrderContract.View.SellFr
     private ActivityResultLauncher<Intent> loginLauncher;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
     private boolean applySlideTransition = true;
+    private SellProcessingFragment sellProcessingFragment;
+    private SellDeliveringFragment sellDeliveringFragment;
+    private SellFinishFragment sellFinishFragment;
+    private SellCancelFragment sellCancelFragment;
     public SellFragment() {
         // Required empty public constructor
     }
@@ -50,14 +54,14 @@ public class SellFragment extends Fragment implements IOrderContract.View.SellFr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set activity result when Login from BuyFragment
+        /*// Set activity result when Login from BuyFragment
         loginLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK){
                         DisplayManageOrderView();
                     }
                 }
-        );
+        );*/
     }
 
     @Override
@@ -66,11 +70,18 @@ public class SellFragment extends Fragment implements IOrderContract.View.SellFr
         sellFragmentPresenter = new SellFragmentPresenter(this, getContext());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sell, container, false);
+
+        // Create objects
+        sellProcessingFragment = new SellProcessingFragment();
+        sellDeliveringFragment = new SellDeliveringFragment();
+        sellFinishFragment = new SellFinishFragment();
+        sellCancelFragment = new SellCancelFragment();
+
         fragmentList = new ArrayList<>();
-        fragmentList.add(new SellProcessingFragment());
-        fragmentList.add(new SellDeliveringFragment());
-        fragmentList.add(new SellFinishFragment());
-        fragmentList.add(new SellCancelFragment());
+        fragmentList.add(sellProcessingFragment);
+        fragmentList.add(sellDeliveringFragment);
+        fragmentList.add(sellFinishFragment);
+        fragmentList.add(sellCancelFragment);
         viewPagerSell = view.findViewById(R.id.viewPagerSell);
         gridRequireLoginForSell = view.findViewById(R.id.gridRequireLoginForSell);
         btnRequireLoginForSell = view.findViewById(R.id.btnRequireLoginForSell);
@@ -120,7 +131,9 @@ public class SellFragment extends Fragment implements IOrderContract.View.SellFr
             Intent intent = new Intent(this.getActivity(), LoginActivity.class);
             PreferenceManager preferenceManager = new PreferenceManager(getContext());
             preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.MANAGE_SELLING_ORDER);
-            loginLauncher.launch(intent);
+            startActivity(intent);
+            getActivity().finish();
+            //loginLauncher.launch(intent);
         });
         return view;
     }

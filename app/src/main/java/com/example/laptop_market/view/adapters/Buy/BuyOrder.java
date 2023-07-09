@@ -7,36 +7,23 @@ import java.io.Serializable;
 public class BuyOrder implements Serializable {
     private transient Bitmap image;
     private String laptopName;
-    private String userId;
-    private String laptopId;
-    private String postId;
-    private String title;
+    private String price;
     private String address;
-    private double price;
+    private String orderId;
+    private String sellerId;
+    public BuyOrder () {
 
-    public String getAccountId() {
-        return userId;
     }
 
-    public void setAccountId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getLaptopId() {
-        return laptopId;
-    }
-
-    public void setLaptopId(String laptopId) {
-        this.laptopId = laptopId;
-    }
-
-    public BuyOrder() {
-    }
-    public BuyOrder(String title, double price, String address){
-        this.title = title;
+    public BuyOrder(Bitmap image, String laptopName, String price, String address, String orderId, String sellerId) {
+        this.image = image;
+        this.laptopName = laptopName;
         this.price = price;
         this.address = address;
+        this.orderId = orderId;
+        this.sellerId = sellerId;
     }
+
     public Bitmap getImage() {
         return image;
     }
@@ -53,27 +40,11 @@ public class BuyOrder implements Serializable {
         this.laptopName = laptopName;
     }
 
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -83,5 +54,21 @@ public class BuyOrder implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
     }
 }

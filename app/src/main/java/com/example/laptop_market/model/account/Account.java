@@ -12,28 +12,34 @@ public class Account implements Serializable {
     private String address;
     private Double rating;
     private String phoneNumber;
+    private String description;
     private boolean isFinishData;
     private ArrayList<String> publishPosts;
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
-    private ArrayList<String> conversations;
     private ArrayList<String> ratingOrders;
-
+    private ArrayList<String> sellOrders;
+    private ArrayList<String> buyOrders;
     private String avatar;
 
     public Account() {
     }
 
-    public Account(String accountID, String email, String password, String accountName, String address, Double rating, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders) {
+    public Account(String accountID, String email, String password, String accountName, String address, Double rating, String phoneNumber, boolean isFinishData, ArrayList<String> publishPosts, ArrayList<String> savedPosts, ArrayList<String> ratingOrders, ArrayList<String> sellOrders, ArrayList<String> buyOrders, String avatar) {
         this.accountID = accountID;
         this.email = email;
         this.password = password;
         this.accountName = accountName;
         this.address = address;
         this.rating = rating;
+        this.phoneNumber = phoneNumber;
+        this.isFinishData = isFinishData;
         this.publishPosts = publishPosts;
         this.savedPosts = savedPosts;
         this.ratingOrders = ratingOrders;
+        this.sellOrders = sellOrders;
+        this.buyOrders = buyOrders;
+        this.avatar = avatar;
     }
 
     public String getAccountID() {
@@ -132,12 +138,31 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
-    public ArrayList<String> getConversations() {
-        return conversations;
+    public String getDescription() {
+        return description;
+    }
+    public ArrayList<String> getSellOrders() {
+        return sellOrders;
     }
 
-    public void setConversations(ArrayList<String> conversations) {
-        this.conversations = conversations;
+    public void setSellOrders(ArrayList<String> sellOrders) {
+        this.sellOrders = sellOrders;
+    }
+
+    public ArrayList<String> getBuyOrders() {
+        return buyOrders;
+    }
+
+    public void setBuyOrders(ArrayList<String> buyOrders) {
+        this.buyOrders = buyOrders;
+    }
+
+    public ArrayList<String> getConversations() {
+        return null;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 

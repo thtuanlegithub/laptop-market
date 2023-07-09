@@ -4,11 +4,14 @@ import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresen
 import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_SUCCESS;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.LaptopTable;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -16,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,11 +33,13 @@ public class AccountModel implements IAccountContract.Model {
     private FirebaseFirestore db;
     private PreferenceManager preferenceManager;
     private FirebaseUser firebaseUser;
+    private FirebaseStorage firebaseStorage;
     public AccountModel()
     {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseStorage = FirebaseStorage.getInstance();
     }
 
     public AccountModel(Context context)
@@ -74,23 +82,13 @@ public class AccountModel implements IAccountContract.Model {
         {
             Account account = new Account();
             account.setAccountID(firebaseUser.getUid());
-            String temp = preferenceManager.getString(Constants.KEY_USER_NAME);
-            if(temp != null && !temp.isEmpty()){
-                account.setAccountName(preferenceManager.getString(Constants.KEY_USER_NAME));
-                account.setEmail(preferenceManager.getString(Constants.KEY_USER_EMAIL));
-                listener.OnLoadingListener(true,account);
-            }
-            else{
-                db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnSuccessListener(
-                        documentSnapshot -> {
-                            account.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
-                            account.setEmail(documentSnapshot.getString(AccountTable.EMAIL));
-                            preferenceManager.putString(Constants.KEY_USER_NAME, account.getAccountName());
-                            preferenceManager.putString(Constants.KEY_USER_EMAIL, account.getEmail());
-                            listener.OnLoadingListener(true,account);
-                        }
-                );
-            }
+            db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnSuccessListener(
+                    documentSnapshot -> {
+                        account.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
+                        account.setEmail(documentSnapshot.getString(AccountTable.EMAIL));
+                        account.setAvatar(documentSnapshot.getString(AccountTable.AVARTAR));
+                        listener.OnLoadingListener(true,account);
+                    }).addOnFailureListener(e -> {e.printStackTrace();});
         }
         else{
             listener.OnLoadingListener(false,null);
@@ -124,12 +122,9 @@ public class AccountModel implements IAccountContract.Model {
                                 account.setPublishPosts(new ArrayList<>());
                                 account.setRatingOrders(new ArrayList<>());
                                 account.setSavedPosts(new ArrayList<>());
+                                account.setBuyOrders(new ArrayList<>());
+                                account.setSellOrders(new ArrayList<>());
                                 account.setRating(0d);
-                                Map<String, Object> user = new HashMap<>();
-                                user.put(AccountTable.EMAIL, account.getEmail());
-                                user.put(AccountTable.PASSWORD, account.getPassword());
-                                user.put(AccountTable.ACCOUNT_NAME, account.getAccountName());
-                                user.put(AccountTable.PUBLISH_POSTS,new ArrayList<String>());
                                 db.collection(AccountTable.TABLE_NAME).document(task.getResult().getUser().getUid()).set(account);
                                 listener.OnCreateAccountResult(SIGNUP_SUCCESS,"Tạo tài khoản thành công");
                             }
@@ -205,5 +200,101 @@ public class AccountModel implements IAccountContract.Model {
             }
         });
     }
+
+    @Override
+    public void LoadAccountSetting(OnFinishLoadingProfileListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+            if(!task.isSuccessful())
+            {
+                listener.OnFinishLoadingProfile(null,task.getException());
+            }
+            else
+            {
+                Account account = task.getResult().toObject(Account.class);
+                listener.OnFinishLoadingProfile(account,null);
+            }
+        });
+    }
+
+    @Override
+    public void UpdateAccountInformation(Account account, OnFinishUpdateAccountInformationListener listener) {
+        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.ACCOUNT_NAME,account.getAccountName()
+                , AccountTable.ADDRESS, account.getAddress()
+                , AccountTable.PHONE_NUMBER, account.getPhoneNumber()
+                , AccountTable.DESCRIPTION, account.getDescription()).addOnCompleteListener(task -> {
+                    if(!task.isSuccessful())
+                        listener.OnFinishUpdateAccountInformation(task.getException());
+                    else
+                        listener.OnFinishUpdateAccountInformation(null);
+        });
+
+    }
+
+    @Override
+    public void UpdateAccountPassword(String oldPassword, String newPassword, OnFinishUpdateAccountPasswordListener listener) {
+        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            if(!documentSnapshot.getString(AccountTable.PASSWORD).equals(oldPassword))
+                listener.OnFinishUpdateAccountPassword(false, null);
+            else
+                firebaseUser.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.PASSWORD,newPassword);
+                        listener.OnFinishUpdateAccountPassword(true, null);
+                    }
+                }).addOnFailureListener(Throwable::printStackTrace);
+        }).addOnFailureListener(Throwable::printStackTrace);
+    }
+
+
     //endregion
+    @Override
+    public void UploadAvatar(Account account, Uri uri, OnFinishUpdateAvatarListener listener) {
+        String extension = "jpg";
+        StorageReference imageRef = firebaseStorage.getReference().child(LaptopTable.TABLE_NAME).child( firebaseUser.getUid() + "." + extension);
+        imageRef.putFile(uri).addOnCompleteListener(task -> {
+            if(!task.isSuccessful())
+                listener.OnFinishUpdateAvatar(task.getException());
+            else
+            {
+                imageRef.getDownloadUrl().addOnCompleteListener(task1 -> {
+                    if(!task1.isSuccessful())
+                        listener.OnFinishUpdateAvatar(task1.getException());
+                    else
+                    {
+                        Uri imageLink = task1.getResult();
+                        db.collection(AccountTable.TABLE_NAME).document(firebaseUser.getUid()).update(AccountTable.AVARTAR, imageLink.toString()).addOnFailureListener(listener::OnFinishUpdateAvatar)
+                                .addOnSuccessListener(unused -> {
+                            listener.OnFinishUpdateAvatar(null);
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void GetCurrentAccountInformation(OnGetCurrentAccountInfoListener listener) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null){
+            String userID = firebaseUser.getUid();
+            db.collection(AccountTable.TABLE_NAME).document(userID).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()){
+                        CurrentBuyer currentBuyer = new CurrentBuyer();
+                        currentBuyer.setAccountID(firebaseUser.getUid());
+                        currentBuyer.setAccountName(documentSnapshot.getString(AccountTable.ACCOUNT_NAME));
+                        currentBuyer.setPhoneNumber(documentSnapshot.getString(AccountTable.PHONE_NUMBER));
+                        currentBuyer.setAddress(documentSnapshot.getString(AccountTable.ADDRESS));
+                        listener.OnFinishGetCurrentAccountInfo(true, currentBuyer, null);
+                    }
+                } else {
+                    listener.OnFinishGetCurrentAccountInfo(false, null, task.getException());
+                }
+            });
+        }
+    }
+
 }
