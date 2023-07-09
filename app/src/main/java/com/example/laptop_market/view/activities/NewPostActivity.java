@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
@@ -35,6 +36,9 @@ import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.NewPostActivityPresenter;
+import com.example.laptop_market.utils.elses.PreferenceManager;
+import com.example.laptop_market.utils.tables.Constants;
+import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.adapters.ImageForNewPostAdapter;
 import com.google.android.material.button.MaterialButton;
 
@@ -76,6 +80,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private Laptop laptop;
 
     private  ImageForNewPostAdapter imageForNewPostAdapter;
+    private PreferenceManager preferenceManager;
+    private SearchFilterPost searchFilterPost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +149,20 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     }
     private void setListener()
     {
+        newPostStatus.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","Tình trạng +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
         btnNewPostClose.setOnClickListener(view -> {
             Intent intent = new Intent();
             intent.putExtra("applySlideTransition", false);
@@ -270,7 +290,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         post.setPostMainImage(encode_img(ListPictures.get(0)));
         postActivityPresenter.OnCreateNewPostClicked(post,laptop);
     }
-
     @Override
     public void CreateLaptopFailure(Exception error) {
         error.printStackTrace();

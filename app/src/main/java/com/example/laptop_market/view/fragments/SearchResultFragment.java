@@ -237,6 +237,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             filterAdapter.updateFilterName(1,"Giá từ: ... +");
             filterAdapter.updateFiltered(1,true);
         }
+        else{
+            filterAdapter.updateFilterName(1,listFilter.get(1).getTag());
+            filterAdapter.updateFiltered(1,false);
+        }
         if (searchFilterPost.getListGuarantee().size() > 0) {
             String guarantee = "";
             textViewHint += " và có tình trạng sử dụng là: ";
@@ -254,6 +258,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
             filterAdapter.updateFilterName(2, guarantee);
             filterAdapter.updateFiltered(2,true);
+        }
+        else{
+            filterAdapter.updateFilterName(2,listFilter.get(2).getTag());
+            filterAdapter.updateFiltered(2,false);
         }
         if (searchFilterPost.getListCPU().size() > 0) {
             String cpu = "";
@@ -274,6 +282,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             filterAdapter.updateFilterName(3, cpu);
             filterAdapter.updateFiltered(3,true);
         }
+        else{
+            filterAdapter.updateFilterName(3,listFilter.get(3).getTag());
+            filterAdapter.updateFiltered(3,false);
+        }
         if (searchFilterPost.getListRam().size() > 0) {
             String ram = "";
             textViewHint += " và có Ram là: ";
@@ -291,6 +303,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             }
             filterAdapter.updateFilterName(4, ram);
             filterAdapter.updateFiltered(4,true);
+        }
+        else{
+            filterAdapter.updateFilterName(4,listFilter.get(4).getTag());
+            filterAdapter.updateFiltered(4,false);
         }
         if (searchFilterPost.getListHardDrive().size() > 0) {
             String hardDrive = "";
@@ -312,6 +328,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             filterAdapter.updateFilterName(5, hardDrive);
             filterAdapter.updateFiltered(5,true);
         }
+        else{
+            filterAdapter.updateFilterName(5,listFilter.get(5).getTag());
+            filterAdapter.updateFiltered(5,false);
+        }
         if (searchFilterPost.getListHardDriveSize().size() > 0) {
             String hardDriveSize = "";
             textViewHint += " và có dung lượng ổ cứng là: ";
@@ -330,6 +350,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
             filterAdapter.updateFilterName(6, hardDriveSize);
             filterAdapter.updateFiltered(6,true);
+        }
+        else{
+            filterAdapter.updateFilterName(6,listFilter.get(6).getTag());
+            filterAdapter.updateFiltered(6,false);
         }
         if (searchFilterPost.getListGraphics().size() > 0) {
             String graphics = "";
@@ -350,6 +374,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             filterAdapter.updateFilterName(7, graphics);
             filterAdapter.updateFiltered(7,true);
         }
+        else{
+            filterAdapter.updateFilterName(7,listFilter.get(7).getTag());
+            filterAdapter.updateFiltered(7,false);
+        }
         if (searchFilterPost.getListScreenSize().size() > 0) {
             String screenSize = "";
             textViewHint += " và có màn hình là: ";
@@ -368,6 +396,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
             filterAdapter.updateFilterName(8, screenSize);
             filterAdapter.updateFiltered(8,true);
+        }
+        else{
+            filterAdapter.updateFilterName(8,listFilter.get(8).getTag());
+            filterAdapter.updateFiltered(8,false);
         }
         if(textViewHint.length()>25)
             textViewHint = textViewHint.substring(0,22) + "...";
