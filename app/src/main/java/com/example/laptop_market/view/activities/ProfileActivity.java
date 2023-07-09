@@ -142,14 +142,19 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
                     .apply(RequestOptions.circleCropTransform())
                     .into(imgProfileAvatar);
         }
-        AddressTextView.setText(account.getAddress());
-        PhonenumberTextView.setText(account.getPhoneNumber());
-        String description = account.getDescription();
-        if (description.length() > 35) {
-            description = description.substring(0, 35) + "...";
+        if(account.getAddress()!=null)
+            AddressTextView.setText(account.getAddress());
+        if(account.getPhoneNumber()!=null)
+            PhonenumberTextView.setText(account.getPhoneNumber());
+        if(account.getDescription()!=null) {
+            String description = account.getDescription();
+            if (description.length() > 35) {
+                description = description.substring(0, 35) + "...";
+            }
+            descriptionTextView.setText(description);
         }
-        descriptionTextView.setText(description);
         accountNameTextView.setText(account.getAccountName());
+
     }
 
     @Override

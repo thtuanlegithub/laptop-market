@@ -36,6 +36,8 @@ public class FilterActivity extends AppCompatActivity {
     private TextView minimumPriceTextView;
     private TextView maximumPriceTextView;
     private TextView txtFilterClose;
+    private FilterCheckBoxAdapter filterBrandAdapter, filterGuaranteeAdapter, filterCPUAdapter, filterRAMAdapter
+            , filterHardDiskTypeAdapter, filterHardDiskSizeAdapter, filterGraphicTypeAdapter, filterScreenSizeAdapter;
     private final int stepSize = 1000000;
     public FilterActivity()
     {
@@ -147,11 +149,7 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
 
-        txtFilterClose.setOnClickListener(v -> {
 
-
-            finish();
-        });
     }
 
     private void displayDetailFilterList(){
@@ -166,9 +164,14 @@ public class FilterActivity extends AppCompatActivity {
                 rcvFilterCheckbox.setVisibility(View.VISIBLE);
                 //display CheckBox
                 GridLayoutManager gridBrandLayoutManager = new GridLayoutManager(this,1);
+
                 rcvFilterCheckbox.setLayoutManager(gridBrandLayoutManager);
-                FilterCheckBoxAdapter filterBrandAdapter = new FilterCheckBoxAdapter(getListBrandFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.BRAND_NAME);
+                filterBrandAdapter = new FilterCheckBoxAdapter(getListBrandFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.BRAND_NAME);
                 rcvFilterCheckbox.setAdapter(filterBrandAdapter);
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListBrandName().clear();
+                    filterBrandAdapter.notifyDataSetChanged();
+                });
                 break;
             case "Tình trạng +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -176,9 +179,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridStatusLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridStatusLayoutManager);
-                FilterCheckBoxAdapter filterGuaranteeAdapter = new FilterCheckBoxAdapter(getListGuaranteeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.GUARANTEE);
+                filterGuaranteeAdapter = new FilterCheckBoxAdapter(getListGuaranteeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.GUARANTEE);
                 rcvFilterCheckbox.setAdapter(filterGuaranteeAdapter);
-
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListGuarantee().clear();
+                    filterGuaranteeAdapter.notifyDataSetChanged();
+                });
                 break;
             case "Bộ xử lý +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -186,9 +192,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridCPULayoutManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridCPULayoutManager);
-                FilterCheckBoxAdapter filterCPUAdapter = new FilterCheckBoxAdapter(getListCPUFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.CPU);
+                filterCPUAdapter = new FilterCheckBoxAdapter(getListCPUFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.CPU);
                 rcvFilterCheckbox.setAdapter(filterCPUAdapter);
-
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListCPU().clear();
+                    filterCPUAdapter.notifyDataSetChanged();
+                });
                 break;
             case "RAM +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -196,9 +205,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridRAMLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridRAMLayoutManager);
-                FilterCheckBoxAdapter filterRAMAdapter = new FilterCheckBoxAdapter(getListRAMFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.RAM);
+                filterRAMAdapter = new FilterCheckBoxAdapter(getListRAMFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.RAM);
                 rcvFilterCheckbox.setAdapter(filterRAMAdapter);
-
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListRam().clear();
+                    filterRAMAdapter.notifyDataSetChanged();
+                });
                 break;
             case "Loại ổ cứng +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -206,9 +218,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridHardDiskTypeLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridHardDiskTypeLayoutManager);
-                FilterCheckBoxAdapter filterHardDiskTypeAdapter = new FilterCheckBoxAdapter(getListHardDiskTypeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.HARD_DRIVE);
+                filterHardDiskTypeAdapter = new FilterCheckBoxAdapter(getListHardDiskTypeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.HARD_DRIVE);
                 rcvFilterCheckbox.setAdapter(filterHardDiskTypeAdapter);
-
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListHardDrive().clear();
+                    filterHardDiskTypeAdapter.notifyDataSetChanged();
+                });
                 break;
             case "Kích thước ổ cứng +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -216,8 +231,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridHardDiskSizeLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridHardDiskSizeLayoutManager);
-                FilterCheckBoxAdapter filterHardDiskSizeAdapter = new FilterCheckBoxAdapter(getListHardDiskSizeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.HARD_DRIVE_SIZE);
+                filterHardDiskSizeAdapter = new FilterCheckBoxAdapter(getListHardDiskSizeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.HARD_DRIVE_SIZE);
                 rcvFilterCheckbox.setAdapter(filterHardDiskSizeAdapter);
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListHardDriveSize().clear();
+                    filterHardDiskSizeAdapter.notifyDataSetChanged();
+                });
                 break;
             case "Card màn hình +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -225,8 +244,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridGraphicTypeManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridGraphicTypeManager);
-                FilterCheckBoxAdapter filterGraphicTypeAdapter = new FilterCheckBoxAdapter(getListGraphicTypeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.GRAPHICS);
+                filterGraphicTypeAdapter = new FilterCheckBoxAdapter(getListGraphicTypeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.GRAPHICS);
                 rcvFilterCheckbox.setAdapter(filterGraphicTypeAdapter);
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListGraphics().clear();
+                    filterGraphicTypeAdapter.notifyDataSetChanged();
+                });
                 break;
             case "Kích cỡ màn hình +":
                 layoutSeekBar.setVisibility(View.GONE);
@@ -234,8 +257,12 @@ public class FilterActivity extends AppCompatActivity {
                 //display CheckBox
                 GridLayoutManager gridGraphicSizeManager = new GridLayoutManager(this,1);
                 rcvFilterCheckbox.setLayoutManager(gridGraphicSizeManager);
-                FilterCheckBoxAdapter filterScreenSizeAdapter = new FilterCheckBoxAdapter(getListScreenSizeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.SCREEN_SIZE);
+                filterScreenSizeAdapter = new FilterCheckBoxAdapter(getListScreenSizeFilterCheckBox(),searchFilterPost,FilterCheckBoxAdapter.SCREEN_SIZE);
                 rcvFilterCheckbox.setAdapter(filterScreenSizeAdapter);
+                txtFilterClose.setOnClickListener(v -> {
+                    searchFilterPost.getListScreenSize().clear();
+                    filterScreenSizeAdapter.notifyDataSetChanged();
+                });
                 break;
         }
     }
