@@ -35,25 +35,11 @@ public class ConversationDetailActivityPresenter implements IConversationContrac
             else
                 view.LoadAccountMessageInConvesationUI(account);
         });
-        chatMessageModel.listenMessageChange(conversation.getConversationId(),(chatMessage, isLastChatMessage, ex) -> {
+        chatMessageModel.listenMessageChange(conversation.getConversationId(),(chatMessage, isAddMessage, isLastChatMessage, ex) -> {
             if(ex!=null)
                 view.failedLoading(ex);
             else {
-                view.LoadChatMessageInConversationUI(chatMessage, isLastChatMessage);
-                if(chatMessage.getType()==ChatMessage.IMAGE_TYPE) {
-                    DownloadImageFunction downloadImageFunction = new DownloadImageFunction();
-                    downloadImageFunction.DownloadImage(chatMessage, new DownloadImageFunction.FinishDownloadImageListener() {
-                                @Override
-                                public void FinishDownloadImage(ChatMessage chatMessage, Exception ex) {
-                                    if (ex != null)
-                                        view.failedLoading(ex);
-                                    else {
-                                        view.LoadImageInToConversationUI(chatMessage);
-                                    }
-                                }
-                            }
-                    );
-                }
+                view.LoadChatMessageInConversationUI(chatMessage, isAddMessage, isLastChatMessage);
             }
         });
     }
@@ -64,34 +50,21 @@ public class ConversationDetailActivityPresenter implements IConversationContrac
             if(e!=null)
                 view.failedLoading(e);
             else {
+                view.SendMessageSuccess(conversation);
                 if(conversation!=null) {
-                    view.SendMessageSuccess(conversation);
                     chatMessageModel.listenMessageChange(conversation.getConversationId(), new IChatMessageContract.Model.OnListeningMessageChangeListener() {
                         @Override
-                        public void OnListeningMessageChange(ChatMessage chatMessage, boolean isLastChatMessage, Exception ex) {
+                        public void OnListeningMessageChange(ChatMessage chatMessage,boolean isAddNewMessage, boolean isLastChatMessage, Exception ex) {
                             if (ex != null)
                                 view.failedLoading(ex);
                             else {
-                                view.LoadChatMessageInConversationUI(chatMessage, isLastChatMessage);
-                                if (chatMessage != null) {
-                                    if (chatMessage.getType() == ChatMessage.IMAGE_TYPE)
-                                        chatMessageModel.LoadImage(chatMessage, new IChatMessageContract.Model.OnFinishDownloadImageListener() {
-                                            @Override
-                                            public void OnFinishDownloadImage(ChatMessage chatMessage, Exception ex) {
-                                                if (ex != null)
-                                                    view.failedLoading(ex);
-                                                else {
-                                                    view.LoadImageInToConversationUI(chatMessage);
-                                                }
-                                            }
-                                        });
-                                }
+                                view.LoadChatMessageInConversationUI(chatMessage, isAddNewMessage, isLastChatMessage);
                             }
                         }
                     });
                 }
                 else{
-                    view.LoadChatMessageInConversationUI(null, true);
+                    view.LoadChatMessageInConversationUI(null, true,true);
 
                 }
             }
@@ -100,8 +73,6 @@ public class ConversationDetailActivityPresenter implements IConversationContrac
 
     @Override
     public void ClickSendMessage(ChatMessage chatMessage) {
-        if(chatMessage.getType() == ChatMessage.IMAGE_TYPE)
-            chatMessageModel = new ChatMessageModel(context);
         chatMessageModel.addChatMessage(chatMessage, new IChatMessageContract.Model.OnFinishAddChatMessageListener() {
             @Override
             public void OnFinishAddChatMessage(Conversation conversation, Exception ex) {

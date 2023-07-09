@@ -54,7 +54,7 @@ public interface IConversationContract {
             // XỬ lí khi lỗi
             void failedLoading(Exception ex);
             // Load toàn bộ cuộc trò chuyện của người dùng
-            void LoadChatMessageInConversationUI(ChatMessage chatMessage, boolean isLastAddedChatMessage);
+            void LoadChatMessageInConversationUI(ChatMessage chatMessage, boolean isAddMessage, boolean isLastAddedChatMessage);
             void LoadAccountMessageInConvesationUI(Account account);
             void SendMessageSuccess(Conversation conversation);
             void LoadImageInToConversationUI(ChatMessage chatMessage);

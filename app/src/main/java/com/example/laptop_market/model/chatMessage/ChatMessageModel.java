@@ -15,6 +15,7 @@ import com.example.laptop_market.model.conversation.Conversation;
 import com.example.laptop_market.utils.tables.ChatMessageTable;
 import com.example.laptop_market.utils.tables.ConversationTable;
 import com.example.laptop_market.utils.tables.LaptopTable;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -138,20 +139,21 @@ public class ChatMessageModel implements IChatMessageContract.Model {
                         String ChatMessageId = documentReference.getId();
                         List<Task<byte[]>> uploadTasks = new ArrayList<>();
                         successCount = 0;
-                        for (uploadImage = 0; uploadImage<listUploadImage.size(); uploadImage ++) {
-                            String extension = "jpg";
-
-                            StorageReference imageRef = firebaseStorage.getReference().child(ChatMessageTable.TABLE_NAME).child(ChatMessageId + "/Image" + Integer.toString(uploadImage) + "." + extension);
-                            UploadTask uploadTask = imageRef.putBytes(listUploadImage.get(uploadImage));
-                            Task<Uri> task = uploadTask.continueWithTask(singleTaskUpload -> {
-                                successCount++;
-                                if (!singleTaskUpload.isSuccessful()) {
-                                    Exception e = singleTaskUpload.getException();
-                                    listener.OnFinishAddChatMessage(null,e);
-                                }
-                                return imageRef.getDownloadUrl();
-                            });
-                        }
+                        String extension = "jpg";
+                        StorageReference imageRef = firebaseStorage.getReference().child(ChatMessageTable.TABLE_NAME).child(ChatMessageId + "/Image" + Integer.toString(uploadImage) + "." + extension);
+                        imageRef.putBytes(listUploadImage.get(0)).addOnCompleteListener(task -> {
+                            if(!task.isSuccessful())
+                                task.getException().printStackTrace();
+                            else
+                            {
+                                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        db.collection(ChatMessageTable.TABLE_NAME).document(ChatMessageId).update(ChatMessageTable.IMAGE,uri.toString());
+                                    }
+                                });
+                            }
+                        });
                     }
                     else{
                         listener.OnFinishAddChatMessage(conversation,null);
@@ -163,24 +165,24 @@ public class ChatMessageModel implements IChatMessageContract.Model {
     public void listenMessageChange(String idConversation, OnListeningMessageChangeListener listener) {
         db.collection(ChatMessageTable.TABLE_NAME).whereEqualTo(ChatMessageTable.CONVERSATION_ID,idConversation).addSnapshotListener((value, error) -> {
             if(error!=null)
-                listener.OnListeningMessageChange(null,false,error);
+                listener.OnListeningMessageChange(null,true,false,error);
             else
             {
                 if(value.isEmpty())
                 {
-                    listener.OnListeningMessageChange(null,true,null);
+                    listener.OnListeningMessageChange(null,true,true,null);
                 }
                 else {
-                    assert value != null;
                     int totalChatMessage = value.getDocumentChanges().size();
                     for (int i = 0; i < value.getDocumentChanges().size(); i++) {
                         DocumentChange dc = value.getDocumentChanges().get(i);
+                        ChatMessage chatMessage = dc.getDocument().toObject(ChatMessage.class);
+                        chatMessage.setIdMessage(dc.getDocument().getId());
                         if (dc.getType() == DocumentChange.Type.ADDED) {
-                            ChatMessage chatMessage = dc.getDocument().toObject(ChatMessage.class);
-                            chatMessage.setIdMessage(dc.getDocument().getId());
-                            if (chatMessage.getType() == ChatMessage.IMAGE_TYPE)
-                                chatMessage.setDownloadedImage(new ArrayList<>());
-                            listener.OnListeningMessageChange(chatMessage, i + 1 == totalChatMessage, null);
+                            listener.OnListeningMessageChange(chatMessage,true, i + 1 == totalChatMessage, null);
+                        }
+                        else if(dc.getType() == DocumentChange.Type.MODIFIED){
+                            listener.OnListeningMessageChange(chatMessage,false, i + 1 == totalChatMessage, null);
                         }
                     }
                 }

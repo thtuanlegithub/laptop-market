@@ -23,7 +23,7 @@ public interface IChatMessageContract {
         //region kiểm tra sự thay đổi trong danh sách tin nhắn
         void listenMessageChange(String idConversation, OnListeningMessageChangeListener listener);
         interface OnListeningMessageChangeListener{
-            void OnListeningMessageChange(ChatMessage chatMessage, boolean isLastChatMessage, Exception ex);
+            void OnListeningMessageChange(ChatMessage chatMessage,boolean isAddMessage, boolean isLastChatMessage, Exception ex);
         }
         //endregion
     }

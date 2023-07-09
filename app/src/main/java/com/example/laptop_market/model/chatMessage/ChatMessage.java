@@ -31,8 +31,7 @@ public class ChatMessage implements Cloneable{
     private int numberOfPicture;
     @Exclude
     private List<byte[]> listUploadImage;
-    @Exclude
-    private ArrayList<Bitmap> downloadedImage;
+    private String image;
     public ChatMessage()
     {}
     public ChatMessage(int type) {
@@ -79,10 +78,6 @@ public class ChatMessage implements Cloneable{
         this.conversationId = conversationId;
     }
 
-    public void setDownloadedImage(ArrayList<Bitmap> downloadedImage) {
-        this.downloadedImage = downloadedImage;
-    }
-
     public int getType() {
         return type;
     }
@@ -98,11 +93,6 @@ public class ChatMessage implements Cloneable{
     public void setNumberOfPicture(int numberOfPicture) {
         this.numberOfPicture = numberOfPicture;
     }
-
-    public ArrayList<Bitmap> getDownloadedImage() {
-        return downloadedImage;
-    }
-
     public List<byte[]> getListUploadImage() {
         return listUploadImage;
     }
@@ -119,21 +109,11 @@ public class ChatMessage implements Cloneable{
         this.idMessage = idMessage;
     }
 
-    @Override
-    public ChatMessage clone() {
-        try {
-            ChatMessage clone = (ChatMessage) super.clone();
-            // Sao chép các thuộc tính tham chiếu
-            if (this.downloadedImage != null) {
-                clone.downloadedImage = new ArrayList<>(this.downloadedImage.size());
-                for (Bitmap bitmap : this.downloadedImage) {
-                    clone.downloadedImage.add(bitmap.copy(bitmap.getConfig(), bitmap.isMutable()));
-                }
-            }
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

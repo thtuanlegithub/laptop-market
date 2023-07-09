@@ -67,6 +67,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
     private Account receiverAccount;
     private ProgressBar progressBar;
     private int count = 0;
+    private ArrayList<Boolean> isNotHaveConversation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,9 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
         listChatMessages = new ArrayList<>();
         listImages = new ArrayList<>();
         listBitmapImages = new ArrayList<>();
+        isNotHaveConversation = new ArrayList<>();
+        isNotHaveConversation.add(false);
+        isNotHaveConversation.add(false);
         GridLayoutManager gridLayoutManagerImageForNewPost = new GridLayoutManager(this,1, RecyclerView.HORIZONTAL,false);
         rcvImageForConversationDetail.setLayoutManager(gridLayoutManagerImageForNewPost);
         imageForConversationDetailAdapter =  new ImageForNewPostAdapter(listBitmapImages, getApplicationContext(), position -> {
@@ -182,7 +186,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
                     chatMessage.setConversationId(conversation.getConversationId());
                 else
                     chatMessage.setConversationId("");
-                chatMessage.setMessage(receiverAccount.getAccountName() + " đã gửi " + listImages.size() + " ảnh");
+                chatMessage.setMessage("Đã gửi " + listImages.size() + " ảnh");
                 chatMessage.setType(ChatMessage.IMAGE_TYPE);
                 chatMessage.setListUploadImage(listImages);
                 chatMessage.setNumberOfPicture(listImages.size());
@@ -199,6 +203,11 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
         if (requestCode == PICK_IMAGE_REQUEST && (resultCode == RESULT_OK || resultCode == RESULT_FIRST_USER)) {
             if (data.getData() != null) {
                 // Xử lý một ảnh duy nhất
+                if(listImages.size()==1)
+                {
+                    Toast.makeText(getApplicationContext(),"Hiện giờ chỉ hỗ trợ 1 ảnh", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 rcvImageForConversationLayout.setVisibility(View.VISIBLE);
                 Uri uri = data.getData();
                 listImages.add(ConvertUriToByte(uri));
@@ -211,9 +220,9 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
                 if (clipData != null) {
                     rcvImageForConversationLayout.setVisibility(View.VISIBLE);
                     for (int i = 0; i < clipData.getItemCount(); i++) {
-                        if(listImages.size()==6)
+                        if(listImages.size()==1)
                         {
-                            Toast.makeText(getApplicationContext(),"Chỉ nhận tối đa 5 ảnh", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Hiện giờ chỉ hỗ trợ 1 ảnh", Toast.LENGTH_SHORT).show();
                             break;
                         }
                         Uri uri = clipData.getItemAt(i).getUri();
@@ -232,17 +241,33 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
     }
 
     @Override
-    public void LoadChatMessageInConversationUI(ChatMessage chatMessage, boolean isLastAddedChatMessage) {
-        if(chatMessage!=null)
-            listChatMessages.add(chatMessage);
-        if(isLastAddedChatMessage) {
+    public void LoadChatMessageInConversationUI(ChatMessage chatMessage, boolean isAddNewMessage, boolean isLastAddedChatMessage) {
+        if(chatMessage!=null )
+        {
+            if(isAddNewMessage) {
+                listChatMessages.add(chatMessage);
+            }
+            else
+            {
+                for(int i=0 ; i < listChatMessages.size();i++)
+                {
+                    if(listChatMessages.get(i).getIdMessage().equals(chatMessage.getIdMessage()))
+                    {
+                        listChatMessages.get(i).setImage(chatMessage.getImage());
+                        chatMessageAdapter.notifyItemChanged(i);
+                    }
+                }
+            }
+        }
+        if (isLastAddedChatMessage) {
             progressBar.setVisibility(View.GONE);
             conversationRecyclerView.setVisibility(View.VISIBLE);
         }
         Collections.sort(listChatMessages, Comparator.comparing(ChatMessage::getTimeSendMesssage));
-            chatMessageAdapter.notifyItemRangeInserted(listChatMessages.size(),listChatMessages.size());
-            conversationRecyclerView.scrollToPosition(listChatMessages.size()-1);
-            conversationRecyclerView.setVisibility(View.VISIBLE);
+        chatMessageAdapter.notifyItemRangeInserted(listChatMessages.size(), listChatMessages.size());
+        conversationRecyclerView.scrollToPosition(listChatMessages.size() - 1);
+        conversationRecyclerView.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -255,8 +280,14 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
 
     @Override
     public void SendMessageSuccess(Conversation conversation) {
-        if(this.conversation == null)
+        if(this.conversation == null) {
             this.conversation = conversation;
+            if(isNotHaveConversation.get(0) && isNotHaveConversation.get(1))
+                presenter.LoadAllChatMessageInConversationFromPostDetail(receiverAccount);
+        }
+        if(conversation==null && count < 2) {
+            isNotHaveConversation.set(count++,true);
+        }
         listImages.clear();
         rcvImageForConversationLayout.setVisibility(View.GONE);
     }
@@ -266,7 +297,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
         for(int i = 0 ;i< listChatMessages.size();i++)
         {
             if(listChatMessages.get(i).getIdMessage() == chatMessage.getIdMessage()) {
-                listChatMessages.get(i).setDownloadedImage(chatMessage.getDownloadedImage());
+                /*listChatMessages.get(i).setDownloadedImage(chatMessage.getDownloadedImage());*/
                 //Collections.sort(listChatMessages, Comparator.comparing(ChatMessage::getTimeSendMesssage));
                 chatMessageAdapter.notifyItemChanged(i);
                 //conversationRecyclerView.setAdapter(chatMessageAdapter);
