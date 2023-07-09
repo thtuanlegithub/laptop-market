@@ -20,6 +20,7 @@ import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.example.laptop_market.view.adapters.Sell.SellOrder;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,6 +153,7 @@ public class PostModel implements IPostContract.Model {
                             if (task.isSuccessful()) {
                                 List<Object> documentSnapshots = task.getResult();
                                 ArrayList<PostSearchResult> listPost = new ArrayList<>();
+                                ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>();
                                 for (Object obj : documentSnapshots) {
                                     DocumentSnapshot documentSnapshot = (DocumentSnapshot)obj;
                                     PostSearchResult post = new PostSearchResult();
@@ -161,9 +163,28 @@ public class PostModel implements IPostContract.Model {
                                     post.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
                                     post.setAccountId(documentSnapshot.getString(PostTable.ACCOUNT_ID));
                                     post.setImage(getBitMapFromString(documentSnapshot.getString((PostTable.POST_MAIN_IMAGE))));
+                                    String laptopID = documentSnapshot.getString(PostTable.LAPTOP_ID);
+                                    Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                                    .document(laptopID)
+                                                    .get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    if (documentSnapshot.exists()){
+                                                        post.setPrice(documentSnapshot.getDouble(LaptopTable.PRICE));
+                                                    }
+                                                }
+                                            });
+                                    loadProductTasks.add(getProductTask);
                                     listPost.add(post);
                                 }
-                                listener.OnFinishLoadingSearchPostListener(listPost,null);
+                                Tasks.whenAllComplete(loadProductTasks)
+                                                .addOnSuccessListener(results -> {
+                                                    listener.OnFinishLoadingSearchPostListener(listPost,null);
+                                                })
+                                        .addOnFailureListener(exception -> {
+                                            listener.OnFinishLoadingSearchPostListener(null, null);
+                                        });
                             } else {
                                 Exception error = task.getException();
                                 listener.OnFinishLoadingSearchPostListener(null, error);
@@ -293,6 +314,7 @@ public class PostModel implements IPostContract.Model {
                             if (task.isSuccessful()) {
                                 List<Object> documentSnapshots = task.getResult();
                                 ArrayList<PostSearchResult> listPost = new ArrayList<>();
+                                ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>();
                                 for (Object obj : documentSnapshots) {
                                     DocumentSnapshot documentSnapshot = (DocumentSnapshot)obj;
                                     PostSearchResult post = new PostSearchResult();
@@ -302,9 +324,28 @@ public class PostModel implements IPostContract.Model {
                                     post.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
                                     post.setAccountId(documentSnapshot.getString(PostTable.ACCOUNT_ID));
                                     post.setImage(getBitMapFromString(documentSnapshot.getString((PostTable.POST_MAIN_IMAGE))));
+                                    String laptopID = documentSnapshot.getString(PostTable.LAPTOP_ID);
+                                    Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                            .document(laptopID)
+                                            .get()
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    if (documentSnapshot.exists()){
+                                                        post.setPrice(documentSnapshot.getDouble(LaptopTable.PRICE));
+                                                    }
+                                                }
+                                            });
+                                    loadProductTasks.add(getProductTask);
                                     listPost.add(post);
                                 }
-                                listener.OnFinishLoadingSearchPostListener(listPost,null);
+                                Tasks.whenAllComplete(loadProductTasks)
+                                        .addOnSuccessListener(results -> {
+                                            listener.OnFinishLoadingSearchPostListener(listPost,null);
+                                        })
+                                        .addOnFailureListener(exception -> {
+                                            listener.OnFinishLoadingSearchPostListener(null, null);
+                                        });
                             } else {
                                 Exception error = task.getException();
                                 listener.OnFinishLoadingSearchPostListener(null, error);
@@ -389,17 +430,35 @@ public class PostModel implements IPostContract.Model {
 
                                 query.get().addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
+                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
                                         ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
                                         for (QueryDocumentSnapshot postDoc : task1.getResult()) {
                                             PostSearchResult postSearchResult = new PostSearchResult ();
                                             postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
-                                            postSearchResult.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
+                                            postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
                                             postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
-                                            postSearchResult.setTitle(documentSnapshot.getString(PostTable.TITLE));
+                                            postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
                                             postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
                                             postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                            String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                            Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                                    .document(laptopID)
+                                                    .get()
+                                                    .addOnSuccessListener(productSnapshot -> {
+                                                        if (productSnapshot.exists()) {
+                                                            postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                        }
+                                                    });
+                                            loadProductTasks.add(getProductTask);
                                             postSearchResults.add(postSearchResult);
                                         }
+                                        Tasks.whenAllSuccess(loadProductTasks)
+                                            .addOnSuccessListener(results -> {
+                                                listener.OnFinishLoadPostActive(true, postSearchResults, null);
+                                        })
+                                            .addOnFailureListener(exception -> {
+                                               listener.OnFinishLoadPostActive(false, null, null);
+                                            });
                                         listener.OnFinishLoadPostActive(true, postSearchResults, null);
                                     } else {
                                         listener.OnFinishLoadPostActive(false, null, task1.getException());
@@ -439,17 +498,35 @@ public class PostModel implements IPostContract.Model {
 
                                 query.get().addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
+                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
                                         ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
                                         for (QueryDocumentSnapshot postDoc : task1.getResult()) {
-                                            PostSearchResult postSearchResult = new PostSearchResult ();
+                                            PostSearchResult postSearchResult = new PostSearchResult();
                                             postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
-                                            postSearchResult.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
+                                            postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
                                             postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
-                                            postSearchResult.setTitle(documentSnapshot.getString(PostTable.TITLE));
+                                            postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
                                             postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
                                             postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                            String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                            Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                                    .document(laptopID)
+                                                    .get()
+                                                    .addOnSuccessListener(productSnapshot -> {
+                                                        if (productSnapshot.exists()) {
+                                                            postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                        }
+                                                    });
+                                            loadProductTasks.add(getProductTask);
                                             postSearchResults.add(postSearchResult);
                                         }
+                                        Tasks.whenAllSuccess(loadProductTasks)
+                                                .addOnSuccessListener(results -> {
+                                                    listener.OnFinishLoadPostInactive(true, postSearchResults, null);
+                                                })
+                                                .addOnFailureListener(exception -> {
+                                                    listener.OnFinishLoadPostInactive(false, null, null);
+                                                });
                                         listener.OnFinishLoadPostInactive(true, postSearchResults, null);
                                     } else {
                                         listener.OnFinishLoadPostInactive(false, null, task1.getException());
