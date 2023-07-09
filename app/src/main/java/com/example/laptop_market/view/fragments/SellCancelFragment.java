@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IOrderContract;
@@ -24,6 +25,7 @@ import java.util.List;
 public class SellCancelFragment extends Fragment implements IOrderContract.View.SellCancelFragmentView{
     private RecyclerView rcvSellCancel;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
+    private ProgressBar progressBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class SellCancelFragment extends Fragment implements IOrderContract.View.
         View view = inflater.inflate(R.layout.fragment_sell_cancel, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
+        progressBar = view.findViewById(R.id.progressBarSellCancel);
         rcvSellCancel = view.findViewById(R.id.rcvSellCancel);
         GridLayoutManager gridLayoutManagerSellCancel = new GridLayoutManager(requireContext(),1);
         rcvSellCancel.setLayoutManager(gridLayoutManagerSellCancel);
@@ -46,7 +49,10 @@ public class SellCancelFragment extends Fragment implements IOrderContract.View.
 
     @Override
     public void DisplaySellFinishedOrder(ArrayList<SellOrder> orders) {
+        if (orders == null)
+            orders = new ArrayList<>();
         SellCancelAdapter sellCancelAdapter = new SellCancelAdapter(orders);
         rcvSellCancel.setAdapter(sellCancelAdapter);
+        progressBar.setVisibility(View.GONE);
     }
 }

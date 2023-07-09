@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IOrderContract;
@@ -23,7 +24,9 @@ import java.util.List;
 
 public class BuyFinishFragment extends Fragment implements IOrderContract.View.BuyFinishFragmentView {
     private RecyclerView rcvBuyFinish;
-    public IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
+    private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
+    private ProgressBar progressBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,7 @@ public class BuyFinishFragment extends Fragment implements IOrderContract.View.B
         View view = inflater.inflate(R.layout.fragment_buy_finish, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
+        progressBar = view.findViewById(R.id.progressBarBuyFinish);
         rcvBuyFinish = view.findViewById(R.id.rcvBuyFinish);
         GridLayoutManager gridLayoutManagerBuyFinish = new GridLayoutManager(requireContext(),1);
         rcvBuyFinish.setLayoutManager(gridLayoutManagerBuyFinish);
@@ -44,7 +48,10 @@ public class BuyFinishFragment extends Fragment implements IOrderContract.View.B
     }
     @Override
     public void DisplayBuyFinishedOrder(ArrayList<BuyOrder> orders) {
+        if (orders == null)
+            orders = new ArrayList<>();
         BuyFinishAdapter BuyFinishAdapter = new BuyFinishAdapter(orders);
         rcvBuyFinish.setAdapter(BuyFinishAdapter);
+        progressBar.setVisibility(View.GONE);
     }
 }

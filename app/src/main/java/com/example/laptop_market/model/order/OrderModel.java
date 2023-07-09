@@ -456,10 +456,10 @@ public class OrderModel implements IOrderContract.Model {
                         }
                     }
                 });
-            } else {
-                // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-                listener.OnFinishGetSellDeliveringOrders(true, null, null);
             }
+        } else {
+            // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
+            listener.OnFinishGetSellDeliveringOrders(true, null, null);
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +27,7 @@ import com.example.laptop_market.presenter.fragments.LoginFragmentPresenter;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.elses.ValidateData;
+import com.example.laptop_market.view.activities.ConversationListActivity;
 import com.example.laptop_market.view.activities.LoginActivity;
 import com.example.laptop_market.view.activities.MainActivity;
 import com.example.laptop_market.view.activities.NewPostActivity;
@@ -172,9 +174,6 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
                 startActivity(intent);
                 loginActivity.finish();
                 return;
-            case FragmentActivityType.NOTIFICATION_ACTIVITY:
-
-                break;
             case FragmentActivityType.CHAT_ACTIVITY:
 
                 break;

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IOrderContract;
@@ -24,6 +25,7 @@ import java.util.List;
 public class SellDeliveringFragment extends Fragment implements IOrderContract.View.SellDeliveringFragmentView {
     private RecyclerView rcvSellDelivering;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
+    private ProgressBar progressBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
         View view = inflater.inflate(R.layout.fragment_sell_delivering, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
+        progressBar = view.findViewById(R.id.progressBarSellDelivering);
         rcvSellDelivering = view.findViewById(R.id.rcvSellDelivering);
         GridLayoutManager gridLayoutManagerSellDelivering = new GridLayoutManager(requireContext(),1);
         rcvSellDelivering.setLayoutManager(gridLayoutManagerSellDelivering);
@@ -45,7 +48,10 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
 
     @Override
     public void DisplaySellDeliveringOrder(ArrayList<SellOrder> orders) {
+        if (orders.size() == 0)
+            progressBar.setVisibility(View.GONE);
         SellDeliveringAdapter sellDeliveringAdapter = new SellDeliveringAdapter(orders);
         rcvSellDelivering.setAdapter(sellDeliveringAdapter);
+        progressBar.setVisibility(View.GONE);
     }
 }
