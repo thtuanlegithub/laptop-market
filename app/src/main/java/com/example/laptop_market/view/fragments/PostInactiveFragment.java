@@ -30,7 +30,6 @@ public class PostInactiveFragment extends Fragment implements IPostContract.View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -63,7 +62,7 @@ public class PostInactiveFragment extends Fragment implements IPostContract.View
             progressBar.setVisibility(View.GONE);
             return;
         }
-        PostInactiveAdapter PostInactiveAdapter = new PostInactiveAdapter(postSearchResults);
+        PostInactiveAdapter PostInactiveAdapter = new PostInactiveAdapter(postSearchResults, this);
         rcvPostInactive.setAdapter(PostInactiveAdapter);
         progressBar.setVisibility(View.GONE);
         rcvPostInactive.setVisibility(View.VISIBLE);

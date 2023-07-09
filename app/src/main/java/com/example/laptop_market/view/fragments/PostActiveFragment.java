@@ -62,7 +62,7 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
             progressBar.setVisibility(View.GONE);
             return;
         }
-        PostActiveAdapter PostActiveAdapter = new PostActiveAdapter(postSearchResults);
+        PostActiveAdapter PostActiveAdapter = new PostActiveAdapter(postSearchResults, this);
         rcvPostActive.setAdapter(PostActiveAdapter);
         progressBar.setVisibility(View.GONE);
         rcvPostActive.setVisibility(View.VISIBLE);
