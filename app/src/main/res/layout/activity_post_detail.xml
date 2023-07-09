@@ -243,32 +243,13 @@
                             android:textColor="@color/black"
                             android:text="Hãng: " />
                         <TextView
+                            android:id="@+id/brandNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:text="Asus"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_status"/>
-                        <TextView
-                            android:layout_marginLeft="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="Tình trạng: " />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="Mới"/>
-                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal"
@@ -285,6 +266,7 @@
                             android:textColor="@color/black"
                             android:text="Bộ xử lý: " />
                         <TextView
+                            android:id="@+id/cpuTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -306,6 +288,7 @@
                             android:textColor="@color/black"
                             android:text="RAM: " />
                         <TextView
+                            android:id="@+id/ramTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -327,6 +310,7 @@
                             android:textColor="@color/black"
                             android:text="Loại ổ cứng: " />
                         <TextView
+                            android:id="@+id/hardDriveTypeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -348,6 +332,7 @@
                             android:textColor="@color/black"
                             android:text="Dung lượng ổ cứng: " />
                         <TextView
+                            android:id="@+id/hardDriveSizeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -369,6 +354,7 @@
                             android:textColor="@color/black"
                             android:text="Card màn hình: " />
                         <TextView
+                            android:id="@+id/graphicTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -390,6 +376,7 @@
                             android:textColor="@color/black"
                             android:text="Kích thước màn hình: " />
                         <TextView
+                            android:id="@+id/screenSizeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -411,6 +398,7 @@
                             android:textColor="@color/black"
                             android:text="Bảo hành: " />
                         <TextView
+                            android:id="@+id/guaranteeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -432,6 +420,7 @@
                             android:textColor="@color/black"
                             android:text="Xuất xứ: " />
                         <TextView
+                            android:id="@+id/originTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -444,13 +433,20 @@
                         android:layout_height="1dp"
                         android:background="@drawable/line"/>
                     <TextView
-                        android:id="@+id/tvPostDetailDescription"
-                        android:layout_marginBottom="25dp"
+                        android:layout_marginBottom="15dp"
                         android:textSize="15dp"
                         android:textColor="@color/black"
-                        android:text="Mô tả chi tiết sản phẩm"
+                        android:text="Mô tả chi tiết sản phẩm: "
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvPostDetailDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="25dp"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

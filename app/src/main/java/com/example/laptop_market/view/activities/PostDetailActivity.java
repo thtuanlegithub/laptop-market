@@ -66,6 +66,15 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private TextView totalPictureTextView;
     private TextView currentPictureTextView;
     private TextView tvPostDetailSellerAddress;
+    private TextView brandNameTextView;
+    private TextView cpuTextView;
+    private TextView ramTextView;
+    private TextView hardDriveTypeTextView;
+    private TextView hardDriveSizeTextView;
+    private TextView graphicTextView;
+    private TextView screenSizeTextView;
+    private TextView guaranteeTextView;
+    private TextView originTextView;
     private int currentImagePage;
     private LinearLayout layoutButtonCustomer;
     private LinearLayout layoutButtonSeller;
@@ -110,6 +119,15 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         btnSavePost = findViewById(R.id.btnSavePost);
         btnBuyNow = findViewById(R.id.btnBuyNow);
         btnCallNow = findViewById(R.id.btnCallNow);
+        brandNameTextView = findViewById(R.id.brandNameTextView);
+        cpuTextView = findViewById(R.id.cpuTextView);
+        ramTextView = findViewById(R.id.ramTextView);
+        hardDriveTypeTextView = findViewById(R.id.hardDriveTypeTextView);
+        hardDriveSizeTextView = findViewById(R.id.hardDriveSizeTextView);
+        graphicTextView = findViewById(R.id.graphicTextView);
+        screenSizeTextView = findViewById(R.id.screenSizeTextView);
+        guaranteeTextView = findViewById(R.id.guaranteeTextView);
+        originTextView = findViewById(R.id.originTextView);
         // check seller or customer
         if(checkSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
@@ -231,6 +249,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     public void LoadingLapTopInPostDetail(Laptop laptop) {
         this.laptop=laptop;
         isloadLaptopFinish=true;
+        LoadActivityDetail();
         if(isLoadPostFinish & isLoadAccountFinish)
         {
             LoadData();
@@ -336,7 +355,18 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         bundle.putString("SellerPhoneNumber", post.getSellerPhoneNumber());
         bundle.putString("SellerAddress", post.getSellerAddress());
         intent.putExtras(bundle);
-
         orderDetailsLauncher.launch(intent);
+    }
+    private void LoadActivityDetail()
+    {
+        brandNameTextView.setText(laptop.getBrandID());
+        cpuTextView.setText(laptop.getCpu());
+        ramTextView.setText(laptop.getRam());
+        hardDriveTypeTextView.setText(laptop.getHardDrive());
+        hardDriveSizeTextView.setText(laptop.getHardDriveSize());
+        graphicTextView.setText(laptop.getGraphics());
+        screenSizeTextView.setText(laptop.getScreenSize());
+        guaranteeTextView.setText(laptop.getGuarantee());
+        originTextView.setText(laptop.getOrigin());
     }
 }
