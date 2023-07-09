@@ -38,6 +38,7 @@ import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private ActivityResultLauncher<Intent> orderDetailsLauncher;
     private TextView tvPostDetailDescription;
     private boolean backFromOrder = false;
+    private Button btnViewProfileFromPostDetail;
     private AppCompatButton bttMessenger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +130,12 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         screenSizeTextView = findViewById(R.id.screenSizeTextView);
         guaranteeTextView = findViewById(R.id.guaranteeTextView);
         originTextView = findViewById(R.id.originTextView);
+        btnViewProfileFromPostDetail = findViewById(R.id.btnViewProfileFromPostDetail);
+        // init data
+        InitData();
+
         // check seller or customer
-        if(checkSeller()){
+        if(isSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
         }
@@ -137,27 +143,28 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             layoutButtonCustomer.setVisibility(View.VISIBLE);
             layoutButtonSeller.setVisibility(View.GONE);
         }
-
-
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
-
         // set listener
         setListener();
-
-        // init data
-        InitData();
     }
-    private boolean checkSeller(){
-        // Customer - false
-
+    private boolean isSeller(){
         // Seller - true
-
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String currentUserID = firebaseUser.getUid();
+            if (currentUserID.equals(postSearchResult.getAccountId())){
+                return true;
+            }
+        }
+        // Customer - false
         return false;
     }
+
     private void setListener()
     {
-        btnBuyNow.setOnClickListener(view -> {
-
+        btnViewProfileFromPostDetail.setOnClickListener(view -> {
+            /*Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);*/
         });
         bttMessenger.setOnClickListener(view -> {
             if(FirebaseAuth.getInstance().getCurrentUser() == null)

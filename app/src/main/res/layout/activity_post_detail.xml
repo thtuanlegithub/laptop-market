@@ -213,6 +213,7 @@
                             </LinearLayout>
                         </LinearLayout>
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnViewProfileFromPostDetail"
                             android:layout_width="100dp"
                             android:layout_height="45dp"
                             app:layout_constraintEnd_toEndOf="@id/layoutShop"
