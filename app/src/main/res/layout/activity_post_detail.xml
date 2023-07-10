@@ -488,16 +488,16 @@
                 android:textAllCaps="false"
                 android:textSize="15dp"
                 android:textColor="@color/white"
-                android:backgroundTint="#EC5B63"/>
+                android:backgroundTint="#52BE32"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Chỉnh sửa"
+                android:text="Xóa tin"
                 android:textAllCaps="false"
                 android:textSize="15dp"
                 android:textColor="@color/white"
-                android:backgroundTint="#52BE32"/>
+                android:backgroundTint="#EC5B63"/>
         </LinearLayout>
     </LinearLayout>
 
