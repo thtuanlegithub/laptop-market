@@ -27,7 +27,11 @@ public interface IConversationContract {
         }
         void UpdateSeenConversationStatus(Conversation conversation);
         //endregion
-        //region load conversation image
+        //region load numberOfConversationNotSeen
+        void getNumberOfNotSeenMessage();
+        interface FinishGetNumberOfNotSeenMessageListener{
+            void FinishGetNumberOfNotSeenMessage(int numberOfMessage);
+        }
 
         //endregion
     }

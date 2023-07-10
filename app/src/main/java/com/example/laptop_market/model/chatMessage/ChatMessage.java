@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ChatMessage implements Cloneable{
+public class ChatMessage {
     public static final int RECEIVER_MESSAGE = 1;
     public static final int SENT_MESSAGE = 2;
     public static final int IMAGE_TYPE = 1;

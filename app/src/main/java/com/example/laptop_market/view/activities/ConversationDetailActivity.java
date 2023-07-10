@@ -122,6 +122,7 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
             presenter.LoadAllChatMessageInConversationFromListConversation(conversation);
         }
         else {
+            textReceivedAccName.setText(receiverAccount.getAccountName());
             if(receiverAccount.getAvatar()!=null)
                 Glide.with(getApplicationContext()).load(receiverAccount.getAvatar()).into(imageProfile);
             else
