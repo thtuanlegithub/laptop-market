@@ -4,18 +4,25 @@ import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresen
 import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_SUCCESS;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.lang.UCharacter;
 import android.net.Uri;
+import android.util.Base64;
 
 import com.example.laptop_market.contracts.IAccountContract;
 import com.example.laptop_market.model.order.OrderStatus;
+import com.example.laptop_market.model.post.PostStatus;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.LaptopTable;
 import com.example.laptop_market.utils.tables.OrderTable;
+import com.example.laptop_market.utils.tables.PostTable;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
@@ -341,4 +348,76 @@ public class AccountModel implements IAccountContract.Model {
            }
         });
     }
+
+    @Override
+    public void LoadYourSavedPosts(String AccountID, OnFinishLoadYourSavedPosts listener) {
+        if (AccountID != null) {
+            DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(AccountID);
+            // Lấy cái BuyOrder từ bảng Account
+            accountRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        ArrayList<String> yourSavedPosts = (ArrayList<String>) documentSnapshot.get(AccountTable.SAVED_POSTS);
+                        if (yourSavedPosts != null && !yourSavedPosts.isEmpty()) {
+                            ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
+                            for (String postId : yourSavedPosts) {
+                                PostSearchResult postSearchResult = new PostSearchResult();
+                                postSearchResult.setPostId(postId);
+                                // Cập nhật thông tin của postSearchResult dựa trên postId
+                                // Ví dụ: Lấy thông tin từ Firestore dựa trên postId
+                                db.collection(PostTable.TABLE_NAME)
+                                        .document(postId)
+                                        .get()
+                                        .addOnSuccessListener(postDoc -> {
+                                            if (postDoc.exists()) {
+                                                postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
+                                                postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                                postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
+                                                postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                                postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
+                                                postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                                String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                                db.collection(LaptopTable.TABLE_NAME)
+                                                        .document(laptopID)
+                                                        .get()
+                                                        .addOnSuccessListener(productSnapshot -> {
+                                                            if (productSnapshot.exists()) {
+                                                                postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                            }
+                                                        })
+                                                        .addOnCompleteListener(task1 -> {
+                                                            // Kiểm tra nếu đã hoàn thành tất cả nhiệm vụ tải dữ liệu
+                                                            if (postSearchResults.size() == yourSavedPosts.size()) {
+                                                                listener.OnFinishLoadYourSavedPosts(true, postSearchResults, null);
+                                                            }
+                                                        });
+                                            }
+                                        })
+                                        .addOnFailureListener(exception -> {
+                                            listener.OnFinishLoadYourSavedPosts(false, null, exception);
+                                        });
+                                postSearchResults.add(postSearchResult);
+                            }
+                        } else {
+                            listener.OnFinishLoadYourSavedPosts(true, null, null);
+                        }
+                    } else {
+                        listener.OnFinishLoadYourSavedPosts(false, null, null);
+                    }
+                }
+            });
+        }
+    }
+
+    private Bitmap getBitMapFromString(String encodedImage)
+    {
+        if(encodedImage!=null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        else
+            return  null;
+    }
 }
+

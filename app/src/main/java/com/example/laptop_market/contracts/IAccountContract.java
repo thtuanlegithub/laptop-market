@@ -4,8 +4,10 @@ import android.net.Uri;
 
 import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.account.CurrentBuyer;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 
 import java.lang.reflect.Executable;
+import java.util.ArrayList;
 
 public interface IAccountContract {
     interface Model{
@@ -77,6 +79,10 @@ public interface IAccountContract {
         interface OnFinishLoadStatisticInformation{
             void OnFinishLoadStatistic(boolean isSuccess, int NoOrders, double revenue, Exception error);
         }
+        void LoadYourSavedPosts(String AccountID, OnFinishLoadYourSavedPosts listener);
+        interface OnFinishLoadYourSavedPosts{
+            void OnFinishLoadYourSavedPosts(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -135,6 +141,9 @@ public interface IAccountContract {
             void DisplayStatistic(int NoOrders, double revenue);
         }
         // endregion
+        interface SavedPostActivityView {
+            void DisplaySavedPosts(ArrayList<PostSearchResult> postSearchResults);
+        }
     }
     //region Presenter
     interface Presenter{
@@ -184,6 +193,10 @@ public interface IAccountContract {
         //endregion
         interface StatisticActivityPresenter {
             void LoadStatisticInformation(String accountID, boolean isBuy);
+        }
+
+        interface SavedPostActivityPresenter {
+            void LoadSavedPosts(String accountID);
         }
     }
     // endregion
