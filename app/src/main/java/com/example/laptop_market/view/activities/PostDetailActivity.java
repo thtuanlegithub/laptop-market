@@ -32,6 +32,7 @@ import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.model.post.PostStatus;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
+import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.AccountTable;
@@ -149,6 +150,24 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         else{
             layoutButtonCustomer.setVisibility(View.VISIBLE);
             layoutButtonSeller.setVisibility(View.GONE);
+            if (postSearchResult.getPostStatus().equals(PostStatus.NOT_AVAILABLE)) {
+                MyDialog.showDialog(this, "Mặt hàng này đã ngừng bán!", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+                    @Override
+                    public void onYesClick() {
+
+                    }
+
+                    @Override
+                    public void onNoClick() {
+
+                    }
+
+                    @Override
+                    public void onOkClick() {
+                        btnBuyNow.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
         // set listener

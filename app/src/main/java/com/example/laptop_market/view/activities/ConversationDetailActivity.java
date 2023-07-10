@@ -131,7 +131,6 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
         }
         progressBar.setVisibility(View.VISIBLE);
         conversationRecyclerView.setVisibility(View.GONE);
-
     }
     private void setListener()
     {
@@ -279,7 +278,6 @@ public class ConversationDetailActivity extends AppCompatActivity implements ICo
     public void LoadAccountMessageInConvesationUI(Account account) {
         //chatMessageAdapter = new ChatMessageAdapter(listChatMessages,account.getAccountID());
         receiverAccount = account;
-
         textReceivedAccName.setText(account.getAccountName());
         if(account.getAvatar()!=null)
             Glide.with(getApplicationContext()).load(account.getAvatar()).into(imageProfile);
