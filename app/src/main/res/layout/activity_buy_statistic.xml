@@ -53,17 +53,19 @@
             android:textStyle="bold"
             android:textSize="20dp"/>
         <TextView
+            android:id="@+id/tvNoOrdersBuyStatistic"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20"
+            android:text="0"
             android:textColor="#F09D38"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:textStyle="bold"
             android:textSize="40dp"/>
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnViewYourFinishOrder"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="20dp"
@@ -97,11 +99,12 @@
             android:textStyle="bold"
             android:textSize="20dp"/>
         <TextView
+            android:id="@+id/tvRevenueBuyStatistic"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20,000,000"
+            android:text="0 VNĐ"
             android:textColor="#F09D38"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"

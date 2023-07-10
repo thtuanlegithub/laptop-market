@@ -4,21 +4,27 @@ import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresen
 import static com.example.laptop_market.presenter.fragments.SignUpFragmentPresenter.SIGNUP_SUCCESS;
 
 import android.content.Context;
+import android.icu.lang.UCharacter;
 import android.net.Uri;
 
 import com.example.laptop_market.contracts.IAccountContract;
+import com.example.laptop_market.model.order.OrderStatus;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.LaptopTable;
+import com.example.laptop_market.utils.tables.OrderTable;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -297,4 +303,42 @@ public class AccountModel implements IAccountContract.Model {
         }
     }
 
+    @Override
+    public void LoadStatisticInformation(String AccountID, Boolean isBuy, OnFinishLoadStatisticInformation listener) {
+        DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(AccountID);
+        accountRef.get().addOnCompleteListener(task -> {
+           if (task.isSuccessful())  {
+               DocumentSnapshot documentSnapshot = task.getResult();
+               if (documentSnapshot != null && documentSnapshot.exists()) {
+                    ArrayList<String> youFinishOrders = new ArrayList<String>();
+                    if (isBuy)
+                        youFinishOrders = (ArrayList) documentSnapshot.get(AccountTable.BUY_ORDERS);
+                    else
+                        youFinishOrders = (ArrayList) documentSnapshot.get(AccountTable.SELL_ORDERS);
+                    if (youFinishOrders != null && !youFinishOrders.isEmpty()){
+                        Query query = db.collection(OrderTable.TABLE_NAME)
+                                .whereEqualTo(OrderTable.ORDER_STATUS, OrderStatus.FINISHED)
+                                .whereIn("orderID", youFinishOrders);
+                        query.get().addOnCompleteListener(task1 -> {
+                           if (task1.isSuccessful()) {
+                               int NoOrders = 0;
+                               double revenue = 0;
+                               for (QueryDocumentSnapshot orderDoc :  task1.getResult()) {
+                                    String rawPrice = orderDoc.getString(OrderTable.TOTAL_AMOUNT);
+                                    String formattedStr = rawPrice.replaceAll("[^\\d.]", "");
+                                    revenue += (Double.parseDouble(formattedStr));
+                                    ++NoOrders;
+                               }
+                               listener.OnFinishLoadStatistic(true, NoOrders, revenue, null);
+                           } else{
+                               listener.OnFinishLoadStatistic(false, 0, 0, task1.getException());
+                           }
+                        });
+                    } else {
+                        listener.OnFinishLoadStatistic(true, 0, 0, null);
+                    }
+               }
+           }
+        });
+    }
 }

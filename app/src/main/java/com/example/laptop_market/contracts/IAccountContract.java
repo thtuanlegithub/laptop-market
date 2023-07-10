@@ -73,6 +73,10 @@ public interface IAccountContract {
         interface OnFinishUpdateAvatarListener{
             void OnFinishUpdateAvatar(Exception e);
         }
+        void LoadStatisticInformation(String AccountID, Boolean isBuy, OnFinishLoadStatisticInformation listener);
+        interface OnFinishLoadStatisticInformation{
+            void OnFinishLoadStatistic(boolean isSuccess, int NoOrders, double revenue, Exception error);
+        }
     }
     interface View{
         //region Account Fragment view
@@ -125,6 +129,12 @@ public interface IAccountContract {
             void ExceptionCatch(Exception e);
         }
         //endregion
+
+        // region Statistic
+        interface StatisticActivityView {
+            void DisplayStatistic(int NoOrders, double revenue);
+        }
+        // endregion
     }
     //region Presenter
     interface Presenter{
@@ -172,6 +182,9 @@ public interface IAccountContract {
             void UploadImageClicked(Account account, Uri uri);
         }
         //endregion
+        interface StatisticActivityPresenter {
+            void LoadStatisticInformation(String accountID, boolean isBuy);
+        }
     }
     // endregion
 }
