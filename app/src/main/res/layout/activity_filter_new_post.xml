@@ -49,94 +49,11 @@
             android:id="@+id/rcvFilterNewPostRadioButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-
+            android:layout_weight="1"
+            android:visibility="visible">
         </androidx.recyclerview.widget.RecyclerView>
 
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:id="@+id/layoutSeekBarNewPost"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"
-                    android:text="Giá tối thiểu: "/>
-                <TextView
-                    android:id="@+id/minimumPriceTextViewNewPost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="16dp"
-                    android:text="0"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="16dp"
-                    android:text="đ"/>
-            </LinearLayout>
-            <SeekBar
-                android:max="50"
-                android:id="@+id/seekBarMinPriceNewPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumb="@drawable/bg_thumb"
-                android:maxHeight="6dp"
-                android:progressDrawable="@drawable/bg_custom_seek_bar"
-                />
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"
-                    android:text="Giá tối đa: "/>
-                <TextView
-                    android:id="@+id/maximumPriceTextViewNewPost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="16dp"
-                    android:text="50,000,000"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/black"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="16dp"
-                    android:text="đ"/>
-            </LinearLayout>
-            <SeekBar
-                android:max="50"
-                android:id="@+id/seekBarMaxPriceNewPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumb="@drawable/bg_thumb"
-                android:maxHeight="6dp"
-                android:progressDrawable="@drawable/bg_custom_seek_bar"
-                />
-        </LinearLayout>
 
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatButton

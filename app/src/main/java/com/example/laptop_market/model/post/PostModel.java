@@ -66,6 +66,7 @@ public class PostModel implements IPostContract.Model {
     public void CreateNewPost(Post post, Laptop laptop, OnCreatePostListener listener) {
         post.setAccountID(firebaseUser.getUid());
         post.setPushlishTime(new Date());
+        post.setPostStatus(PostStatus.AVAILABLE);
         db.collection(PostTable.TABLE_NAME).add(post).addOnCompleteListener(task -> {
             if(task.isSuccessful())
             {

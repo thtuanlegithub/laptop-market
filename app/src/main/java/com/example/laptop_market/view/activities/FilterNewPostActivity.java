@@ -1,5 +1,6 @@
 package com.example.laptop_market.view.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,14 +33,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
     private AppCompatButton btnFilterDetailNewPostClose;
     private TextView txtFilterNewPostClose;
     private RecyclerView rcvFilterNewPostRadioButton;
-    private LinearLayout layoutSeekBarNewPost;
-    private TextView minimumPriceTextViewNewPost;
-    private SeekBar seekBarMinPriceNewPost;
-    private TextView maximumPriceTextViewNewPost;
-    private SeekBar seekBarMaxPriceNewPost;
     private AppCompatButton btnFilterDetailNewPostApply;
+    private PreferenceManager preferenceManager;
+
     private String filterName;
-    private SearchFilterPost searchFilterPost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,110 +46,114 @@ public class FilterNewPostActivity extends AppCompatActivity {
         btnFilterDetailNewPostClose = findViewById(R.id.btnFilterDetailNewPostClose);
         txtFilterNewPostClose = findViewById(R.id.txtFilterNewPostClose);
         rcvFilterNewPostRadioButton = findViewById(R.id.rcvFilterNewPostRadioButton);
-        layoutSeekBarNewPost = findViewById(R.id.layoutSeekBarNewPost);
-        minimumPriceTextViewNewPost = findViewById(R.id.minimumPriceTextViewNewPost);
-        seekBarMinPriceNewPost = findViewById(R.id.seekBarMinPriceNewPost);
-        maximumPriceTextViewNewPost = findViewById(R.id.maximumPriceTextViewNewPost);
-        seekBarMaxPriceNewPost = findViewById(R.id.seekBarMaxPriceNewPost);
         btnFilterDetailNewPostApply = findViewById(R.id.btnFilterDetailNewPostApply);
-
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
 
         //
         btnFilterDetailNewPostClose.setOnClickListener(v -> {
             finish();
         });
-
         Intent intent = getIntent();
-        if(intent !=null && intent.hasExtra("filter") && intent.hasExtra(SearchFilterPost.SEARCH_NAME)){
+        if(intent !=null && intent.hasExtra("filter") ){
             filterName = intent.getStringExtra("filter");
-            searchFilterPost = (SearchFilterPost)intent.getSerializableExtra(SearchFilterPost.SEARCH_NAME);
         }
         displayDetailFilterList();
     }
     private void displayDetailFilterList(){
         switch (filterName){
-            case "Giá +":
-                layoutSeekBarNewPost.setVisibility(View.VISIBLE);
-                rcvFilterNewPostRadioButton.setVisibility(View.GONE);
-                break;
             case "Hãng +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridBrandLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridBrandLayoutManager);
-                FilterRadioButtonAdapter filterBrandAdapter = new FilterRadioButtonAdapter(getListBrandFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.BRAND_NAME);
+                FilterRadioButtonAdapter filterBrandAdapter = new FilterRadioButtonAdapter(getListBrandFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterBrandAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Tình trạng +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridStatusLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridStatusLayoutManager);
-                FilterRadioButtonAdapter filterGuaranteeAdapter = new FilterRadioButtonAdapter(getListGuaranteeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.GUARANTEE);
+                FilterRadioButtonAdapter filterGuaranteeAdapter = new FilterRadioButtonAdapter(getListGuaranteeFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterGuaranteeAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Bộ xử lý +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridCPULayoutManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridCPULayoutManager);
-                FilterRadioButtonAdapter filterCPUAdapter = new FilterRadioButtonAdapter(getListCPUFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.CPU);
+                FilterRadioButtonAdapter filterCPUAdapter = new FilterRadioButtonAdapter(getListCPUFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterCPUAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "RAM +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridRAMLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridRAMLayoutManager);
-                FilterRadioButtonAdapter filterRAMAdapter = new FilterRadioButtonAdapter(getListRAMFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.RAM);
+                FilterRadioButtonAdapter filterRAMAdapter = new FilterRadioButtonAdapter(getListRAMFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterRAMAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Loại ổ cứng +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridHardDiskTypeLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridHardDiskTypeLayoutManager);
-                FilterRadioButtonAdapter filterHardDiskTypeAdapter = new FilterRadioButtonAdapter(getListHardDiskTypeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.HARD_DRIVE);
+                FilterRadioButtonAdapter filterHardDiskTypeAdapter = new FilterRadioButtonAdapter(getListHardDiskTypeFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterHardDiskTypeAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Kích thước ổ cứng +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridHardDiskSizeLayoutManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridHardDiskSizeLayoutManager);
-                FilterRadioButtonAdapter filterHardDiskSizeAdapter = new FilterRadioButtonAdapter(getListHardDiskSizeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.HARD_DRIVE_SIZE);
+                FilterRadioButtonAdapter filterHardDiskSizeAdapter = new FilterRadioButtonAdapter(getListHardDiskSizeFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterHardDiskSizeAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Card màn hình +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridGraphicTypeManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridGraphicTypeManager);
-                FilterRadioButtonAdapter filterGraphicTypeAdapter = new FilterRadioButtonAdapter(getListGraphicTypeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.GRAPHICS);
+                FilterRadioButtonAdapter filterGraphicTypeAdapter = new FilterRadioButtonAdapter(getListGraphicTypeFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterGraphicTypeAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Kích cỡ màn hình +":
-                layoutSeekBarNewPost.setVisibility(View.GONE);
-                rcvFilterNewPostRadioButton.setVisibility(View.VISIBLE);
                 //display RadioButton
                 GridLayoutManager gridGraphicSizeManager = new GridLayoutManager(this,1);
                 rcvFilterNewPostRadioButton.setLayoutManager(gridGraphicSizeManager);
-                FilterRadioButtonAdapter filterScreenSizeAdapter = new FilterRadioButtonAdapter(getListScreenSizeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.SCREEN_SIZE);
+                FilterRadioButtonAdapter filterScreenSizeAdapter = new FilterRadioButtonAdapter(getListScreenSizeFilterRadioButton(), item -> {
+                    preferenceManager.putString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER,filterName);
+                    preferenceManager.putString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER,item);
+                    finish();
+                });
                 rcvFilterNewPostRadioButton.setAdapter(filterScreenSizeAdapter);
                 btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
@@ -173,6 +174,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         listFilter.add(new Filter(R.drawable.brand_logo_sony,"Sony"));
         listFilter.add(new Filter(R.drawable.brand_logo_toshiba,"Toshiba"));
         listFilter.add(new Filter(R.drawable.ic_baseline_more_horiz_24,"Khác"));
+        for(int i = 0 ;i < listFilter.size(); i++)
+        {
+            listFilter.get(i).setTag("Hãng +");
+        }
         return listFilter;
     }
     private List<Filter> getListGuaranteeFilterRadioButton(){
@@ -181,6 +186,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         listFilter.add(new Filter("Mới"));
         listFilter.add(new Filter("Đã sử dụng - chưa qua sửa chữa"));
         listFilter.add(new Filter("Đã qua sửa chữa"));
+        for(int i = 0 ;i < listFilter.size(); i++)
+        {
+            listFilter.get(i).setTag("Tình trạng +");
+        }
         return listFilter;
     }
     private List<Filter> getListScreenSizeFilterRadioButton() {
@@ -193,6 +202,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         filterList.add(new Filter("17 - 18.9 inch"));
         filterList.add(new Filter("19 - 20.9 inch"));
         filterList.add(new Filter(">= 21 inch"));
+        for(int i = 0 ;i < filterList.size(); i++)
+        {
+            filterList.get(i).setTag("Kích cỡ màn hình +");
+        }
         return filterList;
     }
 
@@ -202,6 +215,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         filterList.add(new Filter("AMD"));
         filterList.add(new Filter("NVIDIA"));
         filterList.add(new Filter("Khác"));
+        for(int i = 0 ;i < filterList.size(); i++)
+        {
+            filterList.get(i).setTag("Card màn hình +");
+        }
         return filterList;
     }
 
@@ -219,6 +236,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         filterList.add(new Filter("750 GB"));
         filterList.add(new Filter("1 TB"));
         filterList.add(new Filter("> 1 TB"));
+        for(int i = 0 ;i < filterList.size(); i++)
+        {
+            filterList.get(i).setTag("Kích thước ổ cứng +");
+        }
         return filterList;
     }
 
@@ -226,6 +247,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         List<Filter> filterList = new ArrayList<>();
         filterList.add(new Filter("SSD"));
         filterList.add(new Filter("HDD"));
+        for(int i = 0 ;i < filterList.size(); i++)
+        {
+            filterList.get(i).setTag("Loại ổ cứng +");
+        }
         return filterList;
     }
 
@@ -248,6 +273,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         filterList.add(new Filter("Ryzen 7"));
         filterList.add(new Filter("Ryzen 9"));
         filterList.add(new Filter("Khác"));
+        for(int i = 0 ;i < filterList.size(); i++)
+        {
+            filterList.get(i).setTag("Bộ xử lý +");
+        }
         return filterList;
     }
     private List<Filter> getListRAMFilterRadioButton() {
@@ -261,6 +290,10 @@ public class FilterNewPostActivity extends AppCompatActivity {
         filterList.add(new Filter("16 GB"));
         filterList.add(new Filter("32 GB"));
         filterList.add(new Filter("> 32 GB"));
+        for(int i = 0 ;i < filterList.size(); i++)
+        {
+            filterList.get(i).setTag("RAM +");
+        }
         return filterList;
     }
 

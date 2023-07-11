@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.laptop_market.R;
+import com.example.laptop_market.contracts.IConversationContract;
+import com.example.laptop_market.presenter.fragments.HomeFragmentPresenter;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
@@ -38,7 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements IConversationContract.View.HomeFragmentView {
     private AppCompatButton btnNotificationHome;
     private HomeBaseFragment homeBaseFragment;
     private LinearLayout linearLayoutFragmentHome = null;
@@ -47,6 +50,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView rcvBrand;
     private PreferenceManager preferenceManager;
     private AppCompatButton chatMessageBtt;
+    private TextView txtNumberOfNewMessage;
+    private int numberOfNotSeenMessage = 0;
+    private HomeFragmentPresenter presenter;
+
     public class ImageSliderAdapter extends PagerAdapter{
         private List<Integer> imageList;
         private Context context;
@@ -97,7 +104,8 @@ public class HomeFragment extends Fragment {
         rcvBrand = view.findViewById(R.id.rcvBrand);
         edtTextHome = view.findViewById(R.id.edtTextHome);
         btnNotificationHome = view.findViewById(R.id.btnNotificationHome);
-
+        presenter = new HomeFragmentPresenter(this);
+        txtNumberOfNewMessage = view.findViewById(R.id.txtNumberOfNewMessage);
         //Tạo list image để hiển thị slide show ViewPager
         List<Integer> imageList = new ArrayList<>();
         imageList.add(R.drawable.slide_show1);
@@ -116,6 +124,7 @@ public class HomeFragment extends Fragment {
         linearLayoutFragmentHome.requestFocus();
         //Sự kiện search
         setListener();
+        presenter.LoadingNotSeenMessage();
 
         return view;
     }
@@ -199,5 +208,16 @@ public class HomeFragment extends Fragment {
             onCreateView(LayoutInflater.from(getContext()), null, null);
         }
     }
-
+    @Override
+    public void LoadNotSeenMessage(int numMessage) {
+        numberOfNotSeenMessage= numMessage;
+        if(numberOfNotSeenMessage == 0)
+            txtNumberOfNewMessage.setVisibility(View.GONE);
+        else
+            txtNumberOfNewMessage.setVisibility(View.VISIBLE);
+        if(numberOfNotSeenMessage <=10)
+            txtNumberOfNewMessage.setText(String.valueOf(numberOfNotSeenMessage));
+        else
+            txtNumberOfNewMessage.setText("10+");
+    }
 }

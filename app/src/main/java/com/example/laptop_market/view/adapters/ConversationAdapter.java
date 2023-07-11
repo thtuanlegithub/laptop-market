@@ -87,13 +87,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             else
                 Glide.with(binding.getRoot()).load(conversation.getConversationImage()).into(binding.imageProfile);
             binding.textConversationName.setText(conversation.getConversationName());
-            if(conversation.getPersonNotSeenId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                binding.textRecentMessage.setTypeface(Typeface.DEFAULT_BOLD);
-                binding.textRecentMessage.setTextColor(Color.BLACK);
-            }
-            else{
-                binding.textRecentMessage.setTypeface(Typeface.DEFAULT);
-                binding.textRecentMessage.setTextColor(binding.getRoot().getResources().getColor(R.color.secondary_text));
+            if(conversation.getPersonNotSeenId() != null) {
+                if (conversation.getPersonNotSeenId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    binding.textRecentMessage.setTypeface(Typeface.DEFAULT_BOLD);
+                    binding.textRecentMessage.setTextColor(Color.BLACK);
+                } else {
+                    binding.textRecentMessage.setTypeface(Typeface.DEFAULT);
+                    binding.textRecentMessage.setTextColor(binding.getRoot().getResources().getColor(R.color.secondary_text));
+                }
             }
             if(conversation.getLastMessageTime()!=null) {
                 SimpleDateFormat sdfDate;

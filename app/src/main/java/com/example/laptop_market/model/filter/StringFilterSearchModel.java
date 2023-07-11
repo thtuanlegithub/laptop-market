@@ -35,6 +35,7 @@ public class StringFilterSearchModel implements IStringFilterSearchContract.Mode
     @Override
     public void PerformSearch(String item, OnPerformSearchListener listener) {
         preferenceManager.putString(Constants.KEY_SEARCH_ITEM, item);
+        preferenceManager.putInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,SearchResultFragment.SEARCH_CLICK);
         ArrayList<String> listSearchString = preferenceManager.getFilters(Constants.KEY_FILTER);
         if(listSearchString==null)
             listSearchString = new ArrayList<>();
