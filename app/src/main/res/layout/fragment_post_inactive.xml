@@ -29,7 +29,7 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Hiện tại bạn chưa có bài đăng hết hạn nào"
+                android:text="Hiện tại chưa có bài đăng hết hạn nào"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textAlignment="center"

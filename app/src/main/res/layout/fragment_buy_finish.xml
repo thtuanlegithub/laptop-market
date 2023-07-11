@@ -29,7 +29,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Hiện tại bạn chưa có đơn bán nào đã giao"
+                android:text="Hiện tại bạn chưa có đơn mua nào đã giao"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textAlignment="center"

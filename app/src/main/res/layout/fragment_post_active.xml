@@ -29,7 +29,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Hiện tại bạn chưa có bài đăng đang hiển thị nào"
+                android:text="Hiện tại chưa có bài đăng đang hiển thị nào"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textAlignment="center"
