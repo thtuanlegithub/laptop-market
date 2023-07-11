@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.laptop_market.R;
@@ -67,10 +68,13 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private FilterAdapter filterAdapter;
     private AppCompatButton btnNotificationPostSearchResult;
     private AppCompatButton chatMessageBtt;
+    private TextView txtNumberOfNewMessage;
+    private int numberOfNotSeenMessage;
     public SearchResultFragment(HomeBaseFragment homeBaseFragment) {
         // Required empty public constructor
         searchFilterPost = new SearchFilterPost();
         this.homeBaseFragment = homeBaseFragment;
+        numberOfNotSeenMessage = 0;
     }
 
     public SearchResultFragment() {
@@ -124,6 +128,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         isLoading= view.findViewById(R.id.isLoading);
         btnSearchResultBack = view.findViewById(R.id.btnSearchResultBack);
         chatMessageBtt = view.findViewById(R.id.chatMessageBtt);
+        txtNumberOfNewMessage = view.findViewById(R.id.txtNumberOfNewMessage);
         chatMessageBtt.setOnClickListener(view1 -> {
             if(FirebaseAuth.getInstance().getCurrentUser() == null)
             {
@@ -199,6 +204,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         rcvPostSearchResult = view.findViewById(R.id.rcvPostSearchResult);
         GridLayoutManager gridLayoutManagerPost = new GridLayoutManager(requireContext(),1);
         rcvPostSearchResult.setLayoutManager(gridLayoutManagerPost);
+        postPreseneter.LoadingNotSeenMessage();
         //
         return view;
     }
@@ -496,5 +502,16 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         rcvPostSearchResult.setVisibility(View.VISIBLE);
         //rcvPostSearchResult.notify();
     }
-
+    @Override
+    public void LoadNotSeenMessage(int numMessage) {
+        numberOfNotSeenMessage= numMessage;
+        if(numberOfNotSeenMessage == 0)
+            txtNumberOfNewMessage.setVisibility(View.GONE);
+        else
+            txtNumberOfNewMessage.setVisibility(View.VISIBLE);
+        if(numberOfNotSeenMessage <=10)
+            txtNumberOfNewMessage.setText(String.valueOf(numberOfNotSeenMessage));
+        else
+            txtNumberOfNewMessage.setText("10+");
+    }
 }

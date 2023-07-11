@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
     private static final int PICK_IMAGE_REQUEST = 1;
     private Button btnProfileBack;
     private ImageView imgProfileAvatar;
+    private ImageButton imgButtonEditAvatar;
     private List<Fragment> fragmentList;
     private Account account;
     private FragmentStateAdapter fragmentStateAdapter;
@@ -57,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
         AddressTextView = findViewById(R.id.AddressTextView);
         descriptionTextView = findViewById(R.id.descriptionTextView);
         accountNameTextView = findViewById(R.id.accountNameTextView);
+        imgButtonEditAvatar = findViewById(R.id.imgButtonEditAvatar);
         fragmentStateAdapter = new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -80,6 +83,11 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
     }
     private void setListener()
     {
+        imgButtonEditAvatar.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        });
         navProfilePost.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.postActive && currentSelectedItem != 0) {

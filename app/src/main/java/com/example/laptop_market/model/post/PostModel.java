@@ -158,6 +158,8 @@ public class PostModel implements IPostContract.Model {
                                 ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>();
                                 for (Object obj : documentSnapshots) {
                                     DocumentSnapshot documentSnapshot = (DocumentSnapshot)obj;
+                                    if(documentSnapshot.getString(PostTable.POST_STATUS).equals(PostStatus.NOT_AVAILABLE))
+                                        continue;
                                     PostSearchResult post = new PostSearchResult();
                                     post.setPostId(documentSnapshot.getId());
                                     post.setAddress(documentSnapshot.getString(PostTable.SELLER_ADDRESS));
