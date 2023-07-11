@@ -9,7 +9,33 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <LinearLayout
+            android:id="@+id/layoutNotSellDelivering"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <ImageView
+                android:layout_marginTop="-100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/ic_empty"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/textViewNotSellDelivering"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Hiện tại bạn chưa có đơn mua nào đang giao"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:visibility="visible"
+                />
+        </LinearLayout>
         <ProgressBar
             android:id="@+id/progressBarSellDelivering"
             android:visibility="visible"
