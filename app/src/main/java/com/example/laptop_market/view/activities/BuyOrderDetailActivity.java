@@ -27,6 +27,7 @@ import com.example.laptop_market.presenter.activities.BuyOrderDetailActivityPres
 import com.example.laptop_market.presenter.activities.OrderDetailActivityPresenter;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.tables.PostTable;
+import com.example.laptop_market.view.adapters.Buy.BuyOrder;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.example.laptop_market.view.adapters.Sell.SellOrder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -68,7 +69,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private AppCompatButton btnCancelOrderBuyOrder;
     private Order fullOrderDetails;
     private Post postOfThisOrder;
-    private SellOrder clickedOrder;
+    private BuyOrder clickedOrder;
     private IOrderContract.Presenter.BuyOrderDetailActivityPresenter buyOrderDetailActivityPresenter;
     private IOrderContract.Presenter.OrderDetailActivityPresenter orderDetailActivityPresenter;
     @Override
@@ -76,7 +77,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_order_detail);
         // Create objects
-        buyOrderDetailActivityPresenter = new BuyOrderDetailActivityPresenter(this, getApplicationContext());
+        buyOrderDetailActivityPresenter = new BuyOrderDetailActivityPresenter(this, this);
         orderDetailActivityPresenter = new OrderDetailActivityPresenter(this, this);
 
         FindViews();
@@ -89,13 +90,13 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
 
         // Get intent from previous activity/fragment
         Intent intent = getIntent();
-        if(intent.hasExtra("SellOrderStatus")){
-            currentOrderStatus = intent.getIntExtra("SellOrderStatus",0);
+        if(intent.hasExtra("BuyOrderStatus")){
+            currentOrderStatus = intent.getIntExtra("BuyOrderStatus",0);
             displayLinearLayoutButton(currentOrderStatus);
             if (currentOrderStatus == 4){
                 LoadDataFromBuyNow();
             } else {
-                clickedOrder = (SellOrder) intent.getSerializableExtra("ClickedOrder");
+                clickedOrder = (BuyOrder) intent.getSerializableExtra("ClickedOrder");
                 orderDetailActivityPresenter.LoadOrderInfo(clickedOrder.getOrderId(), clickedOrder.getPostID());
             }
             // Load data here
@@ -389,8 +390,8 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
         linearLayoutButtonBuyFinish.setVisibility(View.GONE);
         linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation1.setVisibility(View.GONE);
+        linearLayoutShippingInformation2.setVisibility(View.GONE);
         linearLayoutOrderTime.setVisibility(View.VISIBLE);
         linearLayoutFinishTime.setVisibility(View.GONE);
         txtViewBuyOrderStatus.setText("Đang xử lý");

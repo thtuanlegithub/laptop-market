@@ -222,11 +222,11 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
 
         btnBuyNow.setOnClickListener(v -> {
             postPresenter.OnBuyNowClicked();
-            Intent intent = new Intent(this, BuyOrderDetailActivity.class);
+            /*Intent intent = new Intent(this, BuyOrderDetailActivity.class);
             Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
             intent.putExtra("BuyOrderStatus",4);
             backFromOrder = true;
-            startActivity(intent,bundle);
+            startActivity(intent,bundle);*/
         });
         viewPagerImagePostDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

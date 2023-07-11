@@ -50,6 +50,7 @@ public class BuyProcessingAdapter extends RecyclerView.Adapter<BuyProcessingAdap
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),BuyOrderDetailActivity.class);
                 intent.putExtra("BuyOrderStatus",0);
+                intent.putExtra("ClickedOrder", BuyProcessing);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }
