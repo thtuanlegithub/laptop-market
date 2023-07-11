@@ -51,6 +51,7 @@ public class SellProcessingAdapter extends RecyclerView.Adapter<SellProcessingAd
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),SellOrderDetailActivity.class);
                 intent.putExtra("SellOrderStatus",0);
+                intent.putExtra("ClickedOrder", SellProcessing);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }

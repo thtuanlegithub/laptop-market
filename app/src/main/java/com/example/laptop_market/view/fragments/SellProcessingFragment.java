@@ -65,5 +65,6 @@ public class SellProcessingFragment extends Fragment implements IOrderContract.V
         SellProcessingAdapter sellProcessingAdapter = new SellProcessingAdapter(orders);
         rcvSellProcessing.setAdapter(sellProcessingAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvSellProcessing.setVisibility(View.VISIBLE);
     }
 }

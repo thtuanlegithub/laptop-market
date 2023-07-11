@@ -66,5 +66,6 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
         SellDeliveringAdapter sellDeliveringAdapter = new SellDeliveringAdapter(orders);
         rcvSellDelivering.setAdapter(sellDeliveringAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvSellDelivering.setVisibility(View.VISIBLE);
     }
 }

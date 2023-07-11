@@ -110,7 +110,7 @@
                         android:textStyle="bold"
                         android:textSize="17dp"
                         android:textColor="@color/black"
-                        android:text="Laptop ASUS TUF - Gaming A15 - 16GB RAM - RTX 3050 4GB"
+                        android:text=""
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -133,7 +133,7 @@
                         android:textStyle="bold"
                         android:textSize="17dp"
                         android:textColor="@color/red"
-                        android:text="100.000.000 VNĐ"
+                        android:text=""
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="17dp"
-                        android:text="15-06-2023 15:56"
+                        android:text=""
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="17dp"
-                        android:text="25-06-2023 20:08"
+                        android:text=""
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -220,7 +220,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="Viettel Post" />
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -243,7 +243,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="VT123456789"
+                        android:text=""
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -285,7 +285,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="0702 290 135"
+                        android:text=""
                         android:focusable="false"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -312,7 +312,7 @@
                         android:textSize="17dp"
                         android:inputType="text"
                         android:focusable="false"
-                        android:text="Lê Thanh Tuấn" />
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -337,7 +337,7 @@
                         android:textSize="17dp"
                         android:inputType="text"
                         android:focusable="false"
-                        android:text="khối phố Cổ An Đông, phường Điện Nam Đông, thị xã Điện Bàn, tỉnh Quảng Nam"
+                        android:text=""
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -380,7 +380,8 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="0702 290 135" />
+                        android:focusable="false"
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -404,7 +405,8 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="Lê Thanh Tuấn" />
+                        android:focusable="false"
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -429,7 +431,8 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="khối phố Cổ An Đông, phường Điện Nam Đông, thị xã Điện Bàn, tỉnh Quảng Nam"
+                        android:focusable="false"
+                        android:text=""
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -457,7 +460,7 @@
                 android:layout_marginRight="2dp"
                 />
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/NewPostBttDangTin"
+                android:id="@+id/btnShipNowSellOrderDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -476,6 +479,7 @@
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCancelOrderSellOrder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -486,6 +490,7 @@
                 android:layout_marginRight="2dp"
                 />
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFinishOrderSellOrderDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -497,47 +502,20 @@
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/linearLayoutButtonSellFinish"
+            android:id="@+id/linearLayoutButtonUpdatePostStatus"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnUpdatePostStatusSellOrder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Đăng lại tin"
-                android:textSize="16dp"
-                android:backgroundTint="#F5BD40"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="2dp"
-                />
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="#F09D38"
                 android:text="Hủy tin"
                 android:textSize="16dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="20dp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linearLayoutButtonSellCancel"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            >
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Đăng lại tin"
-                android:textSize="16dp"
-                android:backgroundTint="#F5BD40"
+                android:backgroundTint="#F09D38"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 />

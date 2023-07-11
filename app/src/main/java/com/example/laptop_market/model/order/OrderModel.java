@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import com.example.laptop_market.contracts.IOrderContract;
+import com.example.laptop_market.model.post.Post;
+import com.example.laptop_market.model.post.PostStatus;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.AccountTable;
 import com.example.laptop_market.utils.tables.OrderTable;
@@ -100,6 +102,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            buyOrder.setPostID(postID);
                                             buyOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             buyOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(buyOrder);
@@ -169,6 +172,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            buyOrder.setPostID(postID);
                                             buyOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             buyOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(buyOrder);
@@ -238,6 +242,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            buyOrder.setPostID(postID);
                                             buyOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             buyOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(buyOrder);
@@ -307,6 +312,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            buyOrder.setPostID(postID);
                                             buyOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             buyOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(buyOrder);
@@ -377,6 +383,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            sellOrder.setPostID(postID);
                                             sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(sellOrder);
@@ -445,6 +452,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            sellOrder.setPostID(postID);
                                             sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(sellOrder);
@@ -513,6 +521,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            sellOrder.setPostID(postID);
                                             sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(sellOrder);
@@ -581,6 +590,7 @@ public class OrderModel implements IOrderContract.Model {
                                                         }
                                                     });
                                             loadProductTasks.add(getProductTask);
+                                            sellOrder.setPostID(postID);
                                             sellOrder.setPrice(orderDoc.getString(OrderTable.TOTAL_AMOUNT));
                                             sellOrder.setAddress(orderDoc.getString(OrderTable.SHIP_ADDRESS));
                                             processingOrders.add(sellOrder);
@@ -620,5 +630,56 @@ public class OrderModel implements IOrderContract.Model {
         }
         else
             return  null;
+    }
+
+    @Override
+    public void LoadOrderDetails(String OrderID, String postID, OnLoadOrderDetailsListener listener) {
+        DocumentReference orderRef = db.collection(OrderTable.TABLE_NAME).document(OrderID);
+        orderRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot orderDoc = task.getResult();
+                if (orderDoc.exists()) {
+                    // Chuyển đổi DocumentSnapshot thành đối tượng Order
+                    Order order = orderDoc.toObject(Order.class);
+                    DocumentReference postRef = db.collection(PostTable.TABLE_NAME).document(order.getPostID());
+                    postRef.get().addOnSuccessListener(postDoc -> {
+                        if (postDoc.exists()) {
+                                Post post = new Post();
+                                post.setSellerName(postDoc.getString(PostTable.SELLER_NAME));
+                                post.setSellerPhoneNumber(postDoc.getString(PostTable.SELLER_PHONE_NUMBER));
+                                post.setSellerAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                post.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
+                                // Gọi callback OnFinishLoadOrderDetails và truyền đối tượng Order đã nạp
+                                listener.OnFinishLoadOrderDetails(true, order, post, null);
+                        } else {
+                            listener.OnFinishLoadOrderDetails(false, null, null, null);
+                        }
+                    });
+                } else {
+                    listener.OnFinishLoadOrderDetails(false, null, null, null);
+                }
+            } else {
+                listener.OnFinishLoadOrderDetails(false, null, null, task.getException());
+            }
+        });
+    }
+
+    @Override
+    public void UpdateOrderInfo(String OrderID, String changeOrderStatusTo, String postServiceName, String postServiceCode, String finishTime, OnUpdateOrderInfo listener) {
+        DocumentReference orderRef = db.collection(OrderTable.TABLE_NAME).document(OrderID);
+        if (changeOrderStatusTo.equals(OrderStatus.SHIPPING)){
+            orderRef.update(OrderTable.ORDER_STATUS, OrderStatus.SHIPPING);
+            orderRef.update(OrderTable.POST_SERVICE_NAME, postServiceName);
+            orderRef.update(OrderTable.POST_SERVICE_CODE, postServiceCode);
+            listener.OnFinishUpdateOrderInfo(true, null);
+        } else if (changeOrderStatusTo.equals(OrderStatus.FINISHED)) {
+            orderRef.update(OrderTable.ORDER_STATUS, OrderStatus.FINISHED);
+            orderRef.update(OrderTable.FINISHED_DATE, finishTime);
+            listener.OnFinishUpdateOrderInfo(true, null);
+        } else if (changeOrderStatusTo.equals(OrderStatus.CANCELED)) {
+            orderRef.update(OrderTable.ORDER_STATUS, OrderStatus.CANCELED);
+            orderRef.update(OrderTable.FINISHED_DATE, finishTime);
+            listener.OnFinishUpdateOrderInfo(true, null);
+        }
     }
 }

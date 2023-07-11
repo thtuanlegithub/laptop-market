@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
@@ -23,16 +24,18 @@ import com.example.laptop_market.model.order.Order;
 import com.example.laptop_market.model.order.OrderStatus;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.BuyOrderDetailActivityPresenter;
+import com.example.laptop_market.presenter.activities.OrderDetailActivityPresenter;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.example.laptop_market.view.adapters.Sell.SellOrder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderContract.View.BuyOrderDetailActivityView {
+public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderContract.View.BuyOrderDetailActivityView, IOrderContract.View.OrderDetailsActivityView {
     private Button btnBuyOrderDetailClose;
     private TextInputEditText edtBuyOrderDetailPostServiceName;
     private TextInputEditText edtBuyOrderDetailPostServiceCode;
@@ -59,17 +62,113 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private LinearLayout linearLayoutFinishTime;
     private TextView txtViewBuyOrderStatus;
     private Button btnConfirmBuyOrder;
-    private Post post;
     private String sellerID, postID;
     private CurrentBuyer currentBuyer;
+    private int currentOrderStatus;
+    private AppCompatButton btnCancelOrderBuyOrder;
+    private Order fullOrderDetails;
+    private Post postOfThisOrder;
+    private SellOrder clickedOrder;
     private IOrderContract.Presenter.BuyOrderDetailActivityPresenter buyOrderDetailActivityPresenter;
+    private IOrderContract.Presenter.OrderDetailActivityPresenter orderDetailActivityPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_order_detail);
         // Create objects
         buyOrderDetailActivityPresenter = new BuyOrderDetailActivityPresenter(this, getApplicationContext());
+        orderDetailActivityPresenter = new OrderDetailActivityPresenter(this, this);
 
+        FindViews();
+
+        onConfirmBuyNowClicked();
+
+        onCloseClicked();
+
+        onCancelOrderClicked();
+
+        // Get intent from previous activity/fragment
+        Intent intent = getIntent();
+        if(intent.hasExtra("SellOrderStatus")){
+            currentOrderStatus = intent.getIntExtra("SellOrderStatus",0);
+            displayLinearLayoutButton(currentOrderStatus);
+            if (currentOrderStatus == 4){
+                LoadDataFromBuyNow();
+            } else {
+                clickedOrder = (SellOrder) intent.getSerializableExtra("ClickedOrder");
+                orderDetailActivityPresenter.LoadOrderInfo(clickedOrder.getOrderId(), clickedOrder.getPostID());
+            }
+            // Load data here
+        }
+    }
+
+    // region Close order details
+    private void onCloseClicked(){
+        btnBuyOrderDetailClose = findViewById(R.id.btnBuyOrderDetailClose);
+        btnBuyOrderDetailClose.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", false);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+            //Ẩn bàn phím:
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View currentFocus = this.getCurrentFocus();
+            if (inputMethodManager != null && currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+            }
+        });
+    }
+    // endregion
+
+    // region Cancel order
+    private void onCancelOrderClicked() {
+        btnCancelOrderBuyOrder = findViewById(R.id.btnCancelOrderBuyOrder);
+        btnCancelOrderBuyOrder.setOnClickListener(view -> {
+            MyDialog.showDialog(this, "Bạn có chắc là muốn hủy đơn hàng không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+                    // Update Status and PostService Data
+                    DisplayCancelOrderSuccess();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+                    Date currentDateTime = new Date();
+                    // Order info
+                    String finishedTime = sdf.format(currentDateTime);
+                    orderDetailActivityPresenter.UpdateOrderInfo(clickedOrder.getOrderId(), OrderStatus.CANCELED, null, null, finishedTime);
+                }
+
+                @Override
+                public void onNoClick() {
+
+                }
+
+                @Override
+                public void onOkClick() {
+                }
+            });
+        });
+    }
+
+    private void DisplayCancelOrderSuccess() {
+        MyDialog.showDialog(this, "Đơn hàng đã được hủy thành công.", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+            @Override
+            public void onYesClick() {
+            }
+
+            @Override
+            public void onNoClick() {
+
+            }
+
+            @Override
+            public void onOkClick() {
+                finish();
+            }
+        });
+    }
+    // endregion
+
+    // region Buy now
+    private void onConfirmBuyNowClicked(){
         btnConfirmBuyOrder = findViewById(R.id.btnConfirmBuyOrder);
         btnConfirmBuyOrder.setOnClickListener(view -> {
             MyDialog.showDialog(this, "Bạn có chắc muốn mua không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
@@ -110,21 +209,101 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
                 }
             });
         });
+    }
+    private void LoadDataFromBuyNow()
+    {
+        Intent intent = getIntent();
+        if (intent.hasExtra("CurrentBuyer")) {
+            currentBuyer = (CurrentBuyer) intent.getSerializableExtra("CurrentBuyer");
+            // Buyer
+            edtBuyOrderDetailBuyerName.setText(currentBuyer.getAccountName());
+            edtBuyOrderDetailBuyerPhone.setText(currentBuyer.getPhoneNumber());
+            edtBuyOrderDetailBuyerAddress.setText(currentBuyer.getAddress());
+        }
 
-        btnBuyOrderDetailClose = findViewById(R.id.btnBuyOrderDetailClose);
-        btnBuyOrderDetailClose.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra("applySlideTransition", false);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
-            //Ẩn bàn phím:
-            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            View currentFocus = this.getCurrentFocus();
-            if (inputMethodManager != null && currentFocus != null) {
-                inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            // Order
+            tvBuyOrderDetailOrderName.setText(bundle.getString("OrderName"));
+            tvBuyOrderDetailTotalAmount.setText(bundle.getString("TotalAmount"));
+            // Seller
+            sellerID = bundle.getString("SellerID");
+            edtBuyOrderDetailSellerName.setText(bundle.getString("SellerName"));
+            edtBuyOrderDetailSellerPhone.setText(bundle.getString("SellerPhoneNumber"));
+            edtBuyOrderDetailSellerAddress.setText(bundle.getString("SellerAddress"));
+            // Post
+            postID = bundle.getString("PostID");
+        }
+
+        // Check if Buyer data has not been initialized
+        String phoneNumber = edtBuyOrderDetailBuyerPhone.getText().toString().trim();
+        String address = edtBuyOrderDetailBuyerAddress.getText().toString().trim();
+        if (phoneNumber.isEmpty() || address.isEmpty()) {
+            // Disable button
+            btnConfirmBuyOrder.setEnabled(false);
+            btnConfirmBuyOrder.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.gray));
+            MyDialog.showDialog(this, "Bạn có thể cập nhật thông tin trong mục Cài đặt tài khoản để hệ thống tự động điền thông tin", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+
+                }
+
+                @Override
+                public void onNoClick() {
+
+                }
+
+                @Override
+                public void onOkClick() {
+
+                }
+            });
+        }
+        // Add event OnTextChange
+        edtBuyOrderDetailBuyerName.addTextChangedListener(textWatcher);
+        edtBuyOrderDetailBuyerPhone.addTextChangedListener(textWatcher);
+        edtBuyOrderDetailBuyerAddress.addTextChangedListener(textWatcher);
+    }
+    // endregion
+
+    // region Override interface
+    @Override
+    public void DisplayBuySucessful() {
+        Intent resultIntent = new Intent();
+        setResult(Activity.RESULT_OK, resultIntent);
+        MyDialog.showDialog(this, "Đặt hàng thành công.\nQuay về màn hình trang chủ.", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+            @Override
+            public void onYesClick() {
+
+            }
+
+            @Override
+            public void onNoClick() {
+
+            }
+
+            @Override
+            public void onOkClick() {
+                finish();
             }
         });
+    }
 
+    @Override
+    public void DisplayOrderDetailInformation(Order orderInfo, Post postInfo) {
+        this.fullOrderDetails = orderInfo;
+        this.postOfThisOrder = postInfo;
+        SetGeneralData();
+    }
+
+    @Override
+    public void DisplayUpdatePostStatus(boolean isAvailable) {
+
+    }
+    // endregion
+
+    // region Display view
+    private void FindViews(){
         txtViewBuyOrderStatus = findViewById(R.id.txtViewBuyOrderStatus);
         tvBuyOrderDetailOrderName = findViewById(R.id.tvBuyOrderDetailOrderName);
         tvBuyOrderDetailTotalAmount = findViewById(R.id.tvBuyOrderDetailTotalAmount);
@@ -153,194 +332,157 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         linearLayoutBuyOrderStatus = findViewById(R.id.linearLayoutBuyOrderStatus);
         linearLayoutOrderTime = findViewById(R.id.linearLayoutOrderTime);
         linearLayoutFinishTime = findViewById(R.id.linearLayoutFinishTime);
-
-        LoadDataFromBuyNow();
-
-        // Check if Buyer data has not been initialized
-        String phoneNumber = edtBuyOrderDetailBuyerPhone.getText().toString().trim();
-        String address = edtBuyOrderDetailBuyerAddress.getText().toString().trim();
-        if (phoneNumber.isEmpty() || address.isEmpty()) {
-            // Disable button
-            btnConfirmBuyOrder.setEnabled(false);
-            btnConfirmBuyOrder.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.gray));
-            MyDialog.showDialog(this, "Bạn có thể cập nhật thông tin trong mục Cài đặt tài khoản để hệ thống tự động điền thông tin", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
-                @Override
-                public void onYesClick() {
-
-                }
-
-                @Override
-                public void onNoClick() {
-
-                }
-
-                @Override
-                public void onOkClick() {
-
-                }
-            });
-        }
-
-        // Add event OnTextChange
-        edtBuyOrderDetailBuyerName.addTextChangedListener(textWatcher);
-        edtBuyOrderDetailBuyerPhone.addTextChangedListener(textWatcher);
-        edtBuyOrderDetailBuyerAddress.addTextChangedListener(textWatcher);
     }
     private void displayLinearLayoutButton(int BuyOrderStatus){
         switch (BuyOrderStatus){
             case 0: // Processing Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.GONE);
-                txtViewBuyOrderStatus.setText("Đang xử lý");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+                SetDataForBuyProcessing();
                 break;
             case 1: // Shipping Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.GONE);
-                txtViewBuyOrderStatus.setText("Đang giao");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_delivering,null));
+                SetDataForBuyDelivering();
                 break;
             case 2: // Finished Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.VISIBLE);
-                txtViewBuyOrderStatus.setText("Đã hoàn thành");
-                tvBuyOrderDetailFinishStatus.setText("Thời gian hoàn thành: ");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_finish,null));
+                SetDataForBuyFinished();
                 break;
             case 3: // Cancel Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.VISIBLE);
-                txtViewBuyOrderStatus.setText("Đã hủy");
-                tvBuyOrderDetailFinishStatus.setText("Thời gian hủy: ");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_cancel,null));
+                SetDataForBuyCanceled();
                 break;
             case 4: // Confirm buying
-                linearLayoutButtonConfirmBuying.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.GONE);
-                linearLayoutShippingInformation2.setVisibility(View.GONE);
-                linearLayoutOrderTime.setVisibility(View.GONE);
-                linearLayoutFinishTime.setVisibility(View.GONE);
-                txtViewBuyOrderStatus.setText("Đang chờ xác nhận");
-                edtBuyOrderDetailBuyerName.setFocusable(true);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(true);
-                edtBuyOrderDetailBuyerPhone.setFocusable(true);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(true);
-                edtBuyOrderDetailBuyerAddress.setFocusable(true);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(true);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+                SetDataForConfirmBuying();
             default:
                 break;
         }
     }
-    private void LoadDataFromBuyNow()
-    {
-        Intent intent = getIntent();
-        if (intent.hasExtra("BuyOrderStatus")){
-            int BuyOrderStatus = intent.getIntExtra("BuyOrderStatus",0);
-            displayLinearLayoutButton(BuyOrderStatus);
-        }
+    private void SetGeneralData() {
+        // Order info
+        tvBuyOrderDetailOrderName.setText(clickedOrder.getLaptopName());
+        tvBuyOrderDetailTotalAmount.setText(fullOrderDetails.getTotalAmount());
+        tvBuyOrderDetailOrderedTime.setText(fullOrderDetails.getOrderedDate());
+        if (fullOrderDetails.getFinishedDate() != null)
+            tvBuyOrderDetailFinishedTime.setText(fullOrderDetails.getFinishedDate());
 
-        if (intent.hasExtra("CurrentBuyer")) {
-            currentBuyer = (CurrentBuyer) intent.getSerializableExtra("CurrentBuyer");
-            // Buyer
-            edtBuyOrderDetailBuyerName.setText(currentBuyer.getAccountName());
-            edtBuyOrderDetailBuyerPhone.setText(currentBuyer.getPhoneNumber());
-            edtBuyOrderDetailBuyerAddress.setText(currentBuyer.getAddress());
-        }
+        // Delivering info is not initialized yet (Because of processing)
+        if (fullOrderDetails.getPostServiceName() != null)
+            edtBuyOrderDetailPostServiceName.setText(fullOrderDetails.getPostServiceName());
+        else
+            edtBuyOrderDetailPostServiceName.setText("");
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            // Order
-            tvBuyOrderDetailOrderName.setText(bundle.getString("OrderName"));
-            tvBuyOrderDetailTotalAmount.setText(bundle.getString("TotalAmount"));
-            // Seller
-            sellerID = bundle.getString("SellerID");
-            edtBuyOrderDetailSellerName.setText(bundle.getString("SellerName"));
-            edtBuyOrderDetailSellerPhone.setText(bundle.getString("SellerPhoneNumber"));
-            edtBuyOrderDetailSellerAddress.setText(bundle.getString("SellerAddress"));
-            // Post
-            postID = bundle.getString("PostID");
-        }
+        if (fullOrderDetails.getPostServiceCode() != null)
+            edtBuyOrderDetailPostServiceName.setText(fullOrderDetails.getPostServiceCode());
+        else
+            edtBuyOrderDetailPostServiceName.setText("");
+
+        // Buyer info
+        edtBuyOrderDetailBuyerPhone.setText(fullOrderDetails.getBuyerPhone());
+        edtBuyOrderDetailBuyerName.setText(fullOrderDetails.getBuyerName());
+        edtBuyOrderDetailBuyerAddress.setText(fullOrderDetails.getShipAddress());
+
+        // Seller info
+        edtBuyOrderDetailSellerPhone.setText(postOfThisOrder.getSellerPhoneNumber());
+        edtBuyOrderDetailSellerName.setText(postOfThisOrder.getSellerName());
+        edtBuyOrderDetailSellerAddress.setText(postOfThisOrder.getSellerAddress());
+
     }
-
-    @Override
-    public void DisplayBuySucessful() {
-        Intent resultIntent = new Intent();
-        setResult(Activity.RESULT_OK, resultIntent);
-        MyDialog.showDialog(this, "Đặt hàng thành công.\nQuay về màn hình trang chủ.", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
-            @Override
-            public void onYesClick() {
-
-            }
-
-            @Override
-            public void onNoClick() {
-
-            }
-
-            @Override
-            public void onOkClick() {
-                finish();
-            }
-        });
+    private void SetDataForBuyProcessing () {
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.GONE);
+        txtViewBuyOrderStatus.setText("Đang xử lý");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
     }
+    private void SetDataForBuyDelivering () {
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.GONE);
+        txtViewBuyOrderStatus.setText("Đang giao");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_delivering,null));
+    }
+    private void SetDataForBuyFinished(){
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.VISIBLE);
+        txtViewBuyOrderStatus.setText("Đã hoàn thành");
+        tvBuyOrderDetailFinishStatus.setText("Thời gian hoàn thành: ");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_finish,null));
+    }
+    private void SetDataForBuyCanceled(){
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.VISIBLE);
+        txtViewBuyOrderStatus.setText("Đã hủy");
+        tvBuyOrderDetailFinishStatus.setText("Thời gian hủy: ");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_cancel,null));
+    }
+    private void SetDataForConfirmBuying (){
+        linearLayoutButtonConfirmBuying.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.GONE);
+        linearLayoutShippingInformation2.setVisibility(View.GONE);
+        linearLayoutOrderTime.setVisibility(View.GONE);
+        linearLayoutFinishTime.setVisibility(View.GONE);
+        txtViewBuyOrderStatus.setText("Đang chờ xác nhận");
+        edtBuyOrderDetailBuyerName.setFocusable(true);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(true);
+        edtBuyOrderDetailBuyerPhone.setFocusable(true);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(true);
+        edtBuyOrderDetailBuyerAddress.setFocusable(true);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(true);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+    }
+    // endregion
 
+    //region Text change event
     TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -369,4 +511,5 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
 
         }
     };
+    //endregion
 }
