@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
     private RecyclerView rcvBuyCancel;
     private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +41,18 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
         View view = inflater.inflate(R.layout.fragment_buy_cancel, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
-        progressBar = view.findViewById(R.id.progressBarBuyCancel);
         rcvBuyCancel = view.findViewById(R.id.rcvBuyCancel);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutBuyCancel);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buyFragmentPresenter.LoadBuyCancelOrder();
+                rcvBuyCancel.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        progressBar = view.findViewById(R.id.progressBarBuyCancel);
         GridLayoutManager gridLayoutManagerBuyCancel = new GridLayoutManager(requireContext(),1);
         rcvBuyCancel.setLayoutManager(gridLayoutManagerBuyCancel);
         buyFragmentPresenter.LoadBuyCancelOrder();
@@ -56,5 +68,6 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
         BuyCancelAdapter buyCancelAdapter = new BuyCancelAdapter(orders);
         rcvBuyCancel.setAdapter(buyCancelAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvBuyCancel.setVisibility(View.VISIBLE);
     }
 }

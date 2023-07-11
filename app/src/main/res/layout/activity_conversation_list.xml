@@ -47,7 +47,7 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             android:padding="13dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         <ProgressBar
             android:id="@+id/progressBar"
@@ -55,16 +55,33 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:visibility="gone"/>
-        <TextView
-            android:id="@+id/textViewNotConversation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/layoutNotConversation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_gravity="center"
-            android:text="Bạn chưa có cuộc trò chuyện nào!!"
-            android:textColor="#EC7C28"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:visibility="gone"
-            />
+            android:gravity="center">
+            <ImageView
+                android:layout_marginTop="-100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/ic_not_conversation"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/textViewNotConversation"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Hãy tìm tin đăng mà bạn muốn và bấm vào nút Chat ngay để liên hệ với người bán"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                android:visibility="visible"
+                />
+        </LinearLayout>
+
     </FrameLayout>
 </LinearLayout>

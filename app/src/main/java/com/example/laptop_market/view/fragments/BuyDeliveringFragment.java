@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class BuyDeliveringFragment extends Fragment implements IOrderContract.Vi
     private RecyclerView rcvBuyDelivering;
     private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +38,20 @@ public class BuyDeliveringFragment extends Fragment implements IOrderContract.Vi
         // Inflate the layout for this fragment
         buyFragmentPresenter = new BuyFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_buy_delivering, container, false);
+
         //Hiển thị các đơn bán - đang xử lý
-        progressBar = view.findViewById(R.id.progressBarBuyDelivering);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutBuyDelivering);
         rcvBuyDelivering = view.findViewById(R.id.rcvBuyDelivering);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buyFragmentPresenter.LoadBuyDeliveringOrder();
+                rcvBuyDelivering.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        progressBar = view.findViewById(R.id.progressBarBuyDelivering);
         GridLayoutManager gridLayoutManagerBuyDelivering = new GridLayoutManager(requireContext(),1);
         rcvBuyDelivering.setLayoutManager(gridLayoutManagerBuyDelivering);
         buyFragmentPresenter.LoadBuyDeliveringOrder();
@@ -54,5 +67,6 @@ public class BuyDeliveringFragment extends Fragment implements IOrderContract.Vi
         BuyDeliveringAdapter BuyDeliveringAdapter = new BuyDeliveringAdapter(orders);
         rcvBuyDelivering.setAdapter(BuyDeliveringAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvBuyDelivering.setVisibility(View.VISIBLE);
     }
 }

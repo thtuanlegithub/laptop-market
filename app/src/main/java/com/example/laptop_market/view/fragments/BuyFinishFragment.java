@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class BuyFinishFragment extends Fragment implements IOrderContract.View.B
     private RecyclerView rcvBuyFinish;
     private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     private ProgressBar progressBar;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +40,18 @@ public class BuyFinishFragment extends Fragment implements IOrderContract.View.B
         View view = inflater.inflate(R.layout.fragment_buy_finish, container, false);
 
         //Hiển thị các đơn bán - đang xử lý
-        progressBar = view.findViewById(R.id.progressBarBuyFinish);
         rcvBuyFinish = view.findViewById(R.id.rcvBuyFinish);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutBuyFinish);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buyFragmentPresenter.LoadBuyFinishedOrder();
+                rcvBuyFinish.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        progressBar = view.findViewById(R.id.progressBarBuyFinish);
         GridLayoutManager gridLayoutManagerBuyFinish = new GridLayoutManager(requireContext(),1);
         rcvBuyFinish.setLayoutManager(gridLayoutManagerBuyFinish);
         buyFragmentPresenter.LoadBuyFinishedOrder();
@@ -55,5 +66,6 @@ public class BuyFinishFragment extends Fragment implements IOrderContract.View.B
         BuyFinishAdapter BuyFinishAdapter = new BuyFinishAdapter(orders);
         rcvBuyFinish.setAdapter(BuyFinishAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvBuyFinish.setVisibility(View.VISIBLE);
     }
 }

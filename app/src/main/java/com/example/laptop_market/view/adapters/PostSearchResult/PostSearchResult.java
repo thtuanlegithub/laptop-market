@@ -16,6 +16,7 @@ public class PostSearchResult implements Serializable {
     private String title;
     private String address;
     private double price;
+    private String postStatus;
 
     public String getAccountId() {
         return userId;
@@ -88,5 +89,21 @@ public class PostSearchResult implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
     }
 }

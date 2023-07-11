@@ -17,6 +17,8 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.Gravity;
 import android.view.View;
@@ -41,11 +43,15 @@ import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.adapters.ImageForNewPostAdapter;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +66,16 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private RelativeLayout newPostHardDiskSize;
     private RelativeLayout newPostGraphicType;
     private RelativeLayout newPostGraphicSize;
-    private RelativeLayout newPostWarranty;
     private RelativeLayout newPostOriginCountry;
+    private TextInputEditText edtNewPostStatus;
+    private TextInputEditText edtNewPostBrand;
+    private TextInputEditText edtNewPostCPU;
+    private TextInputEditText edtNewPostRAM;
+    private TextInputEditText edtNewPostHardDiskType;
+    private TextInputEditText edtNewPostHardDiskSize;
+    private TextInputEditText edtNewPostGraphicType;
+    private TextInputEditText edtNewPostGraphicSize;
+    private TextInputEditText edtNewPostOriginCountry;
     private EditText edtNewPostPrice;
     private EditText edtTitle;
     private EditText edtDescription;
@@ -91,12 +105,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         ListPictures = new ArrayList<>();
         laptopActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
         postActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
-        listImageLayout = findViewById(R.id.listImageLayout);
-        addNewImageBtt = findViewById(R.id.addNewImageBtt);
-        btnNewPostClose = findViewById(R.id.btnNewPostClose);
-        btnNewPostClose.setOnClickListener(view -> {
-            finish();
-        });
 
         findView();
 
@@ -125,11 +133,19 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         newPostCPU = findViewById(R.id.newPostCPU);
         newPostRAM = findViewById(R.id.newPostRAM);
         newPostHardDiskType = findViewById(R.id.newPostHardDiskType);
-        newPostHardDiskSize = findViewById(R.id.newPostGraphicSize);
+        newPostHardDiskSize = findViewById(R.id.newPostHardDiskSize);
         newPostGraphicType = findViewById(R.id.newPostGraphicType);
         newPostGraphicSize = findViewById(R.id.newPostGraphicSize);
-        newPostWarranty = findViewById(R.id.newPostWarranty);
-        newPostOriginCountry = findViewById(R.id.newPostOriginCountry);
+        edtNewPostStatus = findViewById(R.id.edtNewPostStatus);
+        edtNewPostBrand = findViewById(R.id.edtNewPostBrand);
+        edtNewPostCPU = findViewById(R.id.edtNewPostCPU);
+        edtNewPostRAM = findViewById(R.id.edtNewPostRAM);
+        edtNewPostHardDiskType = findViewById(R.id.edtNewPostHardDiskType);
+        edtNewPostHardDiskSize = findViewById(R.id.edtNewPostHardDiskSize);
+        edtNewPostGraphicType = findViewById(R.id.edtNewPostGraphicType);
+        edtNewPostGraphicSize = findViewById(R.id.edtNewPostGraphicSize);
+        edtNewPostOriginCountry = findViewById(R.id.edtNewPostOriginCountry);
+        edtNewPostOriginCountry = findViewById(R.id.edtNewPostOriginCountry);
         edtNewPostPrice = findViewById(R.id.edtNewPostPrice);
         edtTitle = findViewById(R.id.edtTitle);
         edtSellerPhoneNumber = findViewById(R.id.edtSellerPhoneNumber);
@@ -138,6 +154,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         NewPostOpenImageBtt = findViewById(R.id.NewPostOpenImageBtt);
         edtDescription=findViewById(R.id.edtDescription);
         rcvImageForNewPost = findViewById(R.id.rcvImageForNewPost);
+        listImageLayout = findViewById(R.id.listImageLayout);
+        addNewImageBtt = findViewById(R.id.addNewImageBtt);
         setListener();
     }
     private void ShowToast(String message)
@@ -146,7 +164,48 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     }
     private void setListener()
     {
-        newPostStatus.setOnClickListener(v -> {
+        edtNewPostPrice.addTextChangedListener(new TextWatcher() {
+            private DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance();
+
+            private String current = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(current)) {
+                    edtNewPostPrice.removeTextChangedListener(this);
+
+                    String cleanString = s.toString().replaceAll("[,.]", "");
+                    double parsed = 0;
+                    try {
+                        parsed = decimalFormat.parse(cleanString).doubleValue();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String formatted = decimalFormat.format(parsed);
+
+                    current = formatted;
+                    edtNewPostPrice.setText(formatted);
+                    edtNewPostPrice.setSelection(formatted.length());
+
+                    edtNewPostPrice.addTextChangedListener(this);
+                }
+            }
+        });
+
+
+        btnNewPostClose.setOnClickListener(view -> {
+            finish();
+        });
+
+        edtNewPostStatus.setOnClickListener(v -> {
             preferenceManager = new PreferenceManager(this);
             searchFilterPost = new SearchFilterPost();
             if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
@@ -156,6 +215,104 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Tình trạng +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostBrand.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","Hãng +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostCPU.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","CPU +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostRAM.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","RAM +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostHardDiskType.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","Loại ổ cứng +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostHardDiskSize.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","Kích thước ổ cứng +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostGraphicType.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","Card màn hình +");
+            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            context.startActivity(intent);
+        });
+
+        edtNewPostGraphicSize.setOnClickListener(v -> {
+            preferenceManager = new PreferenceManager(this);
+            searchFilterPost = new SearchFilterPost();
+            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
+            {
+                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
+            }
+            Context context = this;
+            Intent intent = new Intent(context,FilterNewPostActivity.class);
+            intent.putExtra("filter","Kích cỡ màn hình +");
             intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
             context.startActivity(intent);
         });
@@ -172,6 +329,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
         });
+
+
         addNewImageBtt.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");

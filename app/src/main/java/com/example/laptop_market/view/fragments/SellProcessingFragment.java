@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class SellProcessingFragment extends Fragment implements IOrderContract.V
     private RecyclerView rcvSellProcessing;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +37,19 @@ public class SellProcessingFragment extends Fragment implements IOrderContract.V
         // Inflate the layout for this fragment
         sellFragmentPresenter = new SellFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_sell_processing, container, false);
-
+        rcvSellProcessing = view.findViewById(R.id.rcvSellProcessing);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutSellProcessing);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                sellFragmentPresenter.LoadSellProcessingOrder();
+                rcvSellProcessing.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //Hiển thị các đơn bán - đang xử lý
         progressBar = view.findViewById(R.id.progressBarSellProcessing);
-        rcvSellProcessing = view.findViewById(R.id.rcvSellProcessing);
         GridLayoutManager gridLayoutManagerSellProcessing = new GridLayoutManager(requireContext(),1);
         rcvSellProcessing.setLayoutManager(gridLayoutManagerSellProcessing);
         sellFragmentPresenter.LoadSellProcessingOrder();

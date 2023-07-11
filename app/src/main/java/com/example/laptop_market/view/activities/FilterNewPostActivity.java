@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -18,7 +20,11 @@ import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.adapters.FilterRadioButtonAdapter;
+import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +55,9 @@ public class FilterNewPostActivity extends AppCompatActivity {
         maximumPriceTextViewNewPost = findViewById(R.id.maximumPriceTextViewNewPost);
         seekBarMaxPriceNewPost = findViewById(R.id.seekBarMaxPriceNewPost);
         btnFilterDetailNewPostApply = findViewById(R.id.btnFilterDetailNewPostApply);
+
+
+
         //
         btnFilterDetailNewPostClose.setOnClickListener(v -> {
             finish();
@@ -66,7 +75,6 @@ public class FilterNewPostActivity extends AppCompatActivity {
             case "Giá +":
                 layoutSeekBarNewPost.setVisibility(View.VISIBLE);
                 rcvFilterNewPostRadioButton.setVisibility(View.GONE);
-
                 break;
             case "Hãng +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -76,6 +84,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridBrandLayoutManager);
                 FilterRadioButtonAdapter filterBrandAdapter = new FilterRadioButtonAdapter(getListBrandFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.BRAND_NAME);
                 rcvFilterNewPostRadioButton.setAdapter(filterBrandAdapter);
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Tình trạng +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -85,7 +94,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridStatusLayoutManager);
                 FilterRadioButtonAdapter filterGuaranteeAdapter = new FilterRadioButtonAdapter(getListGuaranteeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.GUARANTEE);
                 rcvFilterNewPostRadioButton.setAdapter(filterGuaranteeAdapter);
-
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Bộ xử lý +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -95,7 +104,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridCPULayoutManager);
                 FilterRadioButtonAdapter filterCPUAdapter = new FilterRadioButtonAdapter(getListCPUFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.CPU);
                 rcvFilterNewPostRadioButton.setAdapter(filterCPUAdapter);
-
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "RAM +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -105,7 +114,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridRAMLayoutManager);
                 FilterRadioButtonAdapter filterRAMAdapter = new FilterRadioButtonAdapter(getListRAMFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.RAM);
                 rcvFilterNewPostRadioButton.setAdapter(filterRAMAdapter);
-
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Loại ổ cứng +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -115,7 +124,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridHardDiskTypeLayoutManager);
                 FilterRadioButtonAdapter filterHardDiskTypeAdapter = new FilterRadioButtonAdapter(getListHardDiskTypeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.HARD_DRIVE);
                 rcvFilterNewPostRadioButton.setAdapter(filterHardDiskTypeAdapter);
-
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Kích thước ổ cứng +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -125,6 +134,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridHardDiskSizeLayoutManager);
                 FilterRadioButtonAdapter filterHardDiskSizeAdapter = new FilterRadioButtonAdapter(getListHardDiskSizeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.HARD_DRIVE_SIZE);
                 rcvFilterNewPostRadioButton.setAdapter(filterHardDiskSizeAdapter);
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Card màn hình +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -134,6 +144,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridGraphicTypeManager);
                 FilterRadioButtonAdapter filterGraphicTypeAdapter = new FilterRadioButtonAdapter(getListGraphicTypeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.GRAPHICS);
                 rcvFilterNewPostRadioButton.setAdapter(filterGraphicTypeAdapter);
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
             case "Kích cỡ màn hình +":
                 layoutSeekBarNewPost.setVisibility(View.GONE);
@@ -143,6 +154,7 @@ public class FilterNewPostActivity extends AppCompatActivity {
                 rcvFilterNewPostRadioButton.setLayoutManager(gridGraphicSizeManager);
                 FilterRadioButtonAdapter filterScreenSizeAdapter = new FilterRadioButtonAdapter(getListScreenSizeFilterRadioButton(),searchFilterPost,FilterRadioButtonAdapter.SCREEN_SIZE);
                 rcvFilterNewPostRadioButton.setAdapter(filterScreenSizeAdapter);
+                btnFilterDetailNewPostApply.setVisibility(View.GONE);
                 break;
         }
     }

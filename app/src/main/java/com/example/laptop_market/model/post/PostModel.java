@@ -1,5 +1,6 @@
 package com.example.laptop_market.model.post;
 
+import android.app.appsearch.PackageIdentifier;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -162,6 +163,7 @@ public class PostModel implements IPostContract.Model {
                                     post.setTitle(documentSnapshot.getString(PostTable.TITLE));
                                     post.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
                                     post.setAccountId(documentSnapshot.getString(PostTable.ACCOUNT_ID));
+                                    post.setPostStatus(documentSnapshot.getString(PostTable.POST_STATUS));
                                     post.setImage(getBitMapFromString(documentSnapshot.getString((PostTable.POST_MAIN_IMAGE))));
                                     String laptopID = documentSnapshot.getString(PostTable.LAPTOP_ID);
                                     Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
@@ -323,6 +325,7 @@ public class PostModel implements IPostContract.Model {
                                     post.setTitle(documentSnapshot.getString(PostTable.TITLE));
                                     post.setLaptopId(documentSnapshot.getString(PostTable.LAPTOP_ID));
                                     post.setAccountId(documentSnapshot.getString(PostTable.ACCOUNT_ID));
+                                    post.setPostStatus(documentSnapshot.getString(PostTable.POST_STATUS));
                                     post.setImage(getBitMapFromString(documentSnapshot.getString((PostTable.POST_MAIN_IMAGE))));
                                     String laptopID = documentSnapshot.getString(PostTable.LAPTOP_ID);
                                     Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
@@ -439,6 +442,7 @@ public class PostModel implements IPostContract.Model {
                                             postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
                                             postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
                                             postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                            postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
                                             postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
                                             String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
                                             Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
@@ -507,6 +511,7 @@ public class PostModel implements IPostContract.Model {
                                             postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
                                             postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
                                             postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                            postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
                                             postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
                                             String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
                                             Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
@@ -543,5 +548,26 @@ public class PostModel implements IPostContract.Model {
             // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
             listener.OnFinishLoadPostInactive(true, null, null);
         }
+    }
+
+    @Override
+    public void UpdatePostStatus(String postID, OnUpdatePostStatusListener listener) {
+        db.collection(PostTable.TABLE_NAME).document(postID).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if (documentSnapshot.exists()){
+                    String postStatus = documentSnapshot.getString(PostTable.POST_STATUS);
+                    if (postStatus.equals(PostStatus.AVAILABLE)){
+                        db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE);
+                        listener.OnFinishUpdatePostStatus(true, false, null);
+                    } else {
+                        db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.AVAILABLE);
+                        listener.OnFinishUpdatePostStatus(true, true, null);
+                    }
+                }
+            } else {
+                listener.OnFinishUpdatePostStatus(false, false, task.getException());
+            }
+        });
     }
 }

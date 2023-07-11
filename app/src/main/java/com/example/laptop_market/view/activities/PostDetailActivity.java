@@ -30,7 +30,9 @@ import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.account.CurrentBuyer;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
+import com.example.laptop_market.model.post.PostStatus;
 import com.example.laptop_market.presenter.activities.PostDetailActivityPresenter;
+import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.elses.FragmentActivityType;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.AccountTable;
@@ -38,6 +40,7 @@ import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.ImageSliderAdapter;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -82,7 +85,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private ActivityResultLauncher<Intent> orderDetailsLauncher;
     private TextView tvPostDetailDescription;
     private boolean backFromOrder = false;
+    private Button btnViewProfileFromPostDetail;
     private AppCompatButton bttMessenger;
+    private AppCompatButton btnNotifyPostStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,36 +133,67 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         screenSizeTextView = findViewById(R.id.screenSizeTextView);
         guaranteeTextView = findViewById(R.id.guaranteeTextView);
         originTextView = findViewById(R.id.originTextView);
+        btnViewProfileFromPostDetail = findViewById(R.id.btnViewProfileFromPostDetail);
+        btnNotifyPostStatus = findViewById(R.id.btnNotifyPostStatus);
+        // init data
+        InitData();
+
         // check seller or customer
-        if(checkSeller()){
+        if(isSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
+            if (postSearchResult.getPostStatus().equals(PostStatus.AVAILABLE))
+                btnNotifyPostStatus.setText("Thông báo hết hàng");
+            else
+                btnNotifyPostStatus.setText("Thông báo còn hàng");
         }
         else{
             layoutButtonCustomer.setVisibility(View.VISIBLE);
             layoutButtonSeller.setVisibility(View.GONE);
+            if (postSearchResult.getPostStatus().equals(PostStatus.NOT_AVAILABLE)) {
+                MyDialog.showDialog(this, "Mặt hàng này đã ngừng bán!", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+                    @Override
+                    public void onYesClick() {
+
+                    }
+
+                    @Override
+                    public void onNoClick() {
+
+                    }
+
+                    @Override
+                    public void onOkClick() {
+                        btnBuyNow.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
-
-
         viewPagerImagePostDetail = findViewById(R.id.viewPagerImagePostDetail);
-
         // set listener
         setListener();
-
-        // init data
-        InitData();
     }
-    private boolean checkSeller(){
-        // Customer - false
-
+    private boolean isSeller(){
         // Seller - true
-
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String currentUserID = firebaseUser.getUid();
+            if (currentUserID.equals(postSearchResult.getAccountId())){
+                return true;
+            }
+        }
+        // Customer - false
         return false;
     }
+
     private void setListener()
     {
-        btnBuyNow.setOnClickListener(view -> {
-
+        btnNotifyPostStatus.setOnClickListener(view -> {
+            postPresenter.OnChangeStatusClicked(postSearchResult.getPostId());
+        });
+        btnViewProfileFromPostDetail.setOnClickListener(view -> {
+            /*Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);*/
         });
         bttMessenger.setOnClickListener(view -> {
             if(FirebaseAuth.getInstance().getCurrentUser() == null)
@@ -368,5 +404,13 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         screenSizeTextView.setText(laptop.getScreenSize());
         guaranteeTextView.setText(laptop.getGuarantee());
         originTextView.setText(laptop.getOrigin());
+    }
+
+    @Override
+    public void DisplayNotifyButtonStatus(boolean isAvailable) {
+        if (isAvailable)
+            btnNotifyPostStatus.setText("Thông báo hết hàng");
+        else
+            btnNotifyPostStatus.setText("Thông báo còn hàng");
     }
 }

@@ -295,7 +295,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Dung lượng ổ cứng"
+                        android:hint="Kích thước ổ cứng"
                         app:hintTextAppearance="@style/HintTextAppearance"
                         app:hintAnimationEnabled="true"
                         android:background="@drawable/outline_combobox"
@@ -398,43 +398,6 @@
                         android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <RelativeLayout
-                    android:id="@+id/newPostWarranty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    >
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Bảo hành"
-                        app:hintTextAppearance="@style/HintTextAppearance"
-                        app:hintAnimationEnabled="true"
-                        android:background="@drawable/outline_combobox"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="3dp">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edtNewPostWarranty"
-                            android:focusable="false"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginBottom="15dp"
-                            android:paddingTop="5dp"
-                            android:background="#FAFAFA"
-                            android:textSize="16dp"
-                            android:inputType="number"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_drop_down" />
-                </RelativeLayout>
-                <RelativeLayout
                     android:id="@+id/newPostOriginCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -452,7 +415,6 @@
                         android:paddingTop="3dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtNewPostOriginCountry"
-                            android:focusable="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -464,12 +426,6 @@
                             android:inputType="number"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_drop_down" />
                 </RelativeLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"

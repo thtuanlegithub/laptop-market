@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
     private RecyclerView rcvSellFinish;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +38,19 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
         // Inflate the layout for this fragment
         sellFragmentPresenter = new SellFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_sell_finish, container, false);
-
+        rcvSellFinish = view.findViewById(R.id.rcvSellFinish);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutSellFinish);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                sellFragmentPresenter.LoadSellFinishedOrder();
+                rcvSellFinish.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //Hiển thị các đơn bán - đang xử lý
         progressBar = view.findViewById(R.id.progressBarSellFinish);
-        rcvSellFinish = view.findViewById(R.id.rcvSellFinish);
         GridLayoutManager gridLayoutManagerSellFinish = new GridLayoutManager(requireContext(),1);
         rcvSellFinish.setLayoutManager(gridLayoutManagerSellFinish);
         sellFragmentPresenter.LoadSellFinishedOrder();

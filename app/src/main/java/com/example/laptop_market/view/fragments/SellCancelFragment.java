@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class SellCancelFragment extends Fragment implements IOrderContract.View.
     private RecyclerView rcvSellCancel;
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +39,19 @@ public class SellCancelFragment extends Fragment implements IOrderContract.View.
         // Inflate the layout for this fragment
         sellFragmentPresenter = new SellFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_sell_cancel, container, false);
-
+        rcvSellCancel = view.findViewById(R.id.rcvSellCancel);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutSellCancel);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                sellFragmentPresenter.LoadSellCancelOrder();
+                rcvSellCancel.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //Hiển thị các đơn bán - đang xử lý
         progressBar = view.findViewById(R.id.progressBarSellCancel);
-        rcvSellCancel = view.findViewById(R.id.rcvSellCancel);
         GridLayoutManager gridLayoutManagerSellCancel = new GridLayoutManager(requireContext(),1);
         rcvSellCancel.setLayoutManager(gridLayoutManagerSellCancel);
         sellFragmentPresenter.LoadSellCancelOrder();
@@ -56,5 +67,6 @@ public class SellCancelFragment extends Fragment implements IOrderContract.View.
         SellCancelAdapter sellCancelAdapter = new SellCancelAdapter(orders);
         rcvSellCancel.setAdapter(sellCancelAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvSellCancel.setVisibility(View.VISIBLE);
     }
 }

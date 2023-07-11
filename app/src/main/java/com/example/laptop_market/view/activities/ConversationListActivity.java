@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     private ConversationAdapter conversationAdapter;
     private ArrayList<Conversation> listConversations;
     private TextView textViewNotConversation;
+    private LinearLayout layoutNotConversation;
     private ProgressBar progressBar;
     private IConversationContract.Presenter.ConversationListActivityPresenter conversationListActivityPresenter;
     private int count;
@@ -51,6 +53,7 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
         listConversationRecyclerView = findViewById(R.id.listConversationRecyclerView);
         bttBackConversation = findViewById(R.id.bttBackConversation);
         textViewNotConversation = findViewById(R.id.textViewNotConversation);
+        layoutNotConversation = findViewById(R.id.layoutNotConversation);
         progressBar = findViewById(R.id.progressBar);
         listConversations = new ArrayList<>();
         conversationAdapter = new ConversationAdapter(listConversations,this);
@@ -133,11 +136,11 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
     private void LoadConversation(int length)
     {
         if(length==0 && count == 2) {
-            textViewNotConversation.setVisibility(View.VISIBLE);
+            layoutNotConversation.setVisibility(View.VISIBLE);
             listConversationRecyclerView.setVisibility(View.GONE);
         }
         else{
-            textViewNotConversation.setVisibility(View.GONE);
+            layoutNotConversation.setVisibility(View.GONE);
             listConversationRecyclerView.setVisibility(View.VISIBLE);
         }
     }
