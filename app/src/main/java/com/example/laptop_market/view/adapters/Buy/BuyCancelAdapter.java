@@ -51,6 +51,7 @@ public class BuyCancelAdapter extends RecyclerView.Adapter<BuyCancelAdapter.BuyC
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),BuyOrderDetailActivity.class);
                 intent.putExtra("BuyOrderStatus",3);
+                intent.putExtra("ClickedOrder", BuyCancel);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }

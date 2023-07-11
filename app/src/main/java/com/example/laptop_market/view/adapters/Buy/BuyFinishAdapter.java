@@ -51,6 +51,7 @@ public class BuyFinishAdapter extends RecyclerView.Adapter<BuyFinishAdapter.BuyF
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),BuyOrderDetailActivity.class);
                 intent.putExtra("BuyOrderStatus",2);
+                intent.putExtra("ClickedOrder", BuyFinish);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }

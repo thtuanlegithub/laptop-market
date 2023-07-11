@@ -51,6 +51,7 @@ public class BuyDeliveringAdapter extends RecyclerView.Adapter<BuyDeliveringAdap
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),BuyOrderDetailActivity.class);
                 intent.putExtra("BuyOrderStatus",1);
+                intent.putExtra("ClickedOrder", BuyDelivering);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }

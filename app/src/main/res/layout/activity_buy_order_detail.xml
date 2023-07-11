@@ -110,7 +110,7 @@
                         android:textStyle="bold"
                         android:textSize="17dp"
                         android:textColor="@color/black"
-                        android:text="Laptop ASUS TUF - Gaming A15 - 16GB RAM - RTX 3050 4GB"
+                        android:text=""
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -133,7 +133,7 @@
                         android:textStyle="bold"
                         android:textSize="17dp"
                         android:textColor="@color/red"
-                        android:text="100.000.000 VNĐ"
+                        android:text=""
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="17dp"
-                        android:text="15-06-2023 15:56"
+                        android:text=""
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="17dp"
-                        android:text="25-06-2023 20:08"
+                        android:text=""
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -226,7 +226,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="Viettel Post" />
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -252,7 +252,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="VT123456789"
+                        android:text=""
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -297,7 +297,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="number"
-                        android:text="0702290135"
+                        android:text=""
                         android:maxLength="10"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -326,7 +326,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="Lê Thanh Tuấn" />
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -354,7 +354,7 @@
                         android:textSize="17dp"
                         android:inputType="text"
                         android:focusedByDefault="false"
-                        android:text="khối phố Cổ An Đông, phường Điện Nam Đông, thị xã Điện Bàn, tỉnh Quảng Nam"
+                        android:text=""
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -400,7 +400,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="0702 290 135" />
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -427,7 +427,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="Lê Thanh Tuấn" />
+                        android:text="" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -455,7 +455,7 @@
                         android:background="#FAFAFA"
                         android:textSize="17dp"
                         android:inputType="text"
-                        android:text="khối phố Cổ An Đông, phường Điện Nam Đông, thị xã Điện Bàn, tỉnh Quảng Nam"
+                        android:text=""
                         />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
