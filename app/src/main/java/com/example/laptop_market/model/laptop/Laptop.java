@@ -156,6 +156,14 @@ public class Laptop {
     public void setNumOfImage(int numOfImage) {
         this.numOfImage = numOfImage;
     }
+    public boolean checkDataNull() {
+        if (laptopName == null || brandID == null || cpu == null || ram == null ||
+                hardDrive == null || hardDriveSize == null || graphics == null ||
+                screenSize == null || guarantee == null ) {
+            return true;  // có ít nhất một thuộc tính bằng null
+        }
+        return false;  // tất cả các thuộc tính đều không bằng null
+    }
 }
 
 

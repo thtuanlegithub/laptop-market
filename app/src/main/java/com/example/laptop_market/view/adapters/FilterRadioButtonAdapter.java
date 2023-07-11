@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.laptop_market.R;
 import com.example.laptop_market.model.filter.Filter;
+import com.example.laptop_market.utils.listeners.IFilterNewPost;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
 import com.example.laptop_market.view.activities.FilterActivity;
 
@@ -28,9 +29,10 @@ public class FilterRadioButtonAdapter extends RecyclerView.Adapter<FilterRadioBu
     public static final int HARD_DRIVE_SIZE = 6;
     public static final int GRAPHICS = 7;
     public static final int SCREEN_SIZE = 8;
-    private SearchFilterPost searchFilterPost;
-    private List<Filter> listFilterRadioButton;
+
     private ArrayList<String> listcheckedRadioButton;
+    private List<Filter> listFilterRadioButton;
+    private IFilterNewPost.FinishGetDataFromAdapterListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -42,10 +44,9 @@ public class FilterRadioButtonAdapter extends RecyclerView.Adapter<FilterRadioBu
         this.onItemClickListener = listener;
     }
 
-    public FilterRadioButtonAdapter(List<Filter> listFilterRadioButton, SearchFilterPost searchFilterPost, int type){
+    public FilterRadioButtonAdapter(List<Filter> listFilterRadioButton, IFilterNewPost.FinishGetDataFromAdapterListener listener){
         this.listFilterRadioButton = listFilterRadioButton;
-        this.searchFilterPost = searchFilterPost;
-        this.listcheckedRadioButton = loadListString(type);
+        this.listener = listener;
     }
     @NonNull
     @Override
@@ -63,18 +64,11 @@ public class FilterRadioButtonAdapter extends RecyclerView.Adapter<FilterRadioBu
 
         holder.txtFilterRadioButton.setText(currentFilter.getName());
         holder.rdFilter.setSelected(true);
-        holder.rdFilter.setTag(currentFilter.getName());
         holder.rdFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                String tag = compoundButton.getTag().toString();
                 if(checked)
-                {
-                    listcheckedRadioButton.add(tag);
-                }
-                else{
-                    listcheckedRadioButton.remove(tag);
-                }
+                    listener.FinishGetDataFromAdapter(currentFilter.getName());
             }
         });
         if(currentFilter.getImage()!=700052)
@@ -125,7 +119,7 @@ public class FilterRadioButtonAdapter extends RecyclerView.Adapter<FilterRadioBu
         return 0;
     }
 
-    public class FilterRadioButtonViewHolder extends RecyclerView.ViewHolder{
+    public static class FilterRadioButtonViewHolder extends RecyclerView.ViewHolder{
         TextView txtFilterRadioButton;
         RadioButton rdFilter;
         ImageView imgFilterRadioButton;
@@ -134,28 +128,6 @@ public class FilterRadioButtonAdapter extends RecyclerView.Adapter<FilterRadioBu
             txtFilterRadioButton = itemView.findViewById(R.id.txtFilterRadioButton);
             rdFilter = itemView.findViewById(R.id.rdFilter);
             imgFilterRadioButton = itemView.findViewById(R.id.imgFilterRadioButton);
-        }
-    }
-    private ArrayList<String> loadListString( int type) {
-        switch (type) {
-            case BRAND_NAME:
-                return searchFilterPost.getListBrandName();
-            case GUARANTEE:
-                return searchFilterPost.getListGuarantee();
-            case CPU:
-                return searchFilterPost.getListCPU();
-            case RAM:
-                return searchFilterPost.getListRam();
-            case HARD_DRIVE:
-                return searchFilterPost.getListHardDrive();
-            case HARD_DRIVE_SIZE:
-                return searchFilterPost.getListHardDriveSize();
-            case GRAPHICS:
-                return searchFilterPost.getListGraphics();
-            case SCREEN_SIZE:
-                return searchFilterPost.getListScreenSize();
-            default:
-                return new ArrayList<>();
         }
     }
 }

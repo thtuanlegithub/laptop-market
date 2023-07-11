@@ -430,6 +430,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         searchResultFragmentType = preferenceManager.getInt(Constants.KEY_POST_SEARCH_RESULT_TYPE,0);
         if(searchResultFragmentType == ADAPTER_TYPE0_CLICK)
         {
+            edtTextSearchResult.setText("");
             cleanSearchFilterPost();
             isLoading.setVisibility(View.VISIBLE);
             rcvPostSearchResult.setVisibility(View.GONE);
@@ -458,7 +459,6 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     }
     private void cleanSearchFilterPost()
     {
-        edtTextSearchResult.setText("");
         searchFilterPost.setSearchPost("");
         searchFilterPost.setMaximumPrice(50000000);
         searchFilterPost.setMinimumPrice(0);

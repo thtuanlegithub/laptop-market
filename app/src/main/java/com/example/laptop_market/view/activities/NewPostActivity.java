@@ -35,14 +35,18 @@ import android.widget.Toast;
 import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.ILaptopContract;
 import com.example.laptop_market.contracts.IPostContract;
+import com.example.laptop_market.model.account.Account;
 import com.example.laptop_market.model.laptop.Laptop;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.NewPostActivityPresenter;
 import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.utils.tables.Constants;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
+import com.example.laptop_market.view.adapters.FilterRadioButtonAdapter;
 import com.example.laptop_market.view.adapters.ImageForNewPostAdapter;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
@@ -92,6 +96,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     private LinearLayout listImageLayout;
     private AppCompatButton addNewImageBtt;
     private Laptop laptop;
+    private Post post;
+
 
     private  ImageForNewPostAdapter imageForNewPostAdapter;
     private PreferenceManager preferenceManager;
@@ -100,14 +106,13 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
-
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
         ListPictures = new ArrayList<>();
         laptopActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
         postActivityPresenter = new NewPostActivityPresenter(getApplicationContext(),this,this);
-
+        post = new Post();
+        laptop = new Laptop();
         findView();
-
         GridLayoutManager gridLayoutManagerImageForNewPost = new GridLayoutManager(this,1, RecyclerView.HORIZONTAL,false);
         rcvImageForNewPost.setLayoutManager(gridLayoutManagerImageForNewPost);
 
@@ -123,6 +128,8 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
             imageForNewPostAdapter.notifyDataSetChanged();
         });
         rcvImageForNewPost.setAdapter(imageForNewPostAdapter);
+        LoadData();
+
     }
 
     private void findView(){
@@ -162,13 +169,15 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     {
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
+    private void LoadData()
+    {
+        postActivityPresenter.OnLoadingAccount();
+    }
     private void setListener()
     {
         edtNewPostPrice.addTextChangedListener(new TextWatcher() {
             private DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance();
-
             private String current = "";
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -206,54 +215,27 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         });
 
         edtNewPostStatus.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Tình trạng +");
-            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
             context.startActivity(intent);
         });
 
         edtNewPostBrand.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Hãng +");
-            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
             context.startActivity(intent);
         });
 
         edtNewPostCPU.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
-            intent.putExtra("filter","CPU +");
-            intent.putExtra(SearchFilterPost.SEARCH_NAME, searchFilterPost);
+            intent.putExtra("filter","Bộ xử lý +");
             context.startActivity(intent);
         });
 
         edtNewPostRAM.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","RAM +");
@@ -262,12 +244,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         });
 
         edtNewPostHardDiskType.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Loại ổ cứng +");
@@ -276,12 +252,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         });
 
         edtNewPostHardDiskSize.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Kích thước ổ cứng +");
@@ -290,12 +260,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         });
 
         edtNewPostGraphicType.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Card màn hình +");
@@ -304,12 +268,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
         });
 
         edtNewPostGraphicSize.setOnClickListener(v -> {
-            preferenceManager = new PreferenceManager(this);
-            searchFilterPost = new SearchFilterPost();
-            if(preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH) != null)
-            {
-                searchFilterPost = (SearchFilterPost) preferenceManager.getSerializable(Constants.KEY_FILTER_SEARCH);
-            }
             Context context = this;
             Intent intent = new Intent(context,FilterNewPostActivity.class);
             intent.putExtra("filter","Kích cỡ màn hình +");
@@ -351,20 +309,28 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 Toast.makeText(getApplicationContext(),"Vui lòng chọn ít nhất 1 ảnh", Toast.LENGTH_SHORT).show();
                 return;
             }
-            laptop = new Laptop();
             laptop.setLaptopName(edtTitle.getText().toString());
-            laptop.setBrandID("Dell");
-            laptop.setPrice(1000000);
-            laptop.setCpu("Intel i7");
-            laptop.setRam("8GB ram");
-            laptop.setHardDrive("SSD");
-            laptop.setHardDriveSize("256gb");
-            laptop.setGraphics("NVIDIA");
-            laptop.setScreenSize("15.6 inch");
-            laptop.setGuarantee("Còn bảo hành");
-            laptop.setOrigin("Trung Quốc");
+            if( laptop.checkDataNull() || edtNewPostPrice.getText().toString().isEmpty() || edtDescription.getText().toString().isEmpty()
+                    || edtTitle.getText().toString().isEmpty() || edtSellerAddress.getText().toString().isEmpty()
+                    || edtSellerPhoneNumber.getText().toString().isEmpty())
+            {
+                Toast.makeText(this,"Vui lòng điền đủ thông tin!!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(edtNewPostOriginCountry.getText().toString().isEmpty())
+                laptop.setOrigin("Chưa rõ xuất xứ");
+            else
+                laptop.setOrigin(edtNewPostOriginCountry.getText().toString());
             laptop.setImgLists(ListPictures);
+            String price = edtNewPostPrice.getText().toString().replaceAll("[,.]", "").trim();;
+            laptop.setPrice(Integer.parseInt(price));
             laptop.setNumOfImage(ListPictures.size());
+            post.setDescription(edtDescription.getText().toString());
+            post.setSellerAddress(edtSellerAddress.getText().toString());
+            post.setSellerName(edtSellerName.getText().toString());
+            post.setSellerPhoneNumber(edtSellerPhoneNumber.getText().toString());
+            post.setTitle(edtTitle.getText().toString());
+            post.setPostMainImage(encode_img(ListPictures.get(0)));
             laptopActivityPresenter.OnCreateNewLaptopClicked(laptop);
         });
     }
@@ -436,14 +402,7 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     //region Create laptop View
     @Override
     public void CreateLaptopSuccess(String id_LapTop) {
-        Post post = new Post();
         post.setLaptopID(id_LapTop);
-        post.setDescription(edtDescription.getText().toString());
-        post.setSellerAddress(edtSellerAddress.getText().toString());
-        post.setSellerName(edtSellerName.getText().toString());
-        post.setSellerPhoneNumber(edtSellerPhoneNumber.getText().toString());
-        post.setTitle(edtTitle.getText().toString());
-        post.setPostMainImage(encode_img(ListPictures.get(0)));
         postActivityPresenter.OnCreateNewPostClicked(post,laptop);
     }
     @Override
@@ -455,12 +414,73 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
 
     @Override
     public void CreatePostSuccess() {
-        ShowToast("Up post success");
+        ShowToast("Đăng bài lên thành công");
+        finish();
     }
 
     @Override
     public void CreatePostFailure(Exception error) {
         error.printStackTrace();
     }
+
+    @Override
+    public void LoadDataInView(Account account) {
+        if(account.getPhoneNumber() != null)
+            edtSellerPhoneNumber.setText(account.getPhoneNumber());
+        if(account.getAddress() != null)
+            edtSellerAddress.setText(account.getAddress());
+        edtSellerName.setText(account.getAccountName());
+    }
     //endregion
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String name =preferenceManager.getString(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER);
+        String tag = preferenceManager.getString(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER);
+        if(tag!=null && name!=null)
+        {
+            setItem(tag,name);
+            preferenceManager.removeKey(Constants.KEY_FILTER_NAME_NEW_POST_ADAPTER);
+            preferenceManager.removeKey(Constants.KEY_FILTER_TAG_NEW_POST_ADAPTER);
+        }
+    }
+    private void setItem(String type, String item)
+    {
+        switch (type)
+        {
+            case "Hãng +":
+                laptop.setBrandID(item);
+                edtNewPostBrand.setText(item);
+                break;
+            case "Tình trạng +":
+                laptop.setGuarantee(item);
+                edtNewPostStatus.setText(item);
+                break;
+            case "Bộ xử lý +":
+                laptop.setCpu(item);
+                edtNewPostCPU.setText(item);
+                break;
+            case "RAM +":
+                laptop.setRam(item);
+                edtNewPostRAM.setText(item);
+                break;
+            case "Loại ổ cứng +":
+                laptop.setHardDrive(item);
+                edtNewPostHardDiskType.setText(item);
+                break;
+            case "Kích thước ổ cứng +":
+                laptop.setHardDriveSize(item);
+                edtNewPostHardDiskSize.setText(item);
+                break;
+            case "Card màn hình +":
+                laptop.setGraphics(item);
+                edtNewPostGraphicType.setText(item);
+                break;
+            case "Kích cỡ màn hình +":
+                laptop.setScreenSize(item);
+                edtNewPostGraphicSize.setText(item);
+                break;
+        }
+    }
 }

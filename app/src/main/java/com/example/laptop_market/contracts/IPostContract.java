@@ -59,6 +59,7 @@ public interface IPostContract {
         interface NewPostActivityView{
             void CreatePostSuccess();
             void CreatePostFailure(Exception error);
+            void LoadDataInView(Account account);
         }
         interface SearchResultFragmentView{
             void FinishLoadingSearchPost(ArrayList<PostSearchResult> posts);
@@ -90,6 +91,7 @@ public interface IPostContract {
     interface Presenter{
         interface NewPostActivityPresenter{
             void OnCreateNewPostClicked(Post post, Laptop laptop);
+            void OnLoadingAccount();
         }
         interface SearchResultFragmentPresenter{
             void OnSearchPost(String searchPost);

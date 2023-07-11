@@ -11,4 +11,6 @@ public class Constants {
     public static final String KEY_INTERNET_CONNECTION = "internet_connection";
     public static final String KEY_POST_SEARCH_RESULT_TYPE = "post_search_result_type";
     public static final String KEY_FILTER_SEARCH = "filter_search";
+    public static final String KEY_FILTER_TAG_NEW_POST_ADAPTER = "filter_tag_new_post_adapter";
+    public static final String KEY_FILTER_NAME_NEW_POST_ADAPTER = "filter_name_new_post_adapter";
 }

@@ -576,7 +576,7 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
-                        android:inputType="text"/>
+                        android:inputType="none"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_marginTop="15dp"

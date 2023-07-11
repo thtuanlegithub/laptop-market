@@ -23,6 +23,12 @@ public class Filter implements Serializable {
         this.image = image;
         this.name = name;
     }
+    public Filter(int image,String name, String tag)
+    {
+        this.image = image;
+        this.name = name;
+        this.tag = tag;
+    }
     public String getName() {
         return name;
     }
