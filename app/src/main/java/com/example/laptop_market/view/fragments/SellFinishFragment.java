@@ -66,5 +66,6 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
         SellFinishAdapter sellFinishAdapter = new SellFinishAdapter(orders);
         rcvSellFinish.setAdapter(sellFinishAdapter);
         progressBar.setVisibility(View.GONE);
+        rcvSellFinish.setVisibility(View.VISIBLE);
     }
 }

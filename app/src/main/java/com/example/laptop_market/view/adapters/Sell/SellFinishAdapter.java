@@ -51,6 +51,7 @@ public class SellFinishAdapter extends RecyclerView.Adapter<SellFinishAdapter.Se
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),SellOrderDetailActivity.class);
                 intent.putExtra("SellOrderStatus",2);
+                intent.putExtra("ClickedOrder", SellFinish);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }

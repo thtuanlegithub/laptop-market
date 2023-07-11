@@ -59,9 +59,9 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private LinearLayout linearLayoutFinishTime;
     private TextView txtViewBuyOrderStatus;
     private Button btnConfirmBuyOrder;
-    private Post post;
     private String sellerID, postID;
     private CurrentBuyer currentBuyer;
+    private String currentOrderStatus;
     private IOrderContract.Presenter.BuyOrderDetailActivityPresenter buyOrderDetailActivityPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +180,6 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
                 }
             });
         }
-
         // Add event OnTextChange
         edtBuyOrderDetailBuyerName.addTextChangedListener(textWatcher);
         edtBuyOrderDetailBuyerPhone.addTextChangedListener(textWatcher);
@@ -189,101 +188,23 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private void displayLinearLayoutButton(int BuyOrderStatus){
         switch (BuyOrderStatus){
             case 0: // Processing Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.GONE);
-                txtViewBuyOrderStatus.setText("Đang xử lý");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+                SetGeneralData();
+                SetDataForBuyProcessing();
                 break;
             case 1: // Shipping Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.GONE);
-                txtViewBuyOrderStatus.setText("Đang giao");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_delivering,null));
+                SetGeneralData();
+                SetDataForBuyDelivering();
                 break;
             case 2: // Finished Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.VISIBLE);
-                txtViewBuyOrderStatus.setText("Đã hoàn thành");
-                tvBuyOrderDetailFinishStatus.setText("Thời gian hoàn thành: ");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_finish,null));
+                SetGeneralData();
+                SetDataForBuyFinished();
                 break;
             case 3: // Cancel Order
-                linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
-                linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
-                linearLayoutOrderTime.setVisibility(View.VISIBLE);
-                linearLayoutFinishTime.setVisibility(View.VISIBLE);
-                txtViewBuyOrderStatus.setText("Đã hủy");
-                tvBuyOrderDetailFinishStatus.setText("Thời gian hủy: ");
-                edtBuyOrderDetailBuyerName.setFocusable(false);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerPhone.setFocusable(false);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
-                edtBuyOrderDetailBuyerAddress.setFocusable(false);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_cancel,null));
+                SetGeneralData();
+                SetDataForBuyCanceled();
                 break;
             case 4: // Confirm buying
-                linearLayoutButtonConfirmBuying.setVisibility(View.VISIBLE);
-                linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
-                linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
-                linearLayoutButtonBuyFinish.setVisibility(View.GONE);
-                linearLayoutButtonBuyCancel.setVisibility(View.GONE);
-                linearLayoutShippingInformation1.setVisibility(View.GONE);
-                linearLayoutShippingInformation2.setVisibility(View.GONE);
-                linearLayoutOrderTime.setVisibility(View.GONE);
-                linearLayoutFinishTime.setVisibility(View.GONE);
-                txtViewBuyOrderStatus.setText("Đang chờ xác nhận");
-                edtBuyOrderDetailBuyerName.setFocusable(true);
-                edtBuyOrderDetailBuyerName.setFocusableInTouchMode(true);
-                edtBuyOrderDetailBuyerPhone.setFocusable(true);
-                edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(true);
-                edtBuyOrderDetailBuyerAddress.setFocusable(true);
-                edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(true);
-                linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+                SetDataForConfirmBuying();
             default:
                 break;
         }
@@ -369,4 +290,105 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
 
         }
     };
+
+    private void SetGeneralData() {
+
+    }
+    private void SetDataForBuyProcessing () {
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.GONE);
+        txtViewBuyOrderStatus.setText("Đang xử lý");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+    }
+    private void SetDataForBuyDelivering () {
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.GONE);
+        txtViewBuyOrderStatus.setText("Đang giao");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_delivering,null));
+    }
+    private void SetDataForBuyFinished(){
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.VISIBLE);
+        txtViewBuyOrderStatus.setText("Đã hoàn thành");
+        tvBuyOrderDetailFinishStatus.setText("Thời gian hoàn thành: ");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_finish,null));
+    }
+    private void SetDataForBuyCanceled(){
+        linearLayoutButtonConfirmBuying.setVisibility(View.GONE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation1.setVisibility(View.VISIBLE);
+        linearLayoutShippingInformation2.setVisibility(View.VISIBLE);
+        linearLayoutOrderTime.setVisibility(View.VISIBLE);
+        linearLayoutFinishTime.setVisibility(View.VISIBLE);
+        txtViewBuyOrderStatus.setText("Đã hủy");
+        tvBuyOrderDetailFinishStatus.setText("Thời gian hủy: ");
+        edtBuyOrderDetailBuyerName.setFocusable(false);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerPhone.setFocusable(false);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(false);
+        edtBuyOrderDetailBuyerAddress.setFocusable(false);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(false);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_cancel,null));
+    }
+    private void SetDataForConfirmBuying (){
+        linearLayoutButtonConfirmBuying.setVisibility(View.VISIBLE);
+        linearLayoutButtonBuyProcessing.setVisibility(View.GONE);
+        linearLayoutButtonBuyDelivering.setVisibility(View.GONE);
+        linearLayoutButtonBuyFinish.setVisibility(View.GONE);
+        linearLayoutButtonBuyCancel.setVisibility(View.GONE);
+        linearLayoutShippingInformation1.setVisibility(View.GONE);
+        linearLayoutShippingInformation2.setVisibility(View.GONE);
+        linearLayoutOrderTime.setVisibility(View.GONE);
+        linearLayoutFinishTime.setVisibility(View.GONE);
+        txtViewBuyOrderStatus.setText("Đang chờ xác nhận");
+        edtBuyOrderDetailBuyerName.setFocusable(true);
+        edtBuyOrderDetailBuyerName.setFocusableInTouchMode(true);
+        edtBuyOrderDetailBuyerPhone.setFocusable(true);
+        edtBuyOrderDetailBuyerPhone.setFocusableInTouchMode(true);
+        edtBuyOrderDetailBuyerAddress.setFocusable(true);
+        edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(true);
+        linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
+    }
 }

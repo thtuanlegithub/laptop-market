@@ -1,6 +1,7 @@
 package com.example.laptop_market.contracts;
 
 import com.example.laptop_market.model.order.Order;
+import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.view.adapters.Buy.BuyOrder;
 import com.example.laptop_market.view.adapters.Sell.SellOrder;
 
@@ -49,6 +50,15 @@ public interface IOrderContract {
         interface OnCreateOrderListener {
             void OnFinishCreateOrder(boolean isSuccess, Exception error);
         }
+        void LoadOrderDetails(String OrderID, String PostID, OnLoadOrderDetailsListener listener);
+        interface  OnLoadOrderDetailsListener {
+            void OnFinishLoadOrderDetails(boolean isSuccess, Order orderInfo, Post postInfo, Exception error);
+        }
+
+        void UpdateOrderInfo(String OrderID, String changeOrderStatusTo, String postServiceName, String postServiceCode, String finishedTime, OnUpdateOrderInfo listener);
+        interface OnUpdateOrderInfo {
+            void OnFinishUpdateOrderInfo(boolean isSuccess, Exception error);
+        }
     }
     interface View {
         interface BuyFragmentView {
@@ -61,6 +71,10 @@ public interface IOrderContract {
         }
         interface BuyOrderDetailActivityView {
             void DisplayBuySucessful();
+        }
+        interface OrderDetailsActivityView {
+            void DisplayOrderDetailInformation(Order orderInfo, Post postInfo);
+            void DisplayUpdatePostStatus(boolean isAvailable);
         }
         interface BuyProcessingFragmentView {
             void DisplayBuyProcessingOrder(ArrayList<BuyOrder> orders);
@@ -106,6 +120,11 @@ public interface IOrderContract {
 
         interface BuyOrderDetailActivityPresenter {
             void OnConfirmBuyingClicked(Order order, String sellerID, String buyerID);
+        }
+        interface OrderDetailActivityPresenter {
+            void UpdateOrderInfo(String orderID, String changeOrderStatusTo, String postServiceName, String postServiceCode, String finishedTime);
+            void LoadOrderInfo(String orderID, String postID);
+            void UpdatePostStatus(String postID);
         }
     }
 }

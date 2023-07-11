@@ -11,17 +11,19 @@ public class BuyOrder implements Serializable {
     private String address;
     private String orderId;
     private String sellerId;
+    private String postID;
     public BuyOrder () {
 
     }
 
-    public BuyOrder(Bitmap image, String laptopName, String price, String address, String orderId, String sellerId) {
+    public BuyOrder(Bitmap image, String laptopName, String price, String address, String orderId, String sellerId, String postID) {
         this.image = image;
         this.laptopName = laptopName;
         this.price = price;
         this.address = address;
         this.orderId = orderId;
         this.sellerId = sellerId;
+        this.postID = postID;
     }
 
     public Bitmap getImage() {
@@ -70,5 +72,13 @@ public class BuyOrder implements Serializable {
 
     public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
     }
 }

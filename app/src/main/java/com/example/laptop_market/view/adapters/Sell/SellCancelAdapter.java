@@ -51,6 +51,7 @@ public class SellCancelAdapter extends RecyclerView.Adapter<SellCancelAdapter.Se
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),SellOrderDetailActivity.class);
                 intent.putExtra("SellOrderStatus",3);
+                intent.putExtra("ClickedOrder", SellCancel);
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(holder.itemView.getContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 holder.itemView.getContext().startActivity(intent,bundle);
             }
