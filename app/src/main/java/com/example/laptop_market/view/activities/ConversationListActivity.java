@@ -119,12 +119,13 @@ public class ConversationListActivity extends AppCompatActivity implements IConv
             }
         }
         Collections.sort(listConversations,(obj1, obj2)->obj2.getLastMessageTime().compareTo(obj1.getLastMessageTime()));
-        conversationAdapter.notifyDataSetChanged();
+
         if(isLastAddedConversation) {
 
             count++;
             if(count == 2)
             {
+                conversationAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 listConversationRecyclerView.smoothScrollToPosition(0);
                 listConversationRecyclerView.setVisibility(View.VISIBLE);

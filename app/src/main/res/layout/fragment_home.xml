@@ -46,7 +46,8 @@
                             android:layout_gravity="center">
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    >
 
                                         <androidx.appcompat.widget.AppCompatButton
                                             android:id="@+id/chatMessageBtt"
@@ -58,10 +59,11 @@
 
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                                 <TextView
+
                                     android:id="@+id/txtNumberOfNewMessage"
                                     android:inputType="number"
                                     android:background="@drawable/red_circle"
-                                    android:text="12"
+                                    android:text="10+"
                                     android:gravity="center"
                                     android:textAlignment="center"
                                     android:textColor="@color/white"

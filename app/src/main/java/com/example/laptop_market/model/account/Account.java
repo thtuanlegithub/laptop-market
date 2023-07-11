@@ -14,6 +14,7 @@ public class Account implements Serializable {
     private String phoneNumber;
     private String description;
     private boolean isFinishData;
+    private int ConversartionNotSeenNumber;
     private ArrayList<String> publishPosts;
     private ArrayList<String> savedPosts;
     private ArrayList<String> cartItems;
@@ -163,6 +164,14 @@ public class Account implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getConversartionNotSeenNumber() {
+        return ConversartionNotSeenNumber;
+    }
+
+    public void setConversartionNotSeenNumber(int conversartionNotSeenNumber) {
+        ConversartionNotSeenNumber = conversartionNotSeenNumber;
     }
 }
 

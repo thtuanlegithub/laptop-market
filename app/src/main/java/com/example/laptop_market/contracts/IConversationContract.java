@@ -27,7 +27,13 @@ public interface IConversationContract {
         }
         void UpdateSeenConversationStatus(Conversation conversation);
         //endregion
-        //region load conversation image
+        //region load numberOfConversationNotSeen
+        void getNumberOfNotSeenMessage(FinishGetNumberOfNotSeenMessageListener listener);
+        interface FinishGetNumberOfNotSeenMessageListener{
+            void FinishGetNumberOfNotSeenMessage(int numberOfMessage);
+        }
+
+        //endregion
     }
     interface Presenter{
         interface ConversationListActivityPresenter{
@@ -45,6 +51,9 @@ public interface IConversationContract {
             // Click Gửi tin nhắn
             void ClickSendMessage(ChatMessage chatMessage);
         }
+        interface HomeFragmentPresenter{
+            void LoadingNotSeenMessage();
+        }
     }
     interface View{
         interface ConversationListActivityView{
@@ -61,6 +70,9 @@ public interface IConversationContract {
             void LoadChatMessageInConversationUI(ChatMessage chatMessage, boolean isAddMessage, boolean isLastAddedChatMessage);
             void LoadAccountMessageInConvesationUI(Account account);
             void SendMessageSuccess(Conversation conversation);
+        }
+        interface HomeFragmentView{
+            void LoadNotSeenMessage(int numMessage);
         }
     }
 }

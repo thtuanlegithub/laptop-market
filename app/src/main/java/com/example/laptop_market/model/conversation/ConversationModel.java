@@ -12,6 +12,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ConversationModel implements IConversationContract.Model {
     private FirebaseUser firebaseUser;
@@ -188,6 +189,22 @@ public class ConversationModel implements IConversationContract.Model {
     @Override
     public void UpdateSeenConversationStatus(Conversation conversation) {
         db.collection(ConversationTable.TABLE_NAME).document(conversation.getConversationId()).update(ConversationTable.PERSON_NOT_SEEN_ID,"");
+    }
+
+    @Override
+    public void getNumberOfNotSeenMessage(FinishGetNumberOfNotSeenMessageListener listener) {
+        if(FirebaseAuth.getInstance().getCurrentUser() != null)
+        {
+        db.collection(ConversationTable.TABLE_NAME).whereEqualTo(ConversationTable.PERSON_NOT_SEEN_ID,firebaseUser.getUid())
+                .addSnapshotListener((value, error) -> {
+                   if(error!=null)
+                       error.printStackTrace();
+                   else{
+                       int a = value.getDocuments().size();
+                       listener.FinishGetNumberOfNotSeenMessage(a);
+                   }
+                });
+        }
     }
 
 }
