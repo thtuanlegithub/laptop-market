@@ -423,7 +423,7 @@
                             android:paddingTop="5dp"
                             android:background="#FAFAFA"
                             android:textSize="16dp"
-                            android:inputType="number"/>
+                            android:inputType="text"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </RelativeLayout>
