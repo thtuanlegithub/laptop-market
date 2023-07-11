@@ -63,6 +63,7 @@ public interface IPostContract {
         }
         interface SearchResultFragmentView{
             void FinishLoadingSearchPost(ArrayList<PostSearchResult> posts);
+            void LoadNotSeenMessage(int numMessage);
         }
         interface PostDetailActivityView{
             void LoadingPostInPostDetail(Post post);
@@ -96,6 +97,8 @@ public interface IPostContract {
         interface SearchResultFragmentPresenter{
             void OnSearchPost(String searchPost);
             void OnSearchPostByFilter(SearchFilterPost searchFilterPost);
+            void LoadingNotSeenMessage();
+
         }
         interface PostDetailActivityPresenter{
             void OnLoadingPostInPostDetail(String postID);

@@ -2,8 +2,10 @@ package com.example.laptop_market.presenter.fragments;
 
 import android.content.Context;
 
+import com.example.laptop_market.contracts.IConversationContract;
 import com.example.laptop_market.contracts.IPostContract;
 import com.example.laptop_market.contracts.IStringFilterSearchContract;
+import com.example.laptop_market.model.conversation.ConversationModel;
 import com.example.laptop_market.model.filter.StringFilterSearchModel;
 import com.example.laptop_market.model.post.PostModel;
 import com.example.laptop_market.utils.tables.SearchFilterPost;
@@ -18,12 +20,14 @@ public class SearchResultFragmentPresenter implements IStringFilterSearchContrac
     private IStringFilterSearchContract.View.SearchResultFragmentView view;
     private IPostContract.View.SearchResultFragmentView viewPost;
     private IPostContract.Model postModel;
+    private IConversationContract.Model conversationModel;
 
     public SearchResultFragmentPresenter(Context context, IStringFilterSearchContract.View.SearchResultFragmentView view,IPostContract.View.SearchResultFragmentView viewPost) {
         this.view = view;
         this.viewPost=viewPost;
         model = new StringFilterSearchModel(context);
         postModel = new PostModel(context);
+        conversationModel = new ConversationModel();
     }
 
     @Override
@@ -58,5 +62,10 @@ public class SearchResultFragmentPresenter implements IStringFilterSearchContrac
                 error.printStackTrace();
         });
     }
-
+    @Override
+    public void LoadingNotSeenMessage() {
+        conversationModel.getNumberOfNotSeenMessage(numberOfMessage -> {
+            viewPost.LoadNotSeenMessage(numberOfMessage);
+        });
+    }
 }
