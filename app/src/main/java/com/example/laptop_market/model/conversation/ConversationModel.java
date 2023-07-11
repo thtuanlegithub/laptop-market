@@ -26,7 +26,7 @@ public class ConversationModel implements IConversationContract.Model {
     public ConversationModel()
     {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = firebaseUser.getUid();
+        //String uid = firebaseUser.getUid();
         db = FirebaseFirestore.getInstance();
         listConversations = new ArrayList<>();
     }
