@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -153,10 +154,14 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
 
         // Button
         String postStatus = postOfThisOrder.getPostStatus();
-        if (postStatus.equals(PostStatus.AVAILABLE))
+        if (postStatus.equals(PostStatus.AVAILABLE)){
             btnUpdatePostStatusSellOrder.setText("Hủy tin");
-        else
+            btnUpdatePostStatusSellOrder.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.cancel_post));
+        }
+        else {
             btnUpdatePostStatusSellOrder.setText("Đăng lại tin");
+            btnUpdatePostStatusSellOrder.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.repost_post));
+        }
     }
     private void displayLinearLayoutButton(int SellOrderStatus){
         switch (SellOrderStatus){
@@ -410,8 +415,10 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
     public void DisplayUpdatePostStatus(boolean isAvailable) {
         if (isAvailable) {
             btnUpdatePostStatusSellOrder.setText("Hủy tin");
+            btnUpdatePostStatusSellOrder.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.cancel_post));
         } else {
             btnUpdatePostStatusSellOrder.setText("Đăng lại tin");
+            btnUpdatePostStatusSellOrder.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.repost_post));
         }
     }
     // endregion

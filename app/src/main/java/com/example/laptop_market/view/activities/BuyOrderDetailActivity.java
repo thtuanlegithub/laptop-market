@@ -1,6 +1,7 @@
 package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
@@ -23,16 +24,18 @@ import com.example.laptop_market.model.order.Order;
 import com.example.laptop_market.model.order.OrderStatus;
 import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.presenter.activities.BuyOrderDetailActivityPresenter;
+import com.example.laptop_market.presenter.activities.OrderDetailActivityPresenter;
 import com.example.laptop_market.utils.MyDialog;
 import com.example.laptop_market.utils.tables.PostTable;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.example.laptop_market.view.adapters.Sell.SellOrder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderContract.View.BuyOrderDetailActivityView {
+public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderContract.View.BuyOrderDetailActivityView, IOrderContract.View.OrderDetailsActivityView {
     private Button btnBuyOrderDetailClose;
     private TextInputEditText edtBuyOrderDetailPostServiceName;
     private TextInputEditText edtBuyOrderDetailPostServiceCode;
@@ -61,15 +64,111 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private Button btnConfirmBuyOrder;
     private String sellerID, postID;
     private CurrentBuyer currentBuyer;
-    private String currentOrderStatus;
+    private int currentOrderStatus;
+    private AppCompatButton btnCancelOrderBuyOrder;
+    private Order fullOrderDetails;
+    private Post postOfThisOrder;
+    private SellOrder clickedOrder;
     private IOrderContract.Presenter.BuyOrderDetailActivityPresenter buyOrderDetailActivityPresenter;
+    private IOrderContract.Presenter.OrderDetailActivityPresenter orderDetailActivityPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_order_detail);
         // Create objects
         buyOrderDetailActivityPresenter = new BuyOrderDetailActivityPresenter(this, getApplicationContext());
+        orderDetailActivityPresenter = new OrderDetailActivityPresenter(this, this);
 
+        FindViews();
+
+        onConfirmBuyNowClicked();
+
+        onCloseClicked();
+
+        onCancelOrderClicked();
+
+        // Get intent from previous activity/fragment
+        Intent intent = getIntent();
+        if(intent.hasExtra("SellOrderStatus")){
+            currentOrderStatus = intent.getIntExtra("SellOrderStatus",0);
+            displayLinearLayoutButton(currentOrderStatus);
+            if (currentOrderStatus == 4){
+                LoadDataFromBuyNow();
+            } else {
+                clickedOrder = (SellOrder) intent.getSerializableExtra("ClickedOrder");
+                orderDetailActivityPresenter.LoadOrderInfo(clickedOrder.getOrderId(), clickedOrder.getPostID());
+            }
+            // Load data here
+        }
+    }
+
+    // region Close order details
+    private void onCloseClicked(){
+        btnBuyOrderDetailClose = findViewById(R.id.btnBuyOrderDetailClose);
+        btnBuyOrderDetailClose.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("applySlideTransition", false);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+            //Ẩn bàn phím:
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            View currentFocus = this.getCurrentFocus();
+            if (inputMethodManager != null && currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+            }
+        });
+    }
+    // endregion
+
+    // region Cancel order
+    private void onCancelOrderClicked() {
+        btnCancelOrderBuyOrder = findViewById(R.id.btnCancelOrderBuyOrder);
+        btnCancelOrderBuyOrder.setOnClickListener(view -> {
+            MyDialog.showDialog(this, "Bạn có chắc là muốn hủy đơn hàng không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+                    // Update Status and PostService Data
+                    DisplayCancelOrderSuccess();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+                    Date currentDateTime = new Date();
+                    // Order info
+                    String finishedTime = sdf.format(currentDateTime);
+                    orderDetailActivityPresenter.UpdateOrderInfo(clickedOrder.getOrderId(), OrderStatus.CANCELED, null, null, finishedTime);
+                }
+
+                @Override
+                public void onNoClick() {
+
+                }
+
+                @Override
+                public void onOkClick() {
+                }
+            });
+        });
+    }
+
+    private void DisplayCancelOrderSuccess() {
+        MyDialog.showDialog(this, "Đơn hàng đã được hủy thành công.", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+            @Override
+            public void onYesClick() {
+            }
+
+            @Override
+            public void onNoClick() {
+
+            }
+
+            @Override
+            public void onOkClick() {
+                finish();
+            }
+        });
+    }
+    // endregion
+
+    // region Buy now
+    private void onConfirmBuyNowClicked(){
         btnConfirmBuyOrder = findViewById(R.id.btnConfirmBuyOrder);
         btnConfirmBuyOrder.setOnClickListener(view -> {
             MyDialog.showDialog(this, "Bạn có chắc muốn mua không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
@@ -110,51 +209,31 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
                 }
             });
         });
+    }
+    private void LoadDataFromBuyNow()
+    {
+        Intent intent = getIntent();
+        if (intent.hasExtra("CurrentBuyer")) {
+            currentBuyer = (CurrentBuyer) intent.getSerializableExtra("CurrentBuyer");
+            // Buyer
+            edtBuyOrderDetailBuyerName.setText(currentBuyer.getAccountName());
+            edtBuyOrderDetailBuyerPhone.setText(currentBuyer.getPhoneNumber());
+            edtBuyOrderDetailBuyerAddress.setText(currentBuyer.getAddress());
+        }
 
-        btnBuyOrderDetailClose = findViewById(R.id.btnBuyOrderDetailClose);
-        btnBuyOrderDetailClose.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra("applySlideTransition", false);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
-            //Ẩn bàn phím:
-            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            View currentFocus = this.getCurrentFocus();
-            if (inputMethodManager != null && currentFocus != null) {
-                inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-            }
-        });
-
-        txtViewBuyOrderStatus = findViewById(R.id.txtViewBuyOrderStatus);
-        tvBuyOrderDetailOrderName = findViewById(R.id.tvBuyOrderDetailOrderName);
-        tvBuyOrderDetailTotalAmount = findViewById(R.id.tvBuyOrderDetailTotalAmount);
-        tvBuyOrderDetailOrderedTime = findViewById(R.id.tvBuyOrderDetailOrderedTime);
-        tvBuyOrderDetailFinishedTime = findViewById(R.id.tvBuyOrderDetailFinishedTime);
-        tvBuyOrderDetailFinishStatus = findViewById(R.id.tvBuyOrderDetailFinishStatus);
-
-        edtBuyOrderDetailPostServiceName = findViewById(R.id.edtBuyOrderDetailPostServiceName);
-        edtBuyOrderDetailPostServiceCode = findViewById(R.id.edtBuyOrderDetailPostServiceCode);
-
-        edtBuyOrderDetailBuyerName = findViewById(R.id.edtBuyOrderDetailBuyerName);
-        edtBuyOrderDetailBuyerPhone = findViewById(R.id.edtBuyOrderDetailBuyerPhone);
-        edtBuyOrderDetailBuyerAddress = findViewById(R.id.edtBuyOrderDetailBuyerAddress);
-
-        edtBuyOrderDetailSellerName = findViewById(R.id.edtBuyOrderDetailSellerName);
-        edtBuyOrderDetailSellerPhone = findViewById(R.id.edtBuyOrderDetailSellerPhone);
-        edtBuyOrderDetailSellerAddress = findViewById(R.id.edtBuyOrderDetailSellerAddress);
-
-        linearLayoutButtonConfirmBuying = findViewById(R.id.linearLayoutButtonConfirmBuying);
-        linearLayoutButtonBuyProcessing = findViewById(R.id.linearLayoutButtonBuyProcessing);
-        linearLayoutButtonBuyDelivering = findViewById(R.id.linearLayoutButtonBuyDelivering);
-        linearLayoutButtonBuyFinish = findViewById(R.id.linearLayoutButtonBuyFinish);
-        linearLayoutButtonBuyCancel = findViewById(R.id.linearLayoutButtonBuyCancel);
-        linearLayoutShippingInformation1 = findViewById(R.id.linearLayoutShippingInformation1);
-        linearLayoutShippingInformation2 = findViewById(R.id.linearLayoutShippingInformation2);
-        linearLayoutBuyOrderStatus = findViewById(R.id.linearLayoutBuyOrderStatus);
-        linearLayoutOrderTime = findViewById(R.id.linearLayoutOrderTime);
-        linearLayoutFinishTime = findViewById(R.id.linearLayoutFinishTime);
-
-        LoadDataFromBuyNow();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            // Order
+            tvBuyOrderDetailOrderName.setText(bundle.getString("OrderName"));
+            tvBuyOrderDetailTotalAmount.setText(bundle.getString("TotalAmount"));
+            // Seller
+            sellerID = bundle.getString("SellerID");
+            edtBuyOrderDetailSellerName.setText(bundle.getString("SellerName"));
+            edtBuyOrderDetailSellerPhone.setText(bundle.getString("SellerPhoneNumber"));
+            edtBuyOrderDetailSellerAddress.setText(bundle.getString("SellerAddress"));
+            // Post
+            postID = bundle.getString("PostID");
+        }
 
         // Check if Buyer data has not been initialized
         String phoneNumber = edtBuyOrderDetailBuyerPhone.getText().toString().trim();
@@ -185,61 +264,9 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         edtBuyOrderDetailBuyerPhone.addTextChangedListener(textWatcher);
         edtBuyOrderDetailBuyerAddress.addTextChangedListener(textWatcher);
     }
-    private void displayLinearLayoutButton(int BuyOrderStatus){
-        switch (BuyOrderStatus){
-            case 0: // Processing Order
-                SetGeneralData();
-                SetDataForBuyProcessing();
-                break;
-            case 1: // Shipping Order
-                SetGeneralData();
-                SetDataForBuyDelivering();
-                break;
-            case 2: // Finished Order
-                SetGeneralData();
-                SetDataForBuyFinished();
-                break;
-            case 3: // Cancel Order
-                SetGeneralData();
-                SetDataForBuyCanceled();
-                break;
-            case 4: // Confirm buying
-                SetDataForConfirmBuying();
-            default:
-                break;
-        }
-    }
-    private void LoadDataFromBuyNow()
-    {
-        Intent intent = getIntent();
-        if (intent.hasExtra("BuyOrderStatus")){
-            int BuyOrderStatus = intent.getIntExtra("BuyOrderStatus",0);
-            displayLinearLayoutButton(BuyOrderStatus);
-        }
+    // endregion
 
-        if (intent.hasExtra("CurrentBuyer")) {
-            currentBuyer = (CurrentBuyer) intent.getSerializableExtra("CurrentBuyer");
-            // Buyer
-            edtBuyOrderDetailBuyerName.setText(currentBuyer.getAccountName());
-            edtBuyOrderDetailBuyerPhone.setText(currentBuyer.getPhoneNumber());
-            edtBuyOrderDetailBuyerAddress.setText(currentBuyer.getAddress());
-        }
-
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            // Order
-            tvBuyOrderDetailOrderName.setText(bundle.getString("OrderName"));
-            tvBuyOrderDetailTotalAmount.setText(bundle.getString("TotalAmount"));
-            // Seller
-            sellerID = bundle.getString("SellerID");
-            edtBuyOrderDetailSellerName.setText(bundle.getString("SellerName"));
-            edtBuyOrderDetailSellerPhone.setText(bundle.getString("SellerPhoneNumber"));
-            edtBuyOrderDetailSellerAddress.setText(bundle.getString("SellerAddress"));
-            // Post
-            postID = bundle.getString("PostID");
-        }
-    }
-
+    // region Override interface
     @Override
     public void DisplayBuySucessful() {
         Intent resultIntent = new Intent();
@@ -262,36 +289,98 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         });
     }
 
-    TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    @Override
+    public void DisplayOrderDetailInformation(Order orderInfo, Post postInfo) {
+        this.fullOrderDetails = orderInfo;
+        this.postOfThisOrder = postInfo;
+        SetGeneralData();
+    }
 
+    @Override
+    public void DisplayUpdatePostStatus(boolean isAvailable) {
+
+    }
+    // endregion
+
+    // region Display view
+    private void FindViews(){
+        txtViewBuyOrderStatus = findViewById(R.id.txtViewBuyOrderStatus);
+        tvBuyOrderDetailOrderName = findViewById(R.id.tvBuyOrderDetailOrderName);
+        tvBuyOrderDetailTotalAmount = findViewById(R.id.tvBuyOrderDetailTotalAmount);
+        tvBuyOrderDetailOrderedTime = findViewById(R.id.tvBuyOrderDetailOrderedTime);
+        tvBuyOrderDetailFinishedTime = findViewById(R.id.tvBuyOrderDetailFinishedTime);
+        tvBuyOrderDetailFinishStatus = findViewById(R.id.tvBuyOrderDetailFinishStatus);
+
+        edtBuyOrderDetailPostServiceName = findViewById(R.id.edtBuyOrderDetailPostServiceName);
+        edtBuyOrderDetailPostServiceCode = findViewById(R.id.edtBuyOrderDetailPostServiceCode);
+
+        edtBuyOrderDetailBuyerName = findViewById(R.id.edtBuyOrderDetailBuyerName);
+        edtBuyOrderDetailBuyerPhone = findViewById(R.id.edtBuyOrderDetailBuyerPhone);
+        edtBuyOrderDetailBuyerAddress = findViewById(R.id.edtBuyOrderDetailBuyerAddress);
+
+        edtBuyOrderDetailSellerName = findViewById(R.id.edtBuyOrderDetailSellerName);
+        edtBuyOrderDetailSellerPhone = findViewById(R.id.edtBuyOrderDetailSellerPhone);
+        edtBuyOrderDetailSellerAddress = findViewById(R.id.edtBuyOrderDetailSellerAddress);
+
+        linearLayoutButtonConfirmBuying = findViewById(R.id.linearLayoutButtonConfirmBuying);
+        linearLayoutButtonBuyProcessing = findViewById(R.id.linearLayoutButtonBuyProcessing);
+        linearLayoutButtonBuyDelivering = findViewById(R.id.linearLayoutButtonBuyDelivering);
+        linearLayoutButtonBuyFinish = findViewById(R.id.linearLayoutButtonBuyFinish);
+        linearLayoutButtonBuyCancel = findViewById(R.id.linearLayoutButtonBuyCancel);
+        linearLayoutShippingInformation1 = findViewById(R.id.linearLayoutShippingInformation1);
+        linearLayoutShippingInformation2 = findViewById(R.id.linearLayoutShippingInformation2);
+        linearLayoutBuyOrderStatus = findViewById(R.id.linearLayoutBuyOrderStatus);
+        linearLayoutOrderTime = findViewById(R.id.linearLayoutOrderTime);
+        linearLayoutFinishTime = findViewById(R.id.linearLayoutFinishTime);
+    }
+    private void displayLinearLayoutButton(int BuyOrderStatus){
+        switch (BuyOrderStatus){
+            case 0: // Processing Order
+                SetDataForBuyProcessing();
+                break;
+            case 1: // Shipping Order
+                SetDataForBuyDelivering();
+                break;
+            case 2: // Finished Order
+                SetDataForBuyFinished();
+                break;
+            case 3: // Cancel Order
+                SetDataForBuyCanceled();
+                break;
+            case 4: // Confirm buying
+                SetDataForConfirmBuying();
+            default:
+                break;
         }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            // Check if three information is filled
-            boolean isNameFilled = !TextUtils.isEmpty(edtBuyOrderDetailBuyerName.getText());
-            boolean isPhoneFilled = !TextUtils.isEmpty(edtBuyOrderDetailBuyerPhone.getText());
-            boolean isAddressFilled = !TextUtils.isEmpty(edtBuyOrderDetailBuyerAddress.getText());
-
-            // Enable or disable the login button and change its background color
-            if (isNameFilled && isPhoneFilled && isAddressFilled) {
-                btnConfirmBuyOrder.setEnabled(true);
-                btnConfirmBuyOrder.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.yellow));
-            } else {
-                btnConfirmBuyOrder.setEnabled(false);
-                btnConfirmBuyOrder.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.gray));
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
+    }
     private void SetGeneralData() {
+        // Order info
+        tvBuyOrderDetailOrderName.setText(clickedOrder.getLaptopName());
+        tvBuyOrderDetailTotalAmount.setText(fullOrderDetails.getTotalAmount());
+        tvBuyOrderDetailOrderedTime.setText(fullOrderDetails.getOrderedDate());
+        if (fullOrderDetails.getFinishedDate() != null)
+            tvBuyOrderDetailFinishedTime.setText(fullOrderDetails.getFinishedDate());
+
+        // Delivering info is not initialized yet (Because of processing)
+        if (fullOrderDetails.getPostServiceName() != null)
+            edtBuyOrderDetailPostServiceName.setText(fullOrderDetails.getPostServiceName());
+        else
+            edtBuyOrderDetailPostServiceName.setText("");
+
+        if (fullOrderDetails.getPostServiceCode() != null)
+            edtBuyOrderDetailPostServiceName.setText(fullOrderDetails.getPostServiceCode());
+        else
+            edtBuyOrderDetailPostServiceName.setText("");
+
+        // Buyer info
+        edtBuyOrderDetailBuyerPhone.setText(fullOrderDetails.getBuyerPhone());
+        edtBuyOrderDetailBuyerName.setText(fullOrderDetails.getBuyerName());
+        edtBuyOrderDetailBuyerAddress.setText(fullOrderDetails.getShipAddress());
+
+        // Seller info
+        edtBuyOrderDetailSellerPhone.setText(postOfThisOrder.getSellerPhoneNumber());
+        edtBuyOrderDetailSellerName.setText(postOfThisOrder.getSellerName());
+        edtBuyOrderDetailSellerAddress.setText(postOfThisOrder.getSellerAddress());
 
     }
     private void SetDataForBuyProcessing () {
@@ -391,4 +480,36 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         edtBuyOrderDetailBuyerAddress.setFocusableInTouchMode(true);
         linearLayoutBuyOrderStatus.setBackgroundColor(getResources().getColor(R.color.order_processing,null));
     }
+    // endregion
+
+    //region Text change event
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Check if three information is filled
+            boolean isNameFilled = !TextUtils.isEmpty(edtBuyOrderDetailBuyerName.getText());
+            boolean isPhoneFilled = !TextUtils.isEmpty(edtBuyOrderDetailBuyerPhone.getText());
+            boolean isAddressFilled = !TextUtils.isEmpty(edtBuyOrderDetailBuyerAddress.getText());
+
+            // Enable or disable the login button and change its background color
+            if (isNameFilled && isPhoneFilled && isAddressFilled) {
+                btnConfirmBuyOrder.setEnabled(true);
+                btnConfirmBuyOrder.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.yellow));
+            } else {
+                btnConfirmBuyOrder.setEnabled(false);
+                btnConfirmBuyOrder.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.gray));
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+    //endregion
 }
