@@ -24,7 +24,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/ic_back"/>
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/postDetailMessage"
+                    android:id="@+id/btnDeletePost"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_width="60dp"

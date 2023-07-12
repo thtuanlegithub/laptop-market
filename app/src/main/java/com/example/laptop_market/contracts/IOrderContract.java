@@ -74,7 +74,7 @@ public interface IOrderContract {
         }
         interface OrderDetailsActivityView {
             void DisplayOrderDetailInformation(Order orderInfo, Post postInfo);
-            void DisplayUpdatePostStatus(boolean isAvailable);
+            void DisplayUpdatePostStatus(String currentStatus);
         }
         interface BuyProcessingFragmentView {
             void DisplayBuyProcessingOrder(ArrayList<BuyOrder> orders);
@@ -124,7 +124,7 @@ public interface IOrderContract {
         interface OrderDetailActivityPresenter {
             void UpdateOrderInfo(String orderID, String changeOrderStatusTo, String postServiceName, String postServiceCode, String finishedTime);
             void LoadOrderInfo(String orderID, String postID);
-            void UpdatePostStatus(String postID);
+            void UpdatePostStatus(String postID, String changePostStatusTo);
         }
     }
 }

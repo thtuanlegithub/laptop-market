@@ -298,7 +298,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     }
 
     @Override
-    public void DisplayUpdatePostStatus(boolean isAvailable) {
+    public void DisplayUpdatePostStatus(String currentStatus) {
 
     }
     // endregion
