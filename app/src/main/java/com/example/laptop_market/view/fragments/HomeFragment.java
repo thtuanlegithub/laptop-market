@@ -220,4 +220,5 @@ public class HomeFragment extends Fragment implements IConversationContract.View
         else
             txtNumberOfNewMessage.setText("10+");
     }
+
 }

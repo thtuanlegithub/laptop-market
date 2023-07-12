@@ -60,38 +60,21 @@
                 </LinearLayout>
             </LinearLayout>
             <TextView
+                android:id="@+id/VerifiedEmailText"
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bạn hãy nhập mã OTP được gửi đến email:"
-                android:textSize="15dp"
+                android:text="Vui lòng xác thực email của bạn"
+                android:textSize="16dp"
                 android:textColor="@color/black"
                 android:gravity="center"/>
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="supertour@gmail.com"
-                android:textSize="18dp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@color/black"
-                android:gravity="center"/>
-            <com.chaos.view.PinView
-                android:layout_marginTop="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:itemRadius="5dp"
-                app:itemCount="6"
-                app:lineColor="#C0C0C0"
-                app:lineWidth="1.5dp"
-                android:inputType="number"
-                android:layout_gravity="center_horizontal"/>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sendEmailBtn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="30dp"
-                android:text="Tiếp tục"
+                android:text="Gửi lại mã xác thực"
                 android:textAllCaps="false"
                 android:textSize="20dp"
                 android:fontFamily="sans-serif"
@@ -99,6 +82,7 @@
                 android:textColor="@color/white"
                 />
             <LinearLayout
+                android:id="@+id/layoutTimeLeft"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -112,14 +96,25 @@
                     android:layout_height="wrap_content"
                     android:text="Gửi lại mã sau: "/>
                 <TextView
+                    android:id="@+id/timeResentEmailTextView"
                     android:textSize="16dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:paddingLeft="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00: 59"/>
+                    android:text="59"/>
             </LinearLayout>
+            <TextView
+                android:id="@+id/backToLoginTextView"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quay về trang đăng nhập"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 

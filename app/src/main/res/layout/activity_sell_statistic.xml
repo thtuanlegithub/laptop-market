@@ -55,6 +55,7 @@
         <TextView
             android:id="@+id/tvNoOrdersSellStatistic"
             android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +64,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:textStyle="bold"
-            android:textSize="40dp"/>
+            android:textSize="40dp"
+            />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnViewYourFinishOrder"
             android:layout_marginLeft="15dp"
@@ -74,6 +76,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#F09D38"
             android:text="Xem các đơn đã bán"
+            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18dp"/>

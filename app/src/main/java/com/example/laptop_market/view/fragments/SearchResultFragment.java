@@ -142,6 +142,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
 
         btnSearchResultBack.setOnClickListener(view1 -> {
             homeBaseFragment.replaceFragment(homeBaseFragment.homeFragment);
+            preferenceManager.removeKey(Constants.KEY_FILTER_SEARCH);
             //Ẩn bàn phím:
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             View currentFocus = getActivity().getCurrentFocus();
@@ -419,8 +420,10 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         edtTextSearchResult.setText(itemString);
         if(preferenceManager.getBoolean("isFromHomeFragment")) {
             cleanSearchFilterPost();
+            searchFilterPost.setSearchPost(itemString);
             postPreseneter.OnSearchPost(itemString);
             preferenceManager.putBoolean("isFromHomeFragment", false);
+            preferenceManager.putSerializable(Constants.KEY_FILTER_SEARCH,searchFilterPost);
         }
         else{
             searchFilterPost.setSearchPost(itemString);
@@ -514,4 +517,5 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
         else
             txtNumberOfNewMessage.setText("10+");
     }
+
 }

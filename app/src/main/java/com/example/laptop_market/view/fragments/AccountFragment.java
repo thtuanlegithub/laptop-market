@@ -162,6 +162,8 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
     public void LogoutAccount() {
         ShowToast("Đăng xuất thành công");
         txtAccountName.setText("Đăng nhập / Đăng ký");
+        preferenceManager = new PreferenceManager(getContext());
+        preferenceManager.putBoolean("isLogin",false);
         bttLogout.setVisibility(View.GONE);
         preferenceManager.removeKey(Constants.KEY_USER_NAME);
         preferenceManager.removeKey(Constants.KEY_USER_EMAIL);

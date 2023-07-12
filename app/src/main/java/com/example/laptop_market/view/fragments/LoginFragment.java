@@ -34,6 +34,7 @@ import com.example.laptop_market.view.activities.NewPostActivity;
 import com.example.laptop_market.view.activities.PostDetailActivity;
 import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LoginFragment extends Fragment implements IAccountContract.View.LoginFragmentView{
@@ -72,7 +73,6 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         txtEmail = view.findViewById(R.id.txtEmailLogin);
         preferenceManager = new PreferenceManager(getContext());
         presenter = new LoginFragmentPresenter(this, getContext());
-
         // Disable button
         bttLogin.setEnabled(false);
         bttLogin.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.gray));
@@ -154,6 +154,7 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
     @Override
     public void LoginSuccess() {
         preferenceManager = new PreferenceManager(getContext());
+        preferenceManager.putBoolean("isLogin",true);
         Intent intent = null;
         int PreviousFragment = preferenceManager.getInt(FragmentActivityType.FRAGMENT_ACTIVITY,0);
         switch (PreviousFragment)
@@ -211,5 +212,11 @@ public class LoginFragment extends Fragment implements IAccountContract.View.Log
         if (view != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAuth.getInstance().signOut();
     }
 }
