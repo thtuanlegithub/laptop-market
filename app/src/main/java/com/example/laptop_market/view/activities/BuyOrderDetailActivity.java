@@ -74,6 +74,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private Order fullOrderDetails;
     private Post postOfThisOrder;
     private BuyOrder clickedOrder;
+    private boolean backFromPostDetail = false;
     private AppCompatButton btnViewPostDetailBuyOrderDetail1;
     private AppCompatButton btnViewPostDetailBuyOrderDetail2;
     private AppCompatButton btnViewPostDetailBuyOrderDetail3;
@@ -111,7 +112,14 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
 
         onViewPostDetailsClicked();
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(backFromPostDetail){
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            backFromPostDetail = false;
+        }
+    }
     // region Close order details
     private void onCloseClicked(){
         btnBuyOrderDetailClose = findViewById(R.id.btnBuyOrderDetailClose);
@@ -301,7 +309,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         postSearchResult.setAddress(postOfThisOrder.getSellerAddress());
         postSearchResult.setPostStatus(postOfThisOrder.getPostStatus());
         postSearchResult.setImage(getBitMapFromString(postOfThisOrder.getPostMainImage()));
-        String formattedStr = clickedOrder.getPrice().replaceAll("[^\\d.]", "");
+        String formattedStr = clickedOrder.getPrice().replaceAll("[^\\d]", "");
         postSearchResult.setPrice(Double.parseDouble(formattedStr));
         // Mở Activity mới
         Intent intent = new Intent(this, PostDetailActivity.class);
@@ -309,6 +317,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
         intent.putExtra(PostTable.TABLE_NAME, postSearchResult);
         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
         startActivity(intent,bundle);
+        backFromPostDetail = true;
     }
     private Bitmap getBitMapFromString(String encodedImage)
     {

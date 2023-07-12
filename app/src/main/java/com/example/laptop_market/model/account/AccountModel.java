@@ -32,12 +32,14 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AccountModel implements IAccountContract.Model {
@@ -337,7 +339,7 @@ public class AccountModel implements IAccountContract.Model {
                                double revenue = 0;
                                for (QueryDocumentSnapshot orderDoc :  task1.getResult()) {
                                     String rawPrice = orderDoc.getString(OrderTable.TOTAL_AMOUNT);
-                                    String formattedStr = rawPrice.replaceAll("[^\\d.]", "");
+                                    String formattedStr = rawPrice.replaceAll("[^\\d]", "");
                                     revenue += (Double.parseDouble(formattedStr));
                                     ++NoOrders;
                                }
@@ -365,52 +367,50 @@ public class AccountModel implements IAccountContract.Model {
                     if (documentSnapshot != null && documentSnapshot.exists()) {
                         ArrayList<String> yourSavedPosts = (ArrayList<String>) documentSnapshot.get(AccountTable.SAVED_POSTS);
                         if (yourSavedPosts != null && !yourSavedPosts.isEmpty()) {
-                            ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
-                            for (String postId : yourSavedPosts) {
-                                PostSearchResult postSearchResult = new PostSearchResult();
-                                postSearchResult.setPostId(postId);
-                                // Cập nhật thông tin của postSearchResult dựa trên postId
-                                // Ví dụ: Lấy thông tin từ Firestore dựa trên postId
-                                db.collection(PostTable.TABLE_NAME)
-                                        .document(postId)
-                                        .get()
-                                        .addOnSuccessListener(postDoc -> {
-                                            if (postDoc.exists()) {
-                                                if (!postDoc.getString(PostTable.POST_STATUS).equals(PostStatus.DELETED)) {
-                                                    postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
-                                                    postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
-                                                    postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
-                                                    postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
-                                                    postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
-                                                    postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
-                                                    String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
-                                                    db.collection(LaptopTable.TABLE_NAME)
-                                                            .document(laptopID)
-                                                            .get()
-                                                            .addOnSuccessListener(productSnapshot -> {
-                                                                if (productSnapshot.exists()) {
-                                                                    postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
-                                                                }
-                                                            })
-                                                            .addOnCompleteListener(task1 -> {
-                                                                // Kiểm tra nếu đã hoàn thành tất cả nhiệm vụ tải dữ liệu
-                                                                if (postSearchResults.size() == yourSavedPosts.size()) {
-                                                                    listener.OnFinishLoadYourSavedPosts(true, postSearchResults, null);
-                                                                }
-                                                            });
-                                                }
-                                            }
-                                        })
-                                        .addOnFailureListener(exception -> {
-                                            listener.OnFinishLoadYourSavedPosts(false, null, exception);
-                                        });
-                                postSearchResults.add(postSearchResult);
-                            }
+                            Query query =  db.collection(PostTable.TABLE_NAME)
+                                    .whereNotEqualTo(PostTable.POST_STATUS, PostStatus.DELETED)
+                                    .whereIn("postID", yourSavedPosts);
+                            query.get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>();
+                                    ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
+                                    for (QueryDocumentSnapshot postDoc : task1.getResult()) {
+                                        PostSearchResult postSearchResult = new PostSearchResult();
+                                        postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
+                                        postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
+                                        postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                        postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
+                                        postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                        postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
+                                        postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                        String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                        Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                                .document(laptopID)
+                                                .get()
+                                                .addOnSuccessListener(productSnapshot -> {
+                                                    if (productSnapshot.exists()) {
+                                                        postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                    }
+                                                });
+                                        loadProductTasks.add(getProductTask);
+                                        postSearchResults.add(postSearchResult);
+                                    }
+                                    Tasks.whenAllSuccess(loadProductTasks)
+                                            .addOnSuccessListener(results -> {
+                                              listener.OnFinishLoadYourSavedPosts(true, postSearchResults, null);
+                                            })
+                                            .addOnFailureListener(exception -> {
+                                                listener.OnFinishLoadYourSavedPosts(false, null, null);
+                                            });
+                                } else {
+                                    listener.OnFinishLoadYourSavedPosts(false, null, task1.getException());
+                                }
+                            });
                         } else {
                             listener.OnFinishLoadYourSavedPosts(true, null, null);
                         }
                     } else {
-                        listener.OnFinishLoadYourSavedPosts(false, null, null);
+                        listener.OnFinishLoadYourSavedPosts(true, null, null);
                     }
                 }
             });
