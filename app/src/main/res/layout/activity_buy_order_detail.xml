@@ -492,6 +492,7 @@
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnViewPostDetailBuyOrderDetail1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -521,6 +522,7 @@
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnViewPostDetailBuyOrderDetail2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -557,6 +559,7 @@
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnViewPostDetailBuyOrderDetail3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

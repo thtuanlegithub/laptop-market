@@ -118,11 +118,17 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
 
         // Check UI if is your own account
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String currentUserID = firebaseUser.getUid();
-        if (currentUserID.equals(ownerOfPostID)) {
-            btnProfileEdit.setVisibility(View.VISIBLE);
-            imgButtonEditAvatar.setVisibility(View.VISIBLE);
-            imgProfileAvatar.setEnabled(true);
+        if (firebaseUser != null) {
+            String currentUserID = firebaseUser.getUid();
+            if (currentUserID.equals(ownerOfPostID)) {
+                btnProfileEdit.setVisibility(View.VISIBLE);
+                imgButtonEditAvatar.setVisibility(View.VISIBLE);
+                imgProfileAvatar.setEnabled(true);
+            } else {
+                btnProfileEdit.setVisibility(View.GONE);
+                imgButtonEditAvatar.setVisibility(View.GONE);
+                imgProfileAvatar.setEnabled(false);
+            }
         } else {
             btnProfileEdit.setVisibility(View.GONE);
             imgButtonEditAvatar.setVisibility(View.GONE);
