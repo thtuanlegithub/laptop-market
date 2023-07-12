@@ -35,6 +35,7 @@
   </androidx.appcompat.widget.Toolbar>
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rcvRatedPost"
+      android:visibility="gone"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_weight="1"

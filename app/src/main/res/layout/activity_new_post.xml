@@ -620,6 +620,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Xem trước"
+            android:visibility="gone"
             android:textSize="16dp"
             android:backgroundTint="#C0C0C0"
             android:layout_marginLeft="20dp"

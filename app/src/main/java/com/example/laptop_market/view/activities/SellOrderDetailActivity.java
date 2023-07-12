@@ -429,7 +429,7 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
             postSearchResult.setAddress(postOfThisOrder.getSellerAddress());
             postSearchResult.setPostStatus(postOfThisOrder.getPostStatus());
             postSearchResult.setImage(getBitMapFromString(postOfThisOrder.getPostMainImage()));
-            String formattedStr = clickedOrder.getPrice().replaceAll("[^\\d.]", "");
+            String formattedStr = clickedOrder.getPrice().replaceAll("[^\\d]", "");
             postSearchResult.setPrice(Double.parseDouble(formattedStr));
             // Mở Activity mới
             Intent intent = new Intent(this, PostDetailActivity.class);
