@@ -339,7 +339,7 @@ public class AccountModel implements IAccountContract.Model {
                                double revenue = 0;
                                for (QueryDocumentSnapshot orderDoc :  task1.getResult()) {
                                     String rawPrice = orderDoc.getString(OrderTable.TOTAL_AMOUNT);
-                                    String formattedStr = rawPrice.replaceAll("[^\\d.]", "");
+                                    String formattedStr = rawPrice.replaceAll("[^\\d]", "");
                                     revenue += (Double.parseDouble(formattedStr));
                                     ++NoOrders;
                                }
