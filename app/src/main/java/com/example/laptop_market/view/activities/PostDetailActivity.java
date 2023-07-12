@@ -225,8 +225,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             }
         });
         btnViewProfileFromPostDetail.setOnClickListener(view -> {
-            /*Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("AccountID", this.postSearchResult.getAccountId());
+            startActivity(intent);
         });
         bttMessenger.setOnClickListener(view -> {
             if(FirebaseAuth.getInstance().getCurrentUser() == null)

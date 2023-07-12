@@ -29,6 +29,15 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout layoutNotPostActive;
+    private String ownerOfPostID;
+
+    public PostActiveFragment () {
+
+    }
+
+    public PostActiveFragment (String ownerOfPostID) {
+        this.ownerOfPostID = ownerOfPostID;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +55,7 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                postFragmentPresenter.LoadPostActive();
+                postFragmentPresenter.LoadPostActive(ownerOfPostID);
                 layoutNotPostActive.setVisibility(View.GONE);
                 rcvPostActive.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
@@ -57,7 +66,7 @@ public class PostActiveFragment extends Fragment implements IPostContract.View.P
         progressBar = view.findViewById(R.id.progressBarPostActive);
         GridLayoutManager gridLayoutManagerPostActive = new GridLayoutManager(requireContext(),1);
         rcvPostActive.setLayoutManager(gridLayoutManagerPostActive);
-        postFragmentPresenter.LoadPostActive();
+        postFragmentPresenter.LoadPostActive(ownerOfPostID);
         return view;
     }
     @Override

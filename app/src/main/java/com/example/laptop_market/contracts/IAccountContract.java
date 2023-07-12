@@ -187,7 +187,7 @@ public interface IAccountContract {
         //endregion
         //region Profile Detail Activity view
         interface ProfileActivityPresenter{
-            void LoadProfile();
+            void LoadProfile(String ownerOfPostID);
             void UploadImageClicked(Account account, Uri uri);
         }
         //endregion

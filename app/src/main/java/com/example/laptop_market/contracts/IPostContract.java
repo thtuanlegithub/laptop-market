@@ -35,11 +35,11 @@ public interface IPostContract {
         }
         //endregion
         // region Load your own post
-        void LoadPostActive(OnLoadPostActiveListener listener);
+        void LoadPostActive(String ownerOfPostID, OnLoadPostActiveListener listener);
         interface OnLoadPostActiveListener {
             void OnFinishLoadPostActive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
         }
-        void LoadPostInActive(OnLoadPostInactiveListener listener);
+        void LoadPostInActive(String ownerOfPostID, OnLoadPostInactiveListener listener);
         interface OnLoadPostInactiveListener {
             void OnFinishLoadPostInactive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
         }
@@ -111,8 +111,8 @@ public interface IPostContract {
         interface PostFragmentPresenter{
             void CreateNewPost();
             void LoadManagePost();
-            void LoadPostActive();
-            void LoadPostInactive();
+            void LoadPostActive(String ownerOfPostID);
+            void LoadPostInactive(String ownerOfPostID);
         }
     }
 }

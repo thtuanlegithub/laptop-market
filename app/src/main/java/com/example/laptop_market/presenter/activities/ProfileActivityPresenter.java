@@ -20,8 +20,8 @@ public class ProfileActivityPresenter implements IAccountContract.Presenter.Prof
     }
 
     @Override
-    public void LoadProfile() {
-        model.LoadAccountSetting((account, e) -> {
+    public void LoadProfile(String accountID) {
+        model.LoadAccountWithId(accountID, (account, e) -> {
             if(e!=null)
                 view.ExceptionCatch(e);
             else

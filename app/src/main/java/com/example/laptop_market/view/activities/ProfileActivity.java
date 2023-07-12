@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,6 +29,8 @@ import com.example.laptop_market.presenter.activities.ProfileActivityPresenter;
 import com.example.laptop_market.view.fragments.PostActiveFragment;
 import com.example.laptop_market.view.fragments.PostInactiveFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +54,20 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
     private ActivityResultLauncher<Intent> accountSettingLauncher;
     private static final int REQUEST_CODE_FOR_PROFILE = 5;
     private int currentSelectedItem = 0;
+    private String ownerOfPostID;
+    public ProfileActivity () {
+
+    }
+    public ProfileActivity (String ownerOfPostID) {
+        this.ownerOfPostID = ownerOfPostID;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ownerOfPostID = getIntent().getStringExtra("AccountID");
 
         accountSettingLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == REQUEST_CODE_FOR_PROFILE){
@@ -74,8 +87,8 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
             }
         });
         fragmentList = new ArrayList<>();
-        fragmentList.add(new PostActiveFragment());
-        fragmentList.add(new PostInactiveFragment());
+        fragmentList.add(new PostActiveFragment(ownerOfPostID));
+        fragmentList.add(new PostInactiveFragment(ownerOfPostID));
         //find view
         imgProfileAvatar = findViewById(R.id.imgProfileAvatar);
         btnProfileEdit = findViewById(R.id.btnProfileEdit);
@@ -103,8 +116,21 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
         presenter = new ProfileActivityPresenter(this);
         // circle avatar of seller
 
+        // Check UI if is your own account
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String currentUserID = firebaseUser.getUid();
+        if (currentUserID.equals(ownerOfPostID)) {
+            btnProfileEdit.setVisibility(View.VISIBLE);
+            imgButtonEditAvatar.setVisibility(View.VISIBLE);
+            imgProfileAvatar.setEnabled(true);
+        } else {
+            btnProfileEdit.setVisibility(View.GONE);
+            imgButtonEditAvatar.setVisibility(View.GONE);
+            imgProfileAvatar.setEnabled(false);
+        }
         setListener();
         loadData();
+
     }
     private void setListener()
     {
@@ -160,7 +186,7 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
     }
     private void loadData()
     {
-        presenter.LoadProfile();
+        presenter.LoadProfile(ownerOfPostID);
     }
 
     @Override

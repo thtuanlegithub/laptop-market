@@ -33,6 +33,8 @@ import com.example.laptop_market.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +80,13 @@ public class PostFragment extends Fragment implements IPostContract.View.PostFra
         gridRequireLoginForPost = view.findViewById(R.id.gridRequireLoginForPost);
         btnRequireLoginForPost = view.findViewById(R.id.btnRequireLoginForPost);
         fragmentList = new ArrayList<>();
-        fragmentList.add(new PostActiveFragment());
-        fragmentList.add(new PostInactiveFragment());
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String ownerOfPostID = null;
+        if (firebaseUser != null) {
+            ownerOfPostID = firebaseUser.getUid();
+        }
+        fragmentList.add(new PostActiveFragment(ownerOfPostID));
+        fragmentList.add(new PostInactiveFragment(ownerOfPostID));
         viewPagerPost = view.findViewById(R.id.viewPagerPost);
         fragmentStateAdapter = new FragmentStateAdapter(this) {
             @NonNull
