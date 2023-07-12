@@ -2,16 +2,20 @@ package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -26,6 +30,9 @@ import com.example.laptop_market.model.post.Post;
 import com.example.laptop_market.model.post.PostStatus;
 import com.example.laptop_market.presenter.activities.OrderDetailActivityPresenter;
 import com.example.laptop_market.utils.MyDialog;
+import com.example.laptop_market.utils.tables.PostTable;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResult;
+import com.example.laptop_market.view.adapters.PostSearchResult.PostSearchResultAdapter;
 import com.example.laptop_market.view.adapters.Sell.SellOrder;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -58,6 +65,7 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
     private AppCompatButton btnFinishOrderSellOrderDetail;
     private AppCompatButton btnCancelOrderSellOrder;
     private AppCompatButton btnUpdatePostStatusSellOrder;
+    private AppCompatButton btnViewPostDetailSellOrderDetail;
     private Order fullOrderDetails;
     private Post postOfThisOrder;
     private SellOrder clickedOrder;
@@ -80,6 +88,8 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
         onCancelOrderClicked();
 
         onUpdatePostStatusClicked();
+
+        onViewPostDetailsClicked();
 
         // Get intent from previous activity/fragment
         Intent intent = getIntent();
@@ -405,6 +415,40 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
         });
     }
     // endregion
+
+    // region View post details
+    private void onViewPostDetailsClicked(){
+        btnViewPostDetailSellOrderDetail = findViewById(R.id.btnViewPostDetailSellOrderDetail);
+        btnViewPostDetailSellOrderDetail.setOnClickListener(view -> {
+            // Create new object to pass data
+            PostSearchResult postSearchResult = new PostSearchResult();
+            postSearchResult.setPostId(postOfThisOrder.getPostID());
+            postSearchResult.setLaptopId(postOfThisOrder.getLaptopID());
+            postSearchResult.setAccountId(postOfThisOrder.getAccountID());
+            postSearchResult.setTitle(postOfThisOrder.getTitle());
+            postSearchResult.setAddress(postOfThisOrder.getSellerAddress());
+            postSearchResult.setPostStatus(postOfThisOrder.getPostStatus());
+            postSearchResult.setImage(getBitMapFromString(postOfThisOrder.getPostMainImage()));
+            String formattedStr = clickedOrder.getPrice().replaceAll("[^\\d.]", "");
+            postSearchResult.setPrice(Double.parseDouble(formattedStr));
+            // Mở Activity mới
+            Intent intent = new Intent(this, PostDetailActivity.class);
+            // Truyền dữ liệu cần thiết qua intent (nếu cần)
+            intent.putExtra(PostTable.TABLE_NAME, postSearchResult);
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent,bundle);
+        });
+    }
+    private Bitmap getBitMapFromString(String encodedImage)
+    {
+        if(encodedImage!=null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        else
+            return  null;
+    }
+    //endregion
 
     // region Override interface
     @Override

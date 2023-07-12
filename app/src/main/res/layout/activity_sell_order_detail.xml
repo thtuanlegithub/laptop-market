@@ -450,6 +450,7 @@
             android:layout_marginBottom="5dp"
             >
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnViewPostDetailSellOrderDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

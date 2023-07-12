@@ -2,15 +2,19 @@ package com.example.laptop_market.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -70,6 +74,9 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     private Order fullOrderDetails;
     private Post postOfThisOrder;
     private BuyOrder clickedOrder;
+    private AppCompatButton btnViewPostDetailBuyOrderDetail1;
+    private AppCompatButton btnViewPostDetailBuyOrderDetail2;
+    private AppCompatButton btnViewPostDetailBuyOrderDetail3;
     private IOrderContract.Presenter.BuyOrderDetailActivityPresenter buyOrderDetailActivityPresenter;
     private IOrderContract.Presenter.OrderDetailActivityPresenter orderDetailActivityPresenter;
     @Override
@@ -101,6 +108,8 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
             }
             // Load data here
         }
+
+        onViewPostDetailsClicked();
     }
 
     // region Close order details
@@ -267,6 +276,51 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     }
     // endregion
 
+    // region View post details
+    private void onViewPostDetailsClicked() {
+        btnViewPostDetailBuyOrderDetail1 = findViewById(R.id.btnViewPostDetailBuyOrderDetail1);
+        btnViewPostDetailBuyOrderDetail1.setOnClickListener(view -> {
+            processPassingData();
+        });
+        btnViewPostDetailBuyOrderDetail2 = findViewById(R.id.btnViewPostDetailBuyOrderDetail2);
+        btnViewPostDetailBuyOrderDetail2.setOnClickListener(view -> {
+            processPassingData();
+        });
+        btnViewPostDetailBuyOrderDetail3 = findViewById(R.id.btnViewPostDetailBuyOrderDetail3);
+        btnViewPostDetailBuyOrderDetail3.setOnClickListener(view -> {
+            processPassingData();
+        });
+    }
+    private void processPassingData(){
+        // Create new object to pass data
+        PostSearchResult postSearchResult = new PostSearchResult();
+        postSearchResult.setPostId(postOfThisOrder.getPostID());
+        postSearchResult.setLaptopId(postOfThisOrder.getLaptopID());
+        postSearchResult.setAccountId(postOfThisOrder.getAccountID());
+        postSearchResult.setTitle(postOfThisOrder.getTitle());
+        postSearchResult.setAddress(postOfThisOrder.getSellerAddress());
+        postSearchResult.setPostStatus(postOfThisOrder.getPostStatus());
+        postSearchResult.setImage(getBitMapFromString(postOfThisOrder.getPostMainImage()));
+        String formattedStr = clickedOrder.getPrice().replaceAll("[^\\d.]", "");
+        postSearchResult.setPrice(Double.parseDouble(formattedStr));
+        // Mở Activity mới
+        Intent intent = new Intent(this, PostDetailActivity.class);
+        // Truyền dữ liệu cần thiết qua intent (nếu cần)
+        intent.putExtra(PostTable.TABLE_NAME, postSearchResult);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+        startActivity(intent,bundle);
+    }
+    private Bitmap getBitMapFromString(String encodedImage)
+    {
+        if(encodedImage!=null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        else
+            return  null;
+    }
+    // endregion
+
     // region Override interface
     @Override
     public void DisplayBuySucessful() {
@@ -305,6 +359,10 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
 
     // region Display view
     private void FindViews(){
+        btnViewPostDetailBuyOrderDetail1 = findViewById(R.id.btnViewPostDetailBuyOrderDetail1);
+        btnViewPostDetailBuyOrderDetail1 = findViewById(R.id.btnViewPostDetailBuyOrderDetail2);
+        btnViewPostDetailBuyOrderDetail1 = findViewById(R.id.btnViewPostDetailBuyOrderDetail3);
+
         txtViewBuyOrderStatus = findViewById(R.id.txtViewBuyOrderStatus);
         tvBuyOrderDetailOrderName = findViewById(R.id.tvBuyOrderDetailOrderName);
         tvBuyOrderDetailTotalAmount = findViewById(R.id.tvBuyOrderDetailTotalAmount);

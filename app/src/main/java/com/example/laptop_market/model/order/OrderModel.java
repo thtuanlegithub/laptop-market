@@ -644,12 +644,7 @@ public class OrderModel implements IOrderContract.Model {
                     DocumentReference postRef = db.collection(PostTable.TABLE_NAME).document(order.getPostID());
                     postRef.get().addOnSuccessListener(postDoc -> {
                         if (postDoc.exists()) {
-                                Post post = new Post();
-                                post.setSellerName(postDoc.getString(PostTable.SELLER_NAME));
-                                post.setSellerPhoneNumber(postDoc.getString(PostTable.SELLER_PHONE_NUMBER));
-                                post.setSellerAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
-                                post.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
-                                // Gọi callback OnFinishLoadOrderDetails và truyền đối tượng Order đã nạp
+                                Post post = postDoc.toObject(Post.class);
                                 listener.OnFinishLoadOrderDetails(true, order, post, null);
                         } else {
                             listener.OnFinishLoadOrderDetails(false, null, null, null);

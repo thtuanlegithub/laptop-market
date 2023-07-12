@@ -80,7 +80,26 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
 
     private void setListener()
     {
-
+        imgAccount.setOnClickListener(view -> {
+            if(!isLogin) {
+                Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+                PreferenceManager preferenceManager = new PreferenceManager(getContext());
+                preferenceManager.putInt(FragmentActivityType.FRAGMENT_ACTIVITY, FragmentActivityType.ACCOUNT_FRAGMENT);
+                startActivity(intent);
+            }
+            else {
+//                accountBaseFragment.profileFragment = new ProfileFragment(accountBaseFragment);
+//                accountBaseFragment.replaceFragment(accountBaseFragment.profileFragment);
+                Intent intent = new Intent(this.getActivity(), ProfileActivity.class);
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser != null){
+                    String ownerOfPostID = firebaseUser.getUid();
+                    intent.putExtra("AccountID", ownerOfPostID);
+                }
+                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+                startActivityForResult(intent,REQUEST_CODE_TRANSITION, bundle);
+            }
+        });
         txtAccountName.setOnClickListener(v -> {
             if(!isLogin) {
                 Intent intent = new Intent(this.getActivity(), LoginActivity.class);
