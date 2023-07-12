@@ -54,12 +54,12 @@ public class OrderDetailActivityPresenter implements IOrderContract.Presenter.Or
     }
 
     @Override
-    public void UpdatePostStatus(String postID) {
-        postModel.UpdatePostStatus(postID, new IPostContract.Model.OnUpdatePostStatusListener() {
+    public void UpdatePostStatus(String postID, String changePostStatusTo) {
+        postModel.UpdatePostStatus(postID, changePostStatusTo, new IPostContract.Model.OnUpdatePostStatusListener() {
             @Override
-            public void OnFinishUpdatePostStatus(boolean isSuccess, boolean isAvailable, Exception error) {
+            public void OnFinishUpdatePostStatus(boolean isSuccess, String currentStatus, Exception error) {
                 if (isSuccess) {
-                    orderDetailsActivityView.DisplayUpdatePostStatus(isAvailable);
+                    orderDetailsActivityView.DisplayUpdatePostStatus(currentStatus);
                 } else {
                     error.printStackTrace();
                 }

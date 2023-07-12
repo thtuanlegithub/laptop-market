@@ -397,7 +397,11 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
     private void onUpdatePostStatusClicked() {
         btnUpdatePostStatusSellOrder = findViewById(R.id.btnUpdatePostStatusSellOrder);
         btnUpdatePostStatusSellOrder.setOnClickListener(view -> {
-            orderDetailActivityPresenter.UpdatePostStatus(clickedOrder.getPostID());
+            String currentStatus = this.postOfThisOrder.getPostStatus();
+            if (currentStatus.equals(PostStatus.AVAILABLE))
+                orderDetailActivityPresenter.UpdatePostStatus(clickedOrder.getPostID(), PostStatus.NOT_AVAILABLE);
+            else if (currentStatus.equals(PostStatus.NOT_AVAILABLE))
+                orderDetailActivityPresenter.UpdatePostStatus(clickedOrder.getPostID(), PostStatus.AVAILABLE);
         });
     }
     // endregion
@@ -412,11 +416,13 @@ public class SellOrderDetailActivity extends AppCompatActivity implements IOrder
     }
 
     @Override
-    public void DisplayUpdatePostStatus(boolean isAvailable) {
-        if (isAvailable) {
+    public void DisplayUpdatePostStatus(String currentStatus) {
+        if (currentStatus.equals(PostStatus.AVAILABLE)) {
+            postOfThisOrder.setPostStatus(PostStatus.AVAILABLE);
             btnUpdatePostStatusSellOrder.setText("Hủy tin");
             btnUpdatePostStatusSellOrder.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.cancel_post));
-        } else {
+        } else if (currentStatus.equals(PostStatus.NOT_AVAILABLE)){
+            postOfThisOrder.setPostStatus(PostStatus.NOT_AVAILABLE);
             btnUpdatePostStatusSellOrder.setText("Đăng lại tin");
             btnUpdatePostStatusSellOrder.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.repost_post));
         }

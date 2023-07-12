@@ -554,23 +554,18 @@ public class PostModel implements IPostContract.Model {
     }
 
     @Override
-    public void UpdatePostStatus(String postID, OnUpdatePostStatusListener listener) {
-        db.collection(PostTable.TABLE_NAME).document(postID).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                DocumentSnapshot documentSnapshot = task.getResult();
-                if (documentSnapshot.exists()){
-                    String postStatus = documentSnapshot.getString(PostTable.POST_STATUS);
-                    if (postStatus.equals(PostStatus.AVAILABLE)){
-                        db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE);
-                        listener.OnFinishUpdatePostStatus(true, false, null);
-                    } else {
-                        db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.AVAILABLE);
-                        listener.OnFinishUpdatePostStatus(true, true, null);
-                    }
-                }
-            } else {
-                listener.OnFinishUpdatePostStatus(false, false, task.getException());
-            }
-        });
+    public void UpdatePostStatus(String postID, String changePostStatusTo, OnUpdatePostStatusListener listener) {
+        if (changePostStatusTo.equals(PostStatus.AVAILABLE)){
+            db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.AVAILABLE);
+            listener.OnFinishUpdatePostStatus(true, PostStatus.AVAILABLE, null);
+        }
+        else if (changePostStatusTo.equals(PostStatus.NOT_AVAILABLE)){
+            db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE);
+            listener.OnFinishUpdatePostStatus(true, PostStatus.NOT_AVAILABLE, null);
+        }
+        else if (changePostStatusTo.equals(PostStatus.DELETED)){
+            db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.DELETED);
+            listener.OnFinishUpdatePostStatus(true, PostStatus.DELETED, null);
+        }
     }
 }

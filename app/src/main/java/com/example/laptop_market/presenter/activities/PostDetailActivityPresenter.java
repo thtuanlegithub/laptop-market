@@ -172,12 +172,12 @@ public class PostDetailActivityPresenter implements IPostContract.Presenter.Post
     //endregion
 
     @Override
-    public void OnChangeStatusClicked(String postID) {
-        postModel.UpdatePostStatus(postID, new IPostContract.Model.OnUpdatePostStatusListener() {
+    public void OnChangeStatusClicked(String postID, String changePostStatusTo) {
+        postModel.UpdatePostStatus(postID, changePostStatusTo, new IPostContract.Model.OnUpdatePostStatusListener() {
             @Override
-            public void OnFinishUpdatePostStatus(boolean isSuccess, boolean isAvailable, Exception error) {
+            public void OnFinishUpdatePostStatus(boolean isSuccess, String currentStatus, Exception error) {
                 if (isSuccess) {
-                    postView.DisplayNotifyButtonStatus(isAvailable);
+                    postView.DisplayNotifyButtonStatus(currentStatus);
                 } else {
                     error.printStackTrace();
                 }

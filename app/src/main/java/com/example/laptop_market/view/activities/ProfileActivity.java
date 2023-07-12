@@ -1,7 +1,10 @@
 package com.example.laptop_market.view.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -32,6 +35,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity implements IAccountContract.View.ProfileActivityView {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Button btnProfileBack;
+    private AppCompatButton btnProfileEdit;
     private ImageView imgProfileAvatar;
     private ImageButton imgButtonEditAvatar;
     private List<Fragment> fragmentList;
@@ -44,16 +48,37 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
     private TextView descriptionTextView;
     private TextView accountNameTextView;
     private IAccountContract.Presenter.ProfileActivityPresenter presenter;
+    private ActivityResultLauncher<Intent> accountSettingLauncher;
+    private static final int REQUEST_CODE_FOR_PROFILE = 5;
     private int currentSelectedItem = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        accountSettingLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == REQUEST_CODE_FOR_PROFILE){
+                Account account1 = (Account) result.getData().getSerializableExtra("AccountInfo");
+                if(account1.getAddress()!=null)
+                    AddressTextView.setText(account1.getAddress());
+                if(account1.getPhoneNumber()!=null)
+                    PhonenumberTextView.setText(account1.getPhoneNumber());
+                if(account1.getDescription()!=null) {
+                    String description = account1.getDescription();
+                    if (description.length() > 35) {
+                        description = description.substring(0, 35) + "...";
+                    }
+                    descriptionTextView.setText(description);
+                }
+                accountNameTextView.setText(account1.getAccountName());
+            }
+        });
         fragmentList = new ArrayList<>();
         fragmentList.add(new PostActiveFragment());
         fragmentList.add(new PostInactiveFragment());
         //find view
         imgProfileAvatar = findViewById(R.id.imgProfileAvatar);
+        btnProfileEdit = findViewById(R.id.btnProfileEdit);
         viewPagerPost = findViewById(R.id.viewPagerProfilePost);
         PhonenumberTextView = findViewById(R.id.PhonenumberTextView);
         AddressTextView = findViewById(R.id.AddressTextView);
@@ -117,6 +142,10 @@ public class ProfileActivity extends AppCompatActivity implements IAccountContra
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        });
+        btnProfileEdit.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AccountSettingActivity.class);
+            accountSettingLauncher.launch(intent);
         });
     }
     @Override
