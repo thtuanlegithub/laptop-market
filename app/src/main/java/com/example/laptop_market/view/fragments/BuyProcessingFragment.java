@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
@@ -29,6 +30,7 @@ public class BuyProcessingFragment extends Fragment implements IOrderContract.Vi
     private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout layoutNotBuyProcessing;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +45,13 @@ public class BuyProcessingFragment extends Fragment implements IOrderContract.Vi
 
         //Hiển thị các đơn bán - đang xử lý
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutBuyProcessing);
+        layoutNotBuyProcessing = view.findViewById(R.id.layoutNotBuyProcessing);
         rcvBuyProcessing = view.findViewById(R.id.rcvBuyProcessing);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 buyFragmentPresenter.LoadBuyProcessingOrder();
+                layoutNotBuyProcessing.setVisibility(View.GONE);
                 rcvBuyProcessing.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
@@ -62,13 +66,15 @@ public class BuyProcessingFragment extends Fragment implements IOrderContract.Vi
 
     @Override
     public void DisplayBuyProcessingOrder(ArrayList<BuyOrder> orders) {
-        if (orders == null){
+        if (orders == null || orders.size() == 0){
             progressBar.setVisibility(View.GONE);
+            layoutNotBuyProcessing.setVisibility(View.VISIBLE);
             return;
         }
         BuyProcessingAdapter BuyProcessingAdapter = new BuyProcessingAdapter(orders);
         rcvBuyProcessing.setAdapter(BuyProcessingAdapter);
         progressBar.setVisibility(View.GONE);
+        layoutNotBuyProcessing.setVisibility(View.GONE);
         rcvBuyProcessing.setVisibility(View.VISIBLE);
     }
 

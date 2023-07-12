@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
@@ -28,6 +29,7 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout layoutNotSellDelivering;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +41,13 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
         sellFragmentPresenter = new SellFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_sell_delivering, container, false);
         rcvSellDelivering = view.findViewById(R.id.rcvSellDelivering);
+        layoutNotSellDelivering = view.findViewById(R.id.layoutNotSellDelivering);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutSellDelivering);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 sellFragmentPresenter.LoadSellDeliveringOrder();
+                layoutNotSellDelivering.setVisibility(View.GONE);
                 rcvSellDelivering.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
@@ -59,12 +63,14 @@ public class SellDeliveringFragment extends Fragment implements IOrderContract.V
 
     @Override
     public void DisplaySellDeliveringOrder(ArrayList<SellOrder> orders) {
-        if (orders == null){
+        if (orders == null || orders.size() == 0) {
             progressBar.setVisibility(View.GONE);
+            layoutNotSellDelivering.setVisibility(View.VISIBLE);
             return;
         }
         SellDeliveringAdapter sellDeliveringAdapter = new SellDeliveringAdapter(orders);
         rcvSellDelivering.setAdapter(sellDeliveringAdapter);
+        layoutNotSellDelivering.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         rcvSellDelivering.setVisibility(View.VISIBLE);
     }

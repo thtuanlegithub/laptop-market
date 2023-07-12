@@ -26,13 +26,14 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/postDetailMessage"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_width="52dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="60dp"
                     android:layout_height="32dp"
                     android:textAllCaps="false"
                     android:background="@drawable/bg_btn_delete_post"
                     android:stateListAnimator="@drawable/bg_btn_delete_post"
                     android:text="Xoá"
+                    android:textSize="17dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -124,7 +125,11 @@
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toBottomOf="@id/postDetailTitleTextView"
                                 />
-
+                            <TextView
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="10 giờ trước"/>
                         </LinearLayout>
 
                         <Button
