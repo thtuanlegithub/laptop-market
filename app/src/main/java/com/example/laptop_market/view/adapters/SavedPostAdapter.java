@@ -52,6 +52,7 @@ public class SavedPostAdapter extends RecyclerView.Adapter<SavedPostAdapter.Save
         holder.pricePost.setText(formattedPrice + " VNĐ");
         holder.addressPost.setText(SavedPost.getAddress());
         holder.imgPost.setImageBitmap(SavedPost.getImage());
+        holder.inactiveLabelPost.setVisibility(View.GONE);
         // item select
 
         holder.itemView.setOnClickListener(v -> {
@@ -76,12 +77,14 @@ public class SavedPostAdapter extends RecyclerView.Adapter<SavedPostAdapter.Save
         private TextView titlePost;
         private TextView pricePost;
         private TextView addressPost;
+        private TextView inactiveLabelPost;
         public SavedPostViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPost = itemView.findViewById(R.id.imgPost);
             titlePost = itemView.findViewById(R.id.titlePost);
             pricePost = itemView.findViewById(R.id.pricePost);
             addressPost = itemView.findViewById(R.id.addressPost);
+            inactiveLabelPost = itemView.findViewById(R.id.inactiveLabelPost);
         }
     }
 }
