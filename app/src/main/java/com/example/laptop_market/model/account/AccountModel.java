@@ -68,6 +68,11 @@ public class AccountModel implements IAccountContract.Model {
         firebaseAuth.signInWithEmailAndPassword(account.getEmail(), account.getPassword()).addOnCompleteListener(
                 task -> {
                     if (task.isSuccessful()) {
+                        if(!task.getResult().getUser().isEmailVerified())
+                        {
+                            listener.OnLoginListener(false,"Tài khoản này chưa được xác thực");
+                            return;
+                        }
                         firebaseUser = task.getResult().getUser();
                         String UId = task.getResult().getUser().getUid();
                         db.collection(AccountTable.TABLE_NAME).document(UId).get().addOnCompleteListener(
@@ -408,6 +413,34 @@ public class AccountModel implements IAccountContract.Model {
                 }
             });
         }
+    }
+
+    @Override
+    public void SendEmailVerified(OnFinishEmailVerifiedListener listener) {
+        firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
+            if(!task.isSuccessful())
+                task.getException().printStackTrace();
+            else {
+                listener.OnFinishSendEmailVerified();
+            }
+        });
+    }
+
+    @Override
+    public void GetEmailVerified(OnFinishEmailVerifiedListener listener) {
+        firebaseUser.reload();
+        if(firebaseUser.isEmailVerified())
+            listener.OnFinishSendEmailVerified();
+    }
+
+    @Override
+    public void SendEmailForgotPassword(String email,OnFinishSendEmailForgotPasswordListener listener) {
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if(!task.isSuccessful())
+                listener.OnFinishSendEmailForgotPassword(false);
+            else
+                listener.OnFinishSendEmailForgotPassword(true);
+        });
     }
 
     private Bitmap getBitMapFromString(String encodedImage)

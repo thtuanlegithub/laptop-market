@@ -357,8 +357,12 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && (resultCode == RESULT_OK || resultCode == RESULT_FIRST_USER)) {
+            if(ListPictures.size()==5)
+            {
+                Toast.makeText(getApplicationContext(),"Chỉ nhận tối đa 5 ảnh", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (data.getData() != null) {
-                // Xử lý một ảnh duy nhất
                 listImageLayout.setVisibility(View.VISIBLE);
                 NewPostOpenImageBtt.setVisibility(View.GONE);
                 Uri uri = data.getData();

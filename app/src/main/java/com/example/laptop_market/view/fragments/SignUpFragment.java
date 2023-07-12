@@ -78,19 +78,9 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
         btnSignUpBack.setOnClickListener(v -> {
             loginActivity.replaceFragment(loginActivity.loginFragment);
         });
-
-        btnSignUp.setOnClickListener(v -> {
-            if(loginActivity.authenticationFragment==null)
-            {
-                loginActivity.authenticationFragment = new AuthenticationFragment(loginActivity);
-            }
-            loginActivity.replaceFragment(loginActivity.authenticationFragment);
-        });
-
         txtLogin.setOnClickListener(v -> {
             loginActivity.replaceFragment(loginActivity.loginFragment);
         });
-
         btnSignUp.setOnClickListener(v->{
             String email = editTextEmail.getText().toString();
             String password = editTextPassword.getText().toString();
@@ -147,10 +137,7 @@ public class SignUpFragment extends Fragment implements IAccountContract.View.Si
     @Override
     public void RegisterSuccess() {
         Toast.makeText(getContext(),"",Toast.LENGTH_SHORT).show();
-        if(loginActivity.authenticationFragment==null)
-        {
-            loginActivity.authenticationFragment = new AuthenticationFragment(loginActivity);
-        }
+        loginActivity.authenticationFragment = new AuthenticationFragment(loginActivity);
         loginActivity.replaceFragment(loginActivity.authenticationFragment);
     }
 }

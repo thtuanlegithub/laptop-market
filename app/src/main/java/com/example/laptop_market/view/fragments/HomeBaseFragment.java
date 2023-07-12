@@ -43,6 +43,10 @@ public class HomeBaseFragment extends Fragment {
         return view;
     }
     public void replaceFragment(Fragment fragment) {
+        if(fragment instanceof SearchResultFragment)
+        {
+            fragment = new SearchResultFragment(this);
+        }
         fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameHomeBase, fragment);

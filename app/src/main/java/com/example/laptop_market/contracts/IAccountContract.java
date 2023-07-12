@@ -83,6 +83,15 @@ public interface IAccountContract {
         interface OnFinishLoadYourSavedPosts{
             void OnFinishLoadYourSavedPosts(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error);
         }
+        void SendEmailVerified(OnFinishEmailVerifiedListener listener);
+        interface OnFinishEmailVerifiedListener{
+            void OnFinishSendEmailVerified();
+        }
+        interface OnFinishSendEmailForgotPasswordListener{
+            void OnFinishSendEmailForgotPassword(boolean isSuccess);
+        }
+        void GetEmailVerified(OnFinishEmailVerifiedListener listener);
+        void SendEmailForgotPassword(String email, OnFinishSendEmailForgotPasswordListener listener);
     }
     interface View{
         //region Account Fragment view
@@ -144,6 +153,14 @@ public interface IAccountContract {
         interface SavedPostActivityView {
             void DisplaySavedPosts(ArrayList<PostSearchResult> postSearchResults);
         }
+        interface AuthenticationFragmentView{
+            void sendEmailSuccess();
+            void CheckVerifiedEmailSuccess();;
+        }
+        interface ForgotPasswordFragmentView{
+            void SendEmailForgotPasswordSuccess();
+            void SendEmailForgotPasswordFailed();
+        }
     }
     //region Presenter
     interface Presenter{
@@ -197,6 +214,13 @@ public interface IAccountContract {
 
         interface SavedPostActivityPresenter {
             void LoadSavedPosts(String accountID);
+        }
+        interface AuthenticationFragmentPresenter{
+                void SendEmail();
+                void CheckVerifiedEmail();
+        }
+        interface ForgotPasswordFragmentPresenter{
+            void SendEmailForgot(String email);
         }
     }
     // endregion

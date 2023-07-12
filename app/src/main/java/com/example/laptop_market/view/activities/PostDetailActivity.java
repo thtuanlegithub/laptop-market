@@ -85,6 +85,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private ActivityResultLauncher<Intent> orderDetailsLauncher;
     private TextView tvPostDetailDescription;
     private boolean backFromOrder = false;
+    private boolean backFromProfile = false;
     private Button btnViewProfileFromPostDetail;
     private AppCompatButton bttMessenger;
     private AppCompatButton btnNotifyPostStatus;
@@ -227,7 +228,9 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         btnViewProfileFromPostDetail.setOnClickListener(view -> {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtra("AccountID", this.postSearchResult.getAccountId());
-            startActivity(intent);
+            backFromProfile = true;
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent, bundle);
         });
         bttMessenger.setOnClickListener(view -> {
             if(FirebaseAuth.getInstance().getCurrentUser() == null)
@@ -387,6 +390,10 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         {
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             backFromOrder = false;
+        }
+        if(backFromProfile){
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            backFromProfile = false;
         }
         postPresenter.LoadSavePostButton(this.postSearchResult.getPostId());
     }

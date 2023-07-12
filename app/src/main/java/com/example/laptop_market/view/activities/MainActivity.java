@@ -14,6 +14,7 @@ import com.example.laptop_market.R;
 import com.example.laptop_market.contracts.IFragmentListener;
 import com.example.laptop_market.databinding.ActivityMainBinding;
 import com.example.laptop_market.utils.elses.ConnectionReceiver;
+import com.example.laptop_market.utils.elses.PreferenceManager;
 import com.example.laptop_market.view.fragments.AccountFragment;
 import com.example.laptop_market.view.fragments.BuyFragment;
 import com.example.laptop_market.view.fragments.HomeBaseFragment;
@@ -22,6 +23,7 @@ import com.example.laptop_market.view.fragments.PostFragment;
 import com.example.laptop_market.view.fragments.SearchFragment;
 import com.example.laptop_market.view.fragments.SearchResultFragment;
 import com.example.laptop_market.view.fragments.SellFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements IFragmentListener.MainActivityListener {
     private FragmentManager fragmentManager;
@@ -166,5 +168,14 @@ public class MainActivity extends AppCompatActivity implements IFragmentListener
         buyFragment.DisplayRequireLoginView();
         sellFragment.DisplayRequireLoginView();
         postFragment.DisplayRequireLoginView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
+        if(!preferenceManager.getBoolean("isLogin"))
+            FirebaseAuth.getInstance().signOut();
+
     }
 }

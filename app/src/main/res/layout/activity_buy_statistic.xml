@@ -63,7 +63,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:textStyle="bold"
-            android:textSize="40dp"/>
+            android:textSize="40dp"
+            android:layout_marginBottom="20dp"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnViewYourFinishOrder"
             android:layout_marginLeft="15dp"
@@ -75,6 +76,7 @@
             android:backgroundTint="#F09D38"
             android:text="Xem các đơn đã mua"
             android:textAllCaps="false"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="18dp"/>
     </LinearLayout>
