@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
@@ -27,6 +28,7 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
     private IOrderContract.Presenter.SellFragmentPresenter sellFragmentPresenter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout layoutNotSellFinish;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +41,13 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
         sellFragmentPresenter = new SellFragmentPresenter(this, getContext());
         View view = inflater.inflate(R.layout.fragment_sell_finish, container, false);
         rcvSellFinish = view.findViewById(R.id.rcvSellFinish);
+        layoutNotSellFinish = view.findViewById(R.id.layoutNotSellFinish);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutSellFinish);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 sellFragmentPresenter.LoadSellFinishedOrder();
+                layoutNotSellFinish.setVisibility(View.GONE);
                 rcvSellFinish.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
@@ -59,12 +63,14 @@ public class SellFinishFragment extends Fragment implements IOrderContract.View.
 
     @Override
     public void DisplaySellFinishedOrder(ArrayList<SellOrder> orders) {
-        if (orders == null){
+        if (orders == null || orders.size() == 0){
             progressBar.setVisibility(View.GONE);
+            layoutNotSellFinish.setVisibility(View.VISIBLE);
             return;
         }
         SellFinishAdapter sellFinishAdapter = new SellFinishAdapter(orders);
         rcvSellFinish.setAdapter(sellFinishAdapter);
+        layoutNotSellFinish.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         rcvSellFinish.setVisibility(View.VISIBLE);
     }

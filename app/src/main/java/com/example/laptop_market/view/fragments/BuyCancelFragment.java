@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
@@ -28,6 +29,7 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
     private IOrderContract.Presenter.BuyFragmentPresenter buyFragmentPresenter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout layoutNotBuyCancel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +45,12 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
         //Hiển thị các đơn bán - đang xử lý
         rcvBuyCancel = view.findViewById(R.id.rcvBuyCancel);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutBuyCancel);
+        layoutNotBuyCancel = view.findViewById(R.id.layoutNotBuyCancel);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 buyFragmentPresenter.LoadBuyCancelOrder();
+                layoutNotBuyCancel.setVisibility(View.GONE);
                 rcvBuyCancel.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
@@ -61,12 +65,14 @@ public class BuyCancelFragment extends Fragment implements IOrderContract.View.B
 
     @Override
     public void DisplayCancelFinishedOrder(ArrayList<BuyOrder> orders) {
-        if (orders == null){
+        if (orders == null || orders.size() == 0){
             progressBar.setVisibility(View.GONE);
+            layoutNotBuyCancel.setVisibility(View.VISIBLE);
             return;
         }
         BuyCancelAdapter buyCancelAdapter = new BuyCancelAdapter(orders);
         rcvBuyCancel.setAdapter(buyCancelAdapter);
+        layoutNotBuyCancel.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         rcvBuyCancel.setVisibility(View.VISIBLE);
     }
