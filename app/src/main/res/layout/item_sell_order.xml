@@ -13,6 +13,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,15 +38,14 @@
                 android:layout_height="wrap_content"
                 android:text="26,000,000 đ"
                 android:textColor="#CC4B45"
-                android:textStyle="bold"
-                android:layout_marginTop="5dp"/>
+                android:textStyle="bold"/>
         </LinearLayout>
         <TextView
             android:id="@+id/addressSellOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Thành phố Hồ Chí Minh"/>
+            android:text="15/25A, khối phố Cổ An Đông, phường Điện Nam Đông, thị xã Điện Bàn, tỉnh Quảng Nam"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
