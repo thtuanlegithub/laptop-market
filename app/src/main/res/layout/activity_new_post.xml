@@ -422,6 +422,7 @@
                             android:layout_marginBottom="15dp"
                             android:paddingTop="5dp"
                             android:background="#FAFAFA"
+                            android:maxLength="50"
                             android:textSize="16dp"
                             android:inputType="text"/>
                     </com.google.android.material.textfield.TextInputLayout>
@@ -489,6 +490,7 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
+                        android:maxLength="120"
                         android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -512,6 +514,7 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
+                        android:maxLength="300"
                         android:inputType="textMultiLine"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

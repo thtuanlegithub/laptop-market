@@ -27,9 +27,14 @@
                     android:id="@+id/postDetailMessage"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_width="32dp"
+                    android:layout_width="52dp"
                     android:layout_height="32dp"
-                    android:background="@drawable/ic_more_vert"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_btn_delete_post"
+                    android:stateListAnimator="@drawable/bg_btn_delete_post"
+                    android:text="Xoá"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     app:layout_constraintEnd_toEndOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -119,10 +124,7 @@
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toBottomOf="@id/postDetailTitleTextView"
                                 />
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="10 giờ trước"/>
+
                         </LinearLayout>
 
                         <Button
