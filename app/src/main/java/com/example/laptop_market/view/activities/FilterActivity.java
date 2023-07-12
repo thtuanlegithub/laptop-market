@@ -77,8 +77,8 @@ public class FilterActivity extends AppCompatActivity {
     {
         int min = searchFilterPost.getMinimumPrice();
         int max = searchFilterPost.getMaximumPrice();
-        seekBarMaxPrice.setProgress(max);
-        seekBarMinPrice.setProgress(min);
+        seekBarMaxPrice.setProgress(max/1000000);
+        seekBarMinPrice.setProgress(min/1000000);
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         String minValueFormatted = formatter.format(min);
         String maxValueFormatted = formatter.format(max);
