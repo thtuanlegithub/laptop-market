@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_marginTop="2dp"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/layoutItemPost">
     <ImageView
         android:id="@+id/imgPost"
         android:layout_width="120dp"
@@ -13,6 +14,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,14 +24,14 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             >
             <TextView
                 android:id="@+id/titlePost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Laptop ASUS TUF A15 - Gaming - R7 - 16GB RAM"
+                android:text="Laptop ASUS TUF A15 - Gaming - CPU Ryzen 7 - SSD 512GB - Card đồ họa RTX 3050"
                 android:textColor="@color/black" />
             <TextView
                 android:id="@+id/pricePost"
@@ -37,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="26,000,000 đ"
                 android:textColor="#CC4B45"
-                android:textStyle="bold"
-                android:layout_marginTop="5dp"/>
+                android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,16 +51,16 @@
                 android:id="@+id/addressPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thành phố Hồ Chí Minh"/>
+                android:text="662/10/12, KP1, Phường Trảng Dài, Tp. Biên Hoà, Tỉnh Đồng Nai
+"/>
             <TextView
-                android:paddingTop="5dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/inactiveLabelPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:gravity="center"
                 android:textColor="#6B6D6D"
                 android:text="TIN HẾT HẠN"/>

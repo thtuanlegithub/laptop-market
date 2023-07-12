@@ -298,7 +298,7 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
     }
 
     @Override
-    public void DisplayUpdatePostStatus(boolean isAvailable) {
+    public void DisplayUpdatePostStatus(String currentStatus) {
 
     }
     // endregion
@@ -369,9 +369,9 @@ public class BuyOrderDetailActivity extends AppCompatActivity implements IOrderC
             edtBuyOrderDetailPostServiceName.setText("");
 
         if (fullOrderDetails.getPostServiceCode() != null)
-            edtBuyOrderDetailPostServiceName.setText(fullOrderDetails.getPostServiceCode());
+            edtBuyOrderDetailPostServiceCode.setText(fullOrderDetails.getPostServiceCode());
         else
-            edtBuyOrderDetailPostServiceName.setText("");
+            edtBuyOrderDetailPostServiceCode.setText("");
 
         // Buyer info
         edtBuyOrderDetailBuyerPhone.setText(fullOrderDetails.getBuyerPhone());

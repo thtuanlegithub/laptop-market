@@ -37,6 +37,8 @@ import com.example.laptop_market.view.activities.RatedPostActivity;
 import com.example.laptop_market.view.activities.SavedPostActivity;
 import com.example.laptop_market.view.activities.SellStatisticActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class AccountFragment extends Fragment implements IAccountContract.View.AccountFragmentView {
@@ -90,6 +92,11 @@ public class AccountFragment extends Fragment implements IAccountContract.View.A
 //                accountBaseFragment.profileFragment = new ProfileFragment(accountBaseFragment);
 //                accountBaseFragment.replaceFragment(accountBaseFragment.profileFragment);
                 Intent intent = new Intent(this.getActivity(), ProfileActivity.class);
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser != null){
+                    String ownerOfPostID = firebaseUser.getUid();
+                    intent.putExtra("AccountID", ownerOfPostID);
+                }
                 Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
                 startActivityForResult(intent,REQUEST_CODE_TRANSITION, bundle);
             }

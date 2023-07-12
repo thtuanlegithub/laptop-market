@@ -418,161 +418,142 @@ public class PostModel implements IPostContract.Model {
     //endregion
 
     @Override
-    public void LoadPostActive(OnLoadPostActiveListener listener) {
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            String userID = firebaseUser.getUid();
-            // Nếu có người đang đăng nhập
-            if (userID != null) {
-                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
-                // Lấy cái BuyOrder từ bảng Account
-                accountRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot != null && documentSnapshot.exists()) {
-                            ArrayList<String> postActiveListID = (ArrayList<String>) documentSnapshot.get(AccountTable.PUBLISH_POSTS);
-                            if (postActiveListID != null && !postActiveListID.isEmpty()) {
-                                com.google.firebase.firestore.Query query = db.collection(PostTable.TABLE_NAME)
-                                        .whereEqualTo(PostTable.POST_STATUS, PostStatus.AVAILABLE)
-                                        .whereIn("postID", postActiveListID);
+    public void LoadPostActive(String ownerOfPostID, OnLoadPostActiveListener listener) {
+        // Nếu có người đang đăng nhập
+        if (ownerOfPostID != null) {
+            DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(ownerOfPostID);
+            // Lấy cái BuyOrder từ bảng Account
+            accountRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        ArrayList<String> postActiveListID = (ArrayList<String>) documentSnapshot.get(AccountTable.PUBLISH_POSTS);
+                        if (postActiveListID != null && !postActiveListID.isEmpty()) {
+                            com.google.firebase.firestore.Query query = db.collection(PostTable.TABLE_NAME)
+                                    .whereEqualTo(PostTable.POST_STATUS, PostStatus.AVAILABLE)
+                                    .whereIn("postID", postActiveListID);
 
-                                query.get().addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
-                                        ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
-                                        for (QueryDocumentSnapshot postDoc : task1.getResult()) {
-                                            PostSearchResult postSearchResult = new PostSearchResult ();
-                                            postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
-                                            postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
-                                            postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
-                                            postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
-                                            postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
-                                            postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
-                                            postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
-                                            String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
-                                            Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
-                                                    .document(laptopID)
-                                                    .get()
-                                                    .addOnSuccessListener(productSnapshot -> {
-                                                        if (productSnapshot.exists()) {
-                                                            postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
-                                                        }
-                                                    });
-                                            loadProductTasks.add(getProductTask);
-                                            postSearchResults.add(postSearchResult);
-                                        }
-                                        Tasks.whenAllSuccess(loadProductTasks)
-                                            .addOnSuccessListener(results -> {
-                                                listener.OnFinishLoadPostActive(true, postSearchResults, null);
-                                        })
-                                            .addOnFailureListener(exception -> {
-                                               listener.OnFinishLoadPostActive(false, null, null);
-                                            });
-                                        listener.OnFinishLoadPostActive(true, postSearchResults, null);
-                                    } else {
-                                        listener.OnFinishLoadPostActive(false, null, task1.getException());
-                                    }
-                                });
-                            } else {
-                                listener.OnFinishLoadPostActive(true, null, null);
-                            }
-                        }
-                    }
-                });
-            }
-        } else {
-            // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-            listener.OnFinishLoadPostActive(true, null, null);
-        }
-    }
-
-    @Override
-    public void LoadPostInActive(OnLoadPostInactiveListener listener) {
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            String userID = firebaseUser.getUid();
-            // Nếu có người đang đăng nhập
-            if (userID != null) {
-                DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(userID);
-                // Lấy cái BuyOrder từ bảng Account
-                accountRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot != null && documentSnapshot.exists()) {
-                            ArrayList<String> postActiveListID = (ArrayList<String>) documentSnapshot.get(AccountTable.PUBLISH_POSTS);
-                            if (postActiveListID != null && !postActiveListID.isEmpty()) {
-                                com.google.firebase.firestore.Query query = db.collection(PostTable.TABLE_NAME)
-                                        .whereEqualTo(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE)
-                                        .whereIn("postID", postActiveListID);
-
-                                query.get().addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
-                                        ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
-                                        for (QueryDocumentSnapshot postDoc : task1.getResult()) {
-                                            PostSearchResult postSearchResult = new PostSearchResult();
-                                            postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
-                                            postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
-                                            postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
-                                            postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
-                                            postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
-                                            postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
-                                            postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
-                                            String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
-                                            Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
-                                                    .document(laptopID)
-                                                    .get()
-                                                    .addOnSuccessListener(productSnapshot -> {
-                                                        if (productSnapshot.exists()) {
-                                                            postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
-                                                        }
-                                                    });
-                                            loadProductTasks.add(getProductTask);
-                                            postSearchResults.add(postSearchResult);
-                                        }
-                                        Tasks.whenAllSuccess(loadProductTasks)
-                                                .addOnSuccessListener(results -> {
-                                                    listener.OnFinishLoadPostInactive(true, postSearchResults, null);
-                                                })
-                                                .addOnFailureListener(exception -> {
-                                                    listener.OnFinishLoadPostInactive(false, null, null);
+                            query.get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
+                                    ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
+                                    for (QueryDocumentSnapshot postDoc : task1.getResult()) {
+                                        PostSearchResult postSearchResult = new PostSearchResult ();
+                                        postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
+                                        postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
+                                        postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                        postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
+                                        postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                        postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
+                                        postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                        String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                        Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                                .document(laptopID)
+                                                .get()
+                                                .addOnSuccessListener(productSnapshot -> {
+                                                    if (productSnapshot.exists()) {
+                                                        postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                    }
                                                 });
-                                        listener.OnFinishLoadPostInactive(true, postSearchResults, null);
-                                    } else {
-                                        listener.OnFinishLoadPostInactive(false, null, task1.getException());
+                                        loadProductTasks.add(getProductTask);
+                                        postSearchResults.add(postSearchResult);
                                     }
-                                });
-                            } else {
-                                listener.OnFinishLoadPostInactive(true, null, null);
-                            }
+                                    Tasks.whenAllSuccess(loadProductTasks)
+                                        .addOnSuccessListener(results -> {
+                                            listener.OnFinishLoadPostActive(true, postSearchResults, null);
+                                    })
+                                        .addOnFailureListener(exception -> {
+                                           listener.OnFinishLoadPostActive(false, null, null);
+                                        });
+                                    listener.OnFinishLoadPostActive(true, postSearchResults, null);
+                                } else {
+                                    listener.OnFinishLoadPostActive(false, null, task1.getException());
+                                }
+                            });
+                        } else {
+                            listener.OnFinishLoadPostActive(true, null, null);
                         }
-                    }
-                });
-            }
-        } else {
-            // Trả về list rỗng, nhưng vẫn thông báo thành công chứ không phải bug
-            listener.OnFinishLoadPostInactive(true, null, null);
-        }
-    }
-
-    @Override
-    public void UpdatePostStatus(String postID, OnUpdatePostStatusListener listener) {
-        db.collection(PostTable.TABLE_NAME).document(postID).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                DocumentSnapshot documentSnapshot = task.getResult();
-                if (documentSnapshot.exists()){
-                    String postStatus = documentSnapshot.getString(PostTable.POST_STATUS);
-                    if (postStatus.equals(PostStatus.AVAILABLE)){
-                        db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE);
-                        listener.OnFinishUpdatePostStatus(true, false, null);
-                    } else {
-                        db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.AVAILABLE);
-                        listener.OnFinishUpdatePostStatus(true, true, null);
                     }
                 }
-            } else {
-                listener.OnFinishUpdatePostStatus(false, false, task.getException());
-            }
-        });
+            });
+        }
+    }
+
+    @Override
+    public void LoadPostInActive(String ownerOfPostID, OnLoadPostInactiveListener listener) {
+        // Nếu có người đang đăng nhập
+        if (ownerOfPostID != null) {
+            DocumentReference accountRef = db.collection(AccountTable.TABLE_NAME).document(ownerOfPostID);
+            // Lấy cái BuyOrder từ bảng Account
+            accountRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        ArrayList<String> postActiveListID = (ArrayList<String>) documentSnapshot.get(AccountTable.PUBLISH_POSTS);
+                        if (postActiveListID != null && !postActiveListID.isEmpty()) {
+                            com.google.firebase.firestore.Query query = db.collection(PostTable.TABLE_NAME)
+                                    .whereEqualTo(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE)
+                                    .whereIn("postID", postActiveListID);
+
+                            query.get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    ArrayList<Task<DocumentSnapshot>> loadProductTasks = new ArrayList<>(); // Danh sách các nhiệm vụ tải dữ liệu sản phẩm
+                                    ArrayList<PostSearchResult> postSearchResults = new ArrayList<>();
+                                    for (QueryDocumentSnapshot postDoc : task1.getResult()) {
+                                        PostSearchResult postSearchResult = new PostSearchResult();
+                                        postSearchResult.setPostId(postDoc.getString(PostTable.POST_ID));
+                                        postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
+                                        postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                        postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
+                                        postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                        postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
+                                        postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                        String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                        Task<DocumentSnapshot> getProductTask = db.collection(LaptopTable.TABLE_NAME)
+                                                .document(laptopID)
+                                                .get()
+                                                .addOnSuccessListener(productSnapshot -> {
+                                                    if (productSnapshot.exists()) {
+                                                        postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                    }
+                                                });
+                                        loadProductTasks.add(getProductTask);
+                                        postSearchResults.add(postSearchResult);
+                                    }
+                                    Tasks.whenAllSuccess(loadProductTasks)
+                                            .addOnSuccessListener(results -> {
+                                                listener.OnFinishLoadPostInactive(true, postSearchResults, null);
+                                            })
+                                            .addOnFailureListener(exception -> {
+                                                listener.OnFinishLoadPostInactive(false, null, null);
+                                            });
+                                    listener.OnFinishLoadPostInactive(true, postSearchResults, null);
+                                } else {
+                                    listener.OnFinishLoadPostInactive(false, null, task1.getException());
+                                }
+                            });
+                        } else {
+                            listener.OnFinishLoadPostInactive(true, null, null);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void UpdatePostStatus(String postID, String changePostStatusTo, OnUpdatePostStatusListener listener) {
+        if (changePostStatusTo.equals(PostStatus.AVAILABLE)){
+            db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.AVAILABLE);
+            listener.OnFinishUpdatePostStatus(true, PostStatus.AVAILABLE, null);
+        }
+        else if (changePostStatusTo.equals(PostStatus.NOT_AVAILABLE)){
+            db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.NOT_AVAILABLE);
+            listener.OnFinishUpdatePostStatus(true, PostStatus.NOT_AVAILABLE, null);
+        }
+        else if (changePostStatusTo.equals(PostStatus.DELETED)){
+            db.collection(PostTable.TABLE_NAME).document(postID).update(PostTable.POST_STATUS, PostStatus.DELETED);
+            listener.OnFinishUpdatePostStatus(true, PostStatus.DELETED, null);
+        }
     }
 }

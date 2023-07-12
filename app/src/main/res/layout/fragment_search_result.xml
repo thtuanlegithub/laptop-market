@@ -91,24 +91,6 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/white">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_location"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Khu vực:"
-                android:gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@color/white">
             <androidx.appcompat.widget.AppCompatButton

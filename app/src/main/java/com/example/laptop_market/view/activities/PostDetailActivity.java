@@ -85,9 +85,11 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     private ActivityResultLauncher<Intent> orderDetailsLauncher;
     private TextView tvPostDetailDescription;
     private boolean backFromOrder = false;
+    private boolean backFromProfile = false;
     private Button btnViewProfileFromPostDetail;
     private AppCompatButton bttMessenger;
     private AppCompatButton btnNotifyPostStatus;
+    private AppCompatButton btnDeletePost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +137,7 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         originTextView = findViewById(R.id.originTextView);
         btnViewProfileFromPostDetail = findViewById(R.id.btnViewProfileFromPostDetail);
         btnNotifyPostStatus = findViewById(R.id.btnNotifyPostStatus);
+        btnDeletePost = findViewById(R.id.btnDeletePost);
         // init data
         InitData();
 
@@ -142,12 +145,17 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         if(isSeller()){
             layoutButtonSeller.setVisibility(View.VISIBLE);
             layoutButtonCustomer.setVisibility(View.GONE);
-            if (postSearchResult.getPostStatus().equals(PostStatus.AVAILABLE))
+            if (postSearchResult.getPostStatus().equals(PostStatus.AVAILABLE)){
+                btnDeletePost.setVisibility(View.GONE);
                 btnNotifyPostStatus.setText("Thông báo hết hàng");
-            else
+            }
+            else {
+                btnDeletePost.setVisibility(View.VISIBLE);
                 btnNotifyPostStatus.setText("Thông báo còn hàng");
+            }
         }
         else{
+            btnDeletePost.setVisibility(View.GONE);
             layoutButtonCustomer.setVisibility(View.VISIBLE);
             layoutButtonSeller.setVisibility(View.GONE);
             if (postSearchResult.getPostStatus().equals(PostStatus.NOT_AVAILABLE)) {
@@ -186,14 +194,43 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
         return false;
     }
 
+    private void DeletePost(){
+        postPresenter.OnChangeStatusClicked(this.postSearchResult.getPostId(), PostStatus.DELETED);
+    }
     private void setListener()
     {
+        btnDeletePost.setOnClickListener(view -> {
+            MyDialog.showDialog(this, "Ban có chắc chắn muốn xóa bài đăng này không?", MyDialog.DialogType.YES_NO, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+                    DeletePost();
+                }
+
+                @Override
+                public void onNoClick() {
+
+                }
+
+                @Override
+                public void onOkClick() {
+
+                }
+            });
+        });
         btnNotifyPostStatus.setOnClickListener(view -> {
-            postPresenter.OnChangeStatusClicked(postSearchResult.getPostId());
+            if (postSearchResult.getPostStatus().equals(PostStatus.AVAILABLE)){
+                postPresenter.OnChangeStatusClicked(postSearchResult.getPostId(), PostStatus.NOT_AVAILABLE);
+            }
+            else {
+                postPresenter.OnChangeStatusClicked(postSearchResult.getPostId(), PostStatus.AVAILABLE);
+            }
         });
         btnViewProfileFromPostDetail.setOnClickListener(view -> {
-            /*Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("AccountID", this.postSearchResult.getAccountId());
+            backFromProfile = true;
+            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
+            startActivity(intent, bundle);
         });
         bttMessenger.setOnClickListener(view -> {
             if(FirebaseAuth.getInstance().getCurrentUser() == null)
@@ -354,6 +391,10 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
             this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             backFromOrder = false;
         }
+        if(backFromProfile){
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            backFromProfile = false;
+        }
         postPresenter.LoadSavePostButton(this.postSearchResult.getPostId());
     }
 
@@ -407,10 +448,33 @@ public class PostDetailActivity extends AppCompatActivity implements IPostContra
     }
 
     @Override
-    public void DisplayNotifyButtonStatus(boolean isAvailable) {
-        if (isAvailable)
+    public void DisplayNotifyButtonStatus(String currentStatus) {
+        if (currentStatus.equals(PostStatus.AVAILABLE)){
+            postSearchResult.setPostStatus(PostStatus.AVAILABLE);
+            btnDeletePost.setVisibility(View.GONE);
             btnNotifyPostStatus.setText("Thông báo hết hàng");
-        else
+        }
+        else if (currentStatus.equals(PostStatus.NOT_AVAILABLE)) {
+            postSearchResult.setPostStatus(PostStatus.NOT_AVAILABLE);
+            btnDeletePost.setVisibility(View.VISIBLE);
             btnNotifyPostStatus.setText("Thông báo còn hàng");
+        } else if (currentStatus.equals(PostStatus.DELETED)){
+            MyDialog.showDialog(this, "Xóa bài đăng thành công!", MyDialog.DialogType.OK, new MyDialog.DialogClickListener() {
+                @Override
+                public void onYesClick() {
+
+                }
+
+                @Override
+                public void onNoClick() {
+
+                }
+
+                @Override
+                public void onOkClick() {
+                    finish();
+                }
+            });
+        }
     }
 }

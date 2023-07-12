@@ -52,6 +52,7 @@ public class PostActiveAdapter extends RecyclerView.Adapter<PostActiveAdapter.Po
         holder.pricePost.setText(formattedPrice + " VNĐ");
         holder.addressPost.setText(postActive.getAddress());
         holder.imgPost.setImageBitmap(postActive.getImage());
+        holder.inactiveLabelPost.setVisibility(View.GONE);
         // item select
         holder.itemView.setOnClickListener(v -> {
             // Mở Activity mới
@@ -76,12 +77,14 @@ public class PostActiveAdapter extends RecyclerView.Adapter<PostActiveAdapter.Po
         private TextView titlePost;
         private TextView pricePost;
         private TextView addressPost;
+        private TextView inactiveLabelPost;
         public PostActiveViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPost = itemView.findViewById(R.id.imgPost);
             titlePost = itemView.findViewById(R.id.titlePost);
             pricePost = itemView.findViewById(R.id.pricePost);
             addressPost = itemView.findViewById(R.id.addressPost);
+            inactiveLabelPost = itemView.findViewById(R.id.inactiveLabelPost);
         }
     }
 }

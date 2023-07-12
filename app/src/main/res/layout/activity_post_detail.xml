@@ -24,12 +24,18 @@
                     android:layout_gravity="center"
                     android:background="@drawable/ic_back"/>
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/postDetailMessage"
+                    android:id="@+id/btnDeletePost"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_width="32dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="60dp"
                     android:layout_height="32dp"
-                    android:background="@drawable/ic_more_vert"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_btn_delete_post"
+                    android:stateListAnimator="@drawable/bg_btn_delete_post"
+                    android:text="Xoá"
+                    android:textSize="17dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     app:layout_constraintEnd_toEndOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -120,6 +126,7 @@
                                 app:layout_constraintTop_toBottomOf="@id/postDetailTitleTextView"
                                 />
                             <TextView
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="10 giờ trước"/>
@@ -456,6 +463,21 @@
             android:id="@+id/layoutButtonForCustomer"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnStopBuy"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_stop_buy"
+                android:text="Mặt hàng
+                ngưng bán"
+                android:textAlignment="center"
+                android:textSize="12dp"
+                android:paddingLeft="15dp"
+                android:drawablePadding="-20dp"
+                android:textAllCaps="false"
+                android:background="@drawable/bg_stop_buy"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBuyNow"
                 android:layout_width="match_parent"

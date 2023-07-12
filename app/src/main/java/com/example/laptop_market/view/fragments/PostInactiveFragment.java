@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.laptop_market.R;
@@ -27,6 +28,15 @@ public class PostInactiveFragment extends Fragment implements IPostContract.View
     private IPostContract.Presenter.PostFragmentPresenter postFragmentPresenter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout layoutNotPostInactive;
+    private String ownerOfPostID;
+    public PostInactiveFragment() {
+
+    }
+
+    public PostInactiveFragment (String ownerOfPostID) {
+        this.ownerOfPostID = ownerOfPostID;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +49,14 @@ public class PostInactiveFragment extends Fragment implements IPostContract.View
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_inactive, container, false);
         rcvPostInactive = view.findViewById(R.id.rcvPostInactive);
+        layoutNotPostInactive = view.findViewById(R.id.layoutNotPostInactive);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutPostInactive);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                postFragmentPresenter.LoadPostInactive();
+                postFragmentPresenter.LoadPostInactive(ownerOfPostID);
                 rcvPostInactive.setVisibility(View.GONE);
+                layoutNotPostInactive.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -53,17 +65,19 @@ public class PostInactiveFragment extends Fragment implements IPostContract.View
         progressBar = view.findViewById(R.id.progressBarPostInactive);
         GridLayoutManager gridLayoutManagerPostInactive = new GridLayoutManager(requireContext(),1);
         rcvPostInactive.setLayoutManager(gridLayoutManagerPostInactive);
-        postFragmentPresenter.LoadPostInactive();
+        postFragmentPresenter.LoadPostInactive(ownerOfPostID);
         return view;
     }
     @Override
     public void DisplayPostInactive(ArrayList<PostSearchResult> postSearchResults) {
-        if (postSearchResults == null){
+        if (postSearchResults == null || postSearchResults.size() == 0){
             progressBar.setVisibility(View.GONE);
+            layoutNotPostInactive.setVisibility(View.VISIBLE);
             return;
         }
         PostInactiveAdapter PostInactiveAdapter = new PostInactiveAdapter(postSearchResults, this);
         rcvPostInactive.setAdapter(PostInactiveAdapter);
+        layoutNotPostInactive.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         rcvPostInactive.setVisibility(View.VISIBLE);
     }

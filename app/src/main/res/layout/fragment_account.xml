@@ -60,6 +60,7 @@
                         android:textStyle="bold" />
 
                     <RatingBar
+                        android:isIndicator="true"
                         android:clickable="false"
                         android:id="@+id/ratingBarAccount"
                         android:layout_width="wrap_content"

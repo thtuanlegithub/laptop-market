@@ -51,8 +51,8 @@ public class PostInactiveAdapter extends RecyclerView.Adapter<PostInactiveAdapte
         String formattedPrice = numberFormat.format(postInactive.getPrice());
         holder.pricePost.setText(formattedPrice + " VNĐ");
         holder.addressPost.setText(postInactive.getAddress());
+        holder.imgPost.setImageBitmap(postInactive.getImage());
         holder.inactiveLabelPost.setVisibility(View.VISIBLE);
-
         // item select
         holder.itemView.setOnClickListener(v -> {
             // Mở Activity mới

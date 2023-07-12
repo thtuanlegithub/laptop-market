@@ -53,8 +53,8 @@ public class PostFragmentPresenter implements IPostContract.Presenter.PostFragme
     }
 
     @Override
-    public void LoadPostActive() {
-        postModel.LoadPostActive(new IPostContract.Model.OnLoadPostActiveListener() {
+    public void LoadPostActive(String ownerOfPostID) {
+        postModel.LoadPostActive(ownerOfPostID, new IPostContract.Model.OnLoadPostActiveListener() {
             @Override
             public void OnFinishLoadPostActive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error) {
                 if (isSuccess)
@@ -66,8 +66,8 @@ public class PostFragmentPresenter implements IPostContract.Presenter.PostFragme
     }
 
     @Override
-    public void LoadPostInactive() {
-        postModel.LoadPostInActive(new IPostContract.Model.OnLoadPostInactiveListener() {
+    public void LoadPostInactive(String ownerOfPostID) {
+        postModel.LoadPostInActive(ownerOfPostID, new IPostContract.Model.OnLoadPostInactiveListener() {
             @Override
             public void OnFinishLoadPostInactive(boolean isSuccess, ArrayList<PostSearchResult> postSearchResults, Exception error) {
                 if (isSuccess)

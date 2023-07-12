@@ -98,6 +98,7 @@
                         android:paddingTop="5dp"
                         android:background="#FAFAFA"
                         android:textSize="16dp"
+                        android:maxLength="65"
                         android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
