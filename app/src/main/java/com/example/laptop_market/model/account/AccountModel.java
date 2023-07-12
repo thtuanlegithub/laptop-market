@@ -376,27 +376,29 @@ public class AccountModel implements IAccountContract.Model {
                                         .get()
                                         .addOnSuccessListener(postDoc -> {
                                             if (postDoc.exists()) {
-                                                postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
-                                                postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
-                                                postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
-                                                postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
-                                                postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
-                                                postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
-                                                String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
-                                                db.collection(LaptopTable.TABLE_NAME)
-                                                        .document(laptopID)
-                                                        .get()
-                                                        .addOnSuccessListener(productSnapshot -> {
-                                                            if (productSnapshot.exists()) {
-                                                                postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
-                                                            }
-                                                        })
-                                                        .addOnCompleteListener(task1 -> {
-                                                            // Kiểm tra nếu đã hoàn thành tất cả nhiệm vụ tải dữ liệu
-                                                            if (postSearchResults.size() == yourSavedPosts.size()) {
-                                                                listener.OnFinishLoadYourSavedPosts(true, postSearchResults, null);
-                                                            }
-                                                        });
+                                                if (!postDoc.getString(PostTable.POST_STATUS).equals(PostStatus.DELETED)) {
+                                                    postSearchResult.setLaptopId(postDoc.getString(PostTable.LAPTOP_ID));
+                                                    postSearchResult.setAccountId(postDoc.getString(PostTable.ACCOUNT_ID));
+                                                    postSearchResult.setTitle(postDoc.getString(PostTable.TITLE));
+                                                    postSearchResult.setAddress(postDoc.getString(PostTable.SELLER_ADDRESS));
+                                                    postSearchResult.setPostStatus(postDoc.getString(PostTable.POST_STATUS));
+                                                    postSearchResult.setImage(getBitMapFromString(postDoc.getString(PostTable.POST_MAIN_IMAGE)));
+                                                    String laptopID = postDoc.getString(PostTable.LAPTOP_ID);
+                                                    db.collection(LaptopTable.TABLE_NAME)
+                                                            .document(laptopID)
+                                                            .get()
+                                                            .addOnSuccessListener(productSnapshot -> {
+                                                                if (productSnapshot.exists()) {
+                                                                    postSearchResult.setPrice(productSnapshot.getDouble(LaptopTable.PRICE));
+                                                                }
+                                                            })
+                                                            .addOnCompleteListener(task1 -> {
+                                                                // Kiểm tra nếu đã hoàn thành tất cả nhiệm vụ tải dữ liệu
+                                                                if (postSearchResults.size() == yourSavedPosts.size()) {
+                                                                    listener.OnFinishLoadYourSavedPosts(true, postSearchResults, null);
+                                                                }
+                                                            });
+                                                }
                                             }
                                         })
                                         .addOnFailureListener(exception -> {
