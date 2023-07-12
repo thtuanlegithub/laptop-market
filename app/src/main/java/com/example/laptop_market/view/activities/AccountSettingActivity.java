@@ -42,6 +42,7 @@ public class AccountSettingActivity extends AppCompatActivity implements IAccoun
     private boolean backFromPassword = false;
     public RelativeLayout rltLayoutAccountSettingPassword;
     private AppCompatButton saveAccountSettingbtn;
+    private static final int REQUEST_CODE_FOR_PROFILE = 5;
     private IFragmentListener fragmentListener;
 
     @Override
@@ -164,7 +165,9 @@ public class AccountSettingActivity extends AppCompatActivity implements IAccoun
         ShowToast("Cập nhật thông tin thành công");
         Intent intent = new Intent();
         intent.putExtra("applySlideTransition", true);
+        intent.putExtra("AccountInfo", account);
         setResult(Activity.RESULT_OK, intent);
+        setResult(REQUEST_CODE_FOR_PROFILE, intent);
         finish();
         //Ẩn bàn phím:
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
