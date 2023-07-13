@@ -90,7 +90,7 @@
                     android:text="đ"/>
             </LinearLayout>
             <SeekBar
-                android:max="50"
+                android:max="100"
                 android:id="@+id/seekBarMinPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                     android:textColor="@color/black"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="16dp"
-                    android:text="50,000,000"/>
+                    android:text="100,000,000"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                     android:text="đ"/>
             </LinearLayout>
             <SeekBar
-                android:max="50"
+                android:max="100"
                 android:id="@+id/seekBarMaxPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

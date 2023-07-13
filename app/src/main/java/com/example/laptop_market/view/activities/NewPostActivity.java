@@ -309,6 +309,12 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
                 Toast.makeText(getApplicationContext(),"Vui lòng chọn ít nhất 1 ảnh", Toast.LENGTH_SHORT).show();
                 return;
             }
+            String price = edtNewPostPrice.getText().toString().replaceAll("[,.]", "").trim();;
+            if(Integer.parseInt(price)>100000000)
+            {
+                Toast.makeText(getApplicationContext(),"Giá tối đa là 100,000,000", Toast.LENGTH_SHORT).show();
+                return;
+            }
             laptop.setLaptopName(edtTitle.getText().toString());
             if( laptop.checkDataNull() || edtNewPostPrice.getText().toString().isEmpty() || edtDescription.getText().toString().isEmpty()
                     || edtTitle.getText().toString().isEmpty() || edtSellerAddress.getText().toString().isEmpty()
@@ -322,7 +328,6 @@ public class NewPostActivity extends AppCompatActivity implements IPostContract.
             else
                 laptop.setOrigin(edtNewPostOriginCountry.getText().toString());
             laptop.setImgLists(ListPictures);
-            String price = edtNewPostPrice.getText().toString().replaceAll("[,.]", "").trim();;
             laptop.setPrice(Integer.parseInt(price));
             laptop.setNumOfImage(ListPictures.size());
             post.setDescription(edtDescription.getText().toString());
