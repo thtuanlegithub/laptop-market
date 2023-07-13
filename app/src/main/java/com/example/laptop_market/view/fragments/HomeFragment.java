@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements IConversationContract.View
         //Tạo list image để hiển thị slide show ViewPager
         List<Integer> imageList = new ArrayList<>();
         imageList.add(R.drawable.slide_show1);
-        imageList.add(R.drawable.slide_show1);
+        imageList.add(R.drawable.slide_show2);
         ViewPager viewPager = view.findViewById(R.id.slide_show_view_pager);
         ImageSliderAdapter adapter = new ImageSliderAdapter(requireContext(),imageList);
         viewPager.setAdapter(adapter);

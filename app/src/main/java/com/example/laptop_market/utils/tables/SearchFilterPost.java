@@ -27,7 +27,7 @@ public class SearchFilterPost implements Serializable {
         listGraphics = new ArrayList<>();
         listScreenSize = new ArrayList<>();
         minimumPrice = 0;
-        maximumPrice = 50000000;
+        maximumPrice = 100000000;
     }
 
     public String getSearchPost() {
