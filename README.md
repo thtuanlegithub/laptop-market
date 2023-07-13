@@ -25,7 +25,7 @@ An android application for selling and buying laptops, implemented based on MVP 
 
 # Installation
 
-Just download file LATO.apk with this [following link](https://drive.google.com/file/d/1X4PVvjhRNNkQKl2UEtchaYpSm7K10FHi/view?usp=drive_link) then install on your device and enjoy it. 
+Just download file LATO.apk with this [following link]( https://drive.google.com/file/d/1ekCyE0asvjI3wN6pnY_Sc8wWDAKK_msc/view?usp=sharing) then install on your device and enjoy it.
 
 # Authors
 
