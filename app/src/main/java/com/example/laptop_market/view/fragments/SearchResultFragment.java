@@ -237,7 +237,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             filterAdapter.updateFilterName(0,listFilter.get(0).getTag());
             filterAdapter.updateFiltered(0,false);
         }
-        if(searchFilterPost.getMinimumPrice()!=0 && searchFilterPost.getMaximumPrice()!=100000000) {
+        if(searchFilterPost.getMinimumPrice()!=0 || searchFilterPost.getMaximumPrice()!=100000000) {
             if (searchFilterPost.getMinimumPrice() > 0)
                 textViewHint += " có giá trên " + formatter.format(searchFilterPost.getMinimumPrice()) + " và";
             if(searchFilterPost.getMaximumPrice() < 100000000)
