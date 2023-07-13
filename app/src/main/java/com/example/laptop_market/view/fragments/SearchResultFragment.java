@@ -237,10 +237,11 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
             filterAdapter.updateFilterName(0,listFilter.get(0).getTag());
             filterAdapter.updateFiltered(0,false);
         }
-        if(searchFilterPost.getMinimumPrice()!=0 && searchFilterPost.getMaximumPrice()!=50000000) {
+        if(searchFilterPost.getMinimumPrice()!=0 && searchFilterPost.getMaximumPrice()!=100000000) {
             if (searchFilterPost.getMinimumPrice() > 0)
                 textViewHint += " có giá trên " + formatter.format(searchFilterPost.getMinimumPrice()) + " và";
-            textViewHint += " có giá dưới " + formatter.format(searchFilterPost.getMaximumPrice());
+            if(searchFilterPost.getMaximumPrice() < 100000000)
+                textViewHint += " có giá dưới " + formatter.format(searchFilterPost.getMaximumPrice());
             filterAdapter.updateFilterName(1,"Giá từ: ... +");
             filterAdapter.updateFiltered(1,true);
         }
@@ -469,7 +470,7 @@ public class SearchResultFragment extends Fragment implements IStringFilterSearc
     private void cleanSearchFilterPost()
     {
         searchFilterPost.setSearchPost("");
-        searchFilterPost.setMaximumPrice(50000000);
+        searchFilterPost.setMaximumPrice(100000000);
         searchFilterPost.setMinimumPrice(0);
         searchFilterPost.getListGuarantee().clear();;
         searchFilterPost.getListGraphics().clear();
